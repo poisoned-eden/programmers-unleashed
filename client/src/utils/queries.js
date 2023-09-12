@@ -78,3 +78,18 @@ export const QUERY_ME = gql`
     }
   }
 `;
+
+export const FIND_NOTE = gql`
+  query note($noteId: ID!) {
+    notes {
+      _id
+      title
+      medicine
+      startTime
+      period
+      numberOfTime
+      total
+      userId
+    }
+  }
+`;
