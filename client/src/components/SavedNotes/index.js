@@ -1,11 +1,13 @@
 import React, { useState, useEffect } from "react";
 
 import { useQuery } from "@apollo/client";
-import { QUERY_ME, FIND_NOTES } from "../../utils/queries";
+import { QUERY_ME } from "../../utils/queries";
 
 import { Container, Card, Button, Row, Col } from "react-bootstrap";
 import { REMOVE_NOTE } from "../../utils/mutations";
 import { useMutation } from "@apollo/client";
+
+//import { createNotification } from "../../utils/oneSignal";
 
 const SavedNotes = () => {
   const [userData, setUserData] = useState({
@@ -20,6 +22,8 @@ const SavedNotes = () => {
       setUserData(data.me);
     },
   });
+
+  console.log(userData);
 
   const [removeNote, { data: updatedData }] = useMutation(REMOVE_NOTE, {
     onCompleted: () => {
@@ -40,19 +44,6 @@ const SavedNotes = () => {
     } catch (err) {
       console.error(err);
     }
-  };
-
-  const handlePush = (note) => {
-    const { _id, title, medicine, startTime, period, numberOfTime, total } =
-      note;
-    console.log({
-      id: _id,
-      title: title,
-      medicine: medicine,
-      period: period,
-      numberOfTime: numberOfTime,
-      total: total,
-    });
   };
 
   return (
@@ -83,12 +74,7 @@ const SavedNotes = () => {
                     <Card.Text>Period: {note.period}</Card.Text>
                     <Card.Text>Number of time: {note.numberOfTime}</Card.Text>
                     <Card.Text>Total: {note.total}</Card.Text>
-                    <Button
-                      className="btn-block btn-danger"
-                      onClick={() => handlePush(note)}
-                    >
-                      Push!
-                    </Button>
+
                     <Button
                       className="btn-block btn-danger"
                       onClick={() => handleDeleteNote(note._id)}
