@@ -240,6 +240,38 @@ const resolvers = {
 			}
 			throw new AuthenticationError('You need to be logged in!');
 		},
+
+    updateMed: async (parent, {medId, medData}) => {
+      
+        const {medName, maxDailyDoses, minTimeBetween, remindersBool, iconType} = medData
+
+        const med = await Med.findOneAndUpdate({
+          _id: medId
+        }, {
+          $set: {
+            medName: medName,
+            maxDailyDoses: maxDailyDoses,
+            minTimeBetween: minTimeBetween,
+            remindersBool: remindersBool,
+            iconType: iconType,
+          }
+        }, { new: true, runValidators: true })
+
+        return med;
+      },
+
+    updateDose: async (parent, {doseId, doseData}) => {
+      const {doseScheduled, doseLogged} = doseData
+
+      const dose = await Dose.findOneAndUpdate({
+        _id: doseId
+      }, {$set: {
+        doseScheduled: doseScheduled,
+        doseLogged: doseLogged,
+      }}, { new: true, runValidators: true })
+
+      return dose;
+    }
 	},
 };
 

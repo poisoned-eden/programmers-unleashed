@@ -104,3 +104,36 @@ export const REMOVE_NOTE = gql`
     }
   }
 `;
+
+export const UPDATE_MED = gql`
+  mutation updateMed($medId: ID!, $medData: MedUpdate!) {
+    updateMed(medId: $medId, medData: $medData) {
+      _id
+    userId
+    medName
+    maxDailyDoses
+    minTimeBetween
+    remindersBool
+    iconType
+    doses {
+      _id
+      userId
+      medId
+      doseScheduled
+      doseLogged
+    }
+    }
+  }
+`;
+
+export const UPDATE_DOSE = gql`
+  mutation updateDose($doseId: ID!, $doseData: DoseUpdate!) {
+    updateDose(doseId: $doseId, doseData: $doseData) {
+      _id
+      userId
+      medId
+      doseScheduled
+      doseLogged
+    }
+  }
+`;

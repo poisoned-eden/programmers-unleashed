@@ -82,6 +82,19 @@ const typeDefs = gql`
     iconType: String
   }
 
+  input MedUpdate {
+    medName: String!
+    maxDailyDoses: Int!
+    minTimeBetween: Int!
+    remindersBool: Boolean!
+    iconType: String!
+  }
+
+  input DoseUpdate {
+    doseScheduled: String!
+    doseLogged: DateTime!
+  }
+
   type Query {
     user(username: String!): User
     me: User
@@ -89,12 +102,9 @@ const typeDefs = gql`
     doses: [Dose]
     thoughts(username: String): [Thought]
     thought(thoughtId: ID!): Thought
-<<<<<<< HEAD
     me: User
     note(noteId: ID!): Note
-=======
     users: [User]
->>>>>>> 938d3c283c24aa411738013ba0a1c3b92ba8730b
   }
 
   type Mutation {
@@ -108,6 +118,8 @@ const typeDefs = gql`
     removeComment(thoughtId: ID!, commentId: ID!): Thought
     addNote(noteData: NoteInput!): User
     removeNote(noteId: ID!): User
+    updateMed(medId: ID!, medData: MedUpdate!): Med
+    updateDose(doseId: ID!, doseData: DoseUpdate!): Dose
   }
 `;
 
