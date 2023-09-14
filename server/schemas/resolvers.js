@@ -8,7 +8,6 @@ const {
 } = require('graphql-date-scalars');
 
 const resolvers = {
-<<<<<<< HEAD
   Query: {
     users: async () => {
       return User.find().populate("thoughts").populate("savedNotes");
@@ -39,11 +38,9 @@ const resolvers = {
       throw new AuthenticationError("You need to be logged in!");
     },
   },
-=======
 	Date: DateScalar,
 	Time: TimeScalar,
 	DateTime: DateTimeScalar,
->>>>>>> 938d3c283c24aa411738013ba0a1c3b92ba8730b
 
 	Query: {
 		users: async () => {
