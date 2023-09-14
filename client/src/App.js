@@ -10,8 +10,11 @@ import {
 } from "@apollo/client";
 import { persistCache, LocalStorageWrapper } from "apollo3-cache-persist";
 import { setContext } from "@apollo/client/link/context";
+// utilities
+import OneSignal from "react-onesignal";
+import Auth from "./utils/auth";
 // pages and components
-import Home from "./pages/Home";
+import MedicationReminder from "./pages/MedicationReminder";
 import Signup from "./pages/Signup";
 import Login from "./pages/Login";
 import SingleThought from "./pages/SingleThought";
@@ -20,9 +23,10 @@ import Header from "./components/Header";
 import Footer from "./components/Footer";
 import NoteForm from "./components/NoteForm";
 import SavedNotes from "./components/SavedNotes";
+// styling
 import logo from "./logo.svg";
+import 'bootstrap/dist/css/bootstrap.css';
 import "./App.css";
-import OneSignal from "react-onesignal";
 
 // Construct our main GraphQL API endpoint
 const httpLink = createHttpLink({
@@ -64,13 +68,13 @@ function App() {
           <Header />
           <div className="container">
             <Routes>
-              <Route path="/" element={<Home />} />
+              <Route path="/" element={Auth.loggedIn() ? <MedicationReminder /> : <Signup />} />
+              <Route path="/medicationReminder" element={<MedicationReminder />} />
               <Route path="/login" element={<Login />} />
               <Route path="/signup" element={<Signup />} />
               <Route path="/me" element={<Profile />} />
               <Route path="/add" element={<NoteForm />} />
               <Route path="/notes" element={<SavedNotes />} />
-              <Route path="/profiles/:username" element={<Profile />} />
               <Route path="/thoughts/:thoughtId" element={<SingleThought />} />
             </Routes>
           </div>
