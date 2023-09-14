@@ -11,17 +11,26 @@ export const QUERY_THOUGHTS = gql`
 	}
 `;
 
-// TODO
-// export const QUERY_MEDS = gql`
-//   query meds {
-//     thoughts {
-//       _id
-//       thoughtText
-//       thoughtAuthor
-//       createdAt
-//     }
-//   }
-// `;
+export const QUERY_MEDS = gql`
+	query Meds {
+		meds {
+		_id
+		userId
+		medName
+		maxDailyDoses
+		minTimeBetween
+		remindersBool
+		iconType
+		doses {
+			_id
+			userId
+			medId
+			doseScheduled
+			doseLogged
+		}
+		}
+	}
+`;
 
 export const QUERY_SINGLE_THOUGHT = gql`
 	query getSingleThought($thoughtId: ID!) {
@@ -46,31 +55,6 @@ export const QUERY_ME = gql`
 			_id
 			username
 			email
-			password
-			savedNotes {
-				_id
-				title
-				medicine
-				startTime
-				period
-				numberOfTime
-				total
-				userId
-			}
-			noteCount
-			userMeds {
-				_id
-				userId
-				medName
-				maxDailyDoses
-				minTimeBetween
-				remindersBool
-				doses {
-					_id
-					doseScheduled
-					doseLogged
-				}
-			}
 		}
 	}
 `;

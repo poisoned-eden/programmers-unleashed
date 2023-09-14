@@ -1,24 +1,29 @@
 import React, { useState } from 'react';
 import { useQuery } from '@apollo/client';
-import { QUERY_ME, QUERY_THOUGHTS } from '../utils/queries';
+import { QUERY_ME, QUERY_MEDS } from '../utils/queries';
 
+import MedCards from '../components/MedCards';
 import Calendar from 'react-calendar';
 import { Container, Row, Col, Card } from 'react-bootstrap';
 
 import 'react-calendar/dist/Calendar.css';
 
 const MedicationReminder = () => {
-	const { loading, data } = useQuery(QUERY_ME);
 	const [calendarValue, setCalendarValue] = useState(new Date());
+	// const { loading, data } = useQuery(QUERY_ME);
+	// const { loading: medsLoading, data: medsData } = useQuery(QUERY_MEDS);
+	// if (loading) return 'loading your data...';
 
-	const meds = data?.me.userMeds || [];
+	const { loading: medsLoading, data: medsData } = useQuery(QUERY_MEDS);
+	if (medsLoading) return 'loading your meds info...';
+
+	const meds = medsData?.meds || [];
+
 
 	function onChangeCalendar(nextValue) {
 		setCalendarValue(nextValue);
 		console.log(calendarValue);
 	};
-
-	if (loading) return 'loading your data...';
 
 	return (
 		<main>
@@ -31,23 +36,7 @@ const MedicationReminder = () => {
 						<div className="loader-container" id="pill-image">
 							<div className="loader"></div>
 						</div>
-							{meds.map((med) => 
-								<Card key={med._id}>
-									<Card.Title>
-										{med.medName}	
-									</Card.Title>
-									<Card.Body>
-										{/* TODO add med.icon properly */}
-										<span className="medication-icon">Icon 1</span>
-											{med.doses.map((dose) => 
-										<ul key={dose._id}>
-												<li>Scheduled:{dose.doseScheduled}</li>
-												<li>Logged:{dose.doseLogged}</li>
-										</ul>
-											)}
-									</Card.Body>
-								</Card>
-							)}
+						<MedCards meds={meds}/>
 
 						<ul className="medication-list">
 							<li>
