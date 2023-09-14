@@ -12,11 +12,11 @@ const doseSchema = new Schema({
     required: true,
   },
 	doseScheduled: {
-		type: Date,
-    default: Date.now,
+		type: String,
+    // default: Date.now(),
 	},
 	doseLogged: {
-		type: Date,
+		type: String,
 	},
 });
 

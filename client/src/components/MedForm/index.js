@@ -5,6 +5,7 @@ import { useMutation } from '@apollo/client';
 import { ADD_MED } from '../../utils/mutations';
 
 import { Container, Row, Col, Button, Form } from 'react-bootstrap';
+import { QUERY_MEDS } from '../../utils/queries';
 
 const MedForm = () => {
 	const [medFormData, setMedFormData] = useState({
@@ -14,8 +15,32 @@ const MedForm = () => {
 		remindersBool: false,
 	});
 
+	const [addMed, { error }] = useMutation(ADD_MED, {
+		update(cache, { data: { addMed } }) {
+			try {
+			  const { meds } = cache.readQuery({ query: QUERY_MEDS });
+	  
+			  cache.writeQuery({
+				query: QUERY_MEDS,
+				data: { meds: [addMed, ...meds] },
+			  });
+			} catch (e) {
+			  console.error(e);
+			}
+		},
+		refetchQueries: [
+			QUERY_MEDS, // DocumentNode object parsed with gql
+			'Meds' // Query name
+		],
+	});
+
+	if (error) {
+		console.error(error);
+		return 'Sorry, there was an error adding your medication. Please try again.';
+	};
+
 	console.log(medFormData);
-	const [addMed] = useMutation(ADD_MED);
+	
 
 	const handleChange = (event) => {
 		const { name, value } = event.target;
@@ -30,6 +55,7 @@ const MedForm = () => {
 		if (form.checkValidity() === false) {
 			event.preventDefault();
 			event.stopPropagation();
+			console.log('form not valid');
 		}
 
 		console.log(medFormData);

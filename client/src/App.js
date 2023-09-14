@@ -27,6 +27,12 @@ import SavedNotes from "./components/SavedNotes";
 import logo from "./logo.svg";
 import 'bootstrap/dist/css/bootstrap.css';
 import "./App.css";
+import { loadErrorMessages, loadDevMessages } from "@apollo/client/dev";
+
+if (process.env.NODE_ENV !== "production") {  // Adds messages only in a dev environment
+  loadDevMessages();
+  loadErrorMessages();
+}
 
 // Construct our main GraphQL API endpoint
 const httpLink = createHttpLink({
