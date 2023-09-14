@@ -31,21 +31,21 @@ const resolvers = {
 			throw new AuthenticationError('You need to be logged in!');
 		},
 		// TODO 
-		// meds: async (parent, args, context) => {
-		// 	if (context.user) {
-		// 		try {
-		// 			const medsData = await Med.find({
-		// 				userId: context.user._id,
-		// 			}).populate('doses');
+		meds: async (parent, args, context) => {
+			if (context.user) {
+				try {
+					const medsData = await Med.find({
+						userId: context.user._id,
+					}).populate('doses');
 
-		// 			console.log(medsData);
-		// 			return medsData;
-		// 		} catch (err) {
-		// 			console.error(err);
-		// 		}
-		// 	}
-		// 	throw new AuthenticationError('You need to be logged in!');
-		// },
+					console.log(medsData);
+					return medsData;
+				} catch (err) {
+					console.error(err);
+				}
+			}
+			throw new AuthenticationError('You need to be logged in!');
+		},
 	},
 
 	Mutation: {
@@ -74,8 +74,9 @@ const resolvers = {
 			return { token, user };
 		},
 		// WORKS
-		addMed: async (parent, { userId, medSettings }, context) => {
+		addMed: async (parent, { medSettings }, context) => {
 			console.log('addMed resolver');
+			console.log(medSettings);
 			try {
 				const newMed = await Med.create({
 					userId: context.user._id,
@@ -85,7 +86,7 @@ const resolvers = {
 
 				try {
 					const userUpdate = await User.findOneAndUpdate(
-						{ _id: userId },
+						{ _id: context.user._id },
 						{ $addToSet: { userMeds: newMed._id } },
 						{ new: true, runValidators: true }
 					).populate('userMeds');

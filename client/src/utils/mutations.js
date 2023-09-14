@@ -26,19 +26,14 @@ export const ADD_USER = gql`
 
 export const ADD_MED = gql`
   mutation AddMed($medSettings: MedInput!) {
-    addMed(medSettings: $medSettings) {
+    addMed( medSettings: $medSettings) {
       _id
-      username
-      email
-      password
-      noteCount
-      userMeds {
-        _id
-        medName
-        maxDailyDoses
-        minTimeBetween
-        remindersBool
-      }
+      userId
+      medName
+      maxDailyDoses
+      minTimeBetween
+      remindersBool
+      iconType
     }
   }
 `;
