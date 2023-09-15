@@ -19,10 +19,9 @@ const typeDefs = gql`
     _id: ID
     userId: ID
     medName: String!
-    maxDailyDoses: Int
-    minTimeBetween: Int
-    remindersBool: Boolean!
-    iconType: String
+    maxDailyDoses: String
+    minTimeBetween: String
+    remindersBool: String!
     doses: [Dose]
   }
 
@@ -30,7 +29,7 @@ const typeDefs = gql`
     _id: ID!
     userId: ID!
     medId: ID!
-    doseScheduled: String
+    doseScheduled: DateTime
     doseLogged: DateTime
   }
 
@@ -75,34 +74,34 @@ const typeDefs = gql`
   }
 
   input MedInput {
+    medId: ID
     medName: String!
-    maxDailyDoses: Int
-    minTimeBetween: Int
-    remindersBool: Boolean!
-    iconType: String
+    maxDailyDoses: String
+    minTimeBetween: String
+    remindersBool: String!
   }
 
   input MedUpdate {
+    medId: ID
     medName: String!
-    maxDailyDoses: Int!
-    minTimeBetween: Int!
-    remindersBool: Boolean!
-    iconType: String!
+    maxDailyDoses: String!
+    minTimeBetween: String!
+    remindersBool: String!
   }
 
   input DoseUpdate {
-    doseScheduled: String!
+    doseScheduled: DateTime!
     doseLogged: DateTime!
   }
 
   type Query {
     user(username: String!): User
-    me: User
     meds: [Med]
     doses: [Dose]
     thoughts(username: String): [Thought]
     thought(thoughtId: ID!): Thought
     me: User
+    findme: User
     note(noteId: ID!): Note
     users: [User]
   }

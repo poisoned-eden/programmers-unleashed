@@ -25,15 +25,21 @@ export const ADD_USER = gql`
 `;
 
 export const ADD_MED = gql`
-  mutation AddMed($medSettings: MedInput!) {
-    addMed( medSettings: $medSettings) {
+  mutation addMed($medSettings: MedInput!) {
+    addMed(medSettings: $medSettings) {
       _id
       userId
       medName
       maxDailyDoses
       minTimeBetween
       remindersBool
-      iconType
+      doses {
+        _id
+        userId
+        medId
+        doseScheduled
+        doseLogged
+      }
     }
   }
 `;
@@ -109,19 +115,18 @@ export const UPDATE_MED = gql`
   mutation updateMed($medId: ID!, $medData: MedUpdate!) {
     updateMed(medId: $medId, medData: $medData) {
       _id
-    userId
-    medName
-    maxDailyDoses
-    minTimeBetween
-    remindersBool
-    iconType
-    doses {
-      _id
       userId
-      medId
-      doseScheduled
-      doseLogged
-    }
+      medName
+      maxDailyDoses
+      minTimeBetween
+      remindersBool
+      doses {
+        _id
+        userId
+        medId
+        doseScheduled
+        doseLogged
+      }
     }
   }
 `;
