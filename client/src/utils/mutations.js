@@ -24,6 +24,20 @@ export const ADD_USER = gql`
   }
 `;
 
+export const ADD_MED = gql`
+  mutation AddMed($medSettings: MedInput!) {
+    addMed( medSettings: $medSettings) {
+      _id
+      userId
+      medName
+      maxDailyDoses
+      minTimeBetween
+      remindersBool
+      iconType
+    }
+  }
+`;
+
 export const ADD_THOUGHT = gql`
   mutation addThought($thoughtText: String!) {
     addThought(thoughtText: $thoughtText) {

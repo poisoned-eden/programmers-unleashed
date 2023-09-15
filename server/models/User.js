@@ -1,5 +1,6 @@
 const { Schema, model } = require("mongoose");
 const bcrypt = require("bcrypt");
+const Med = require('./Med');
 
 const userSchema = new Schema(
   {
@@ -20,16 +21,16 @@ const userSchema = new Schema(
       required: true,
       minlength: 5,
     },
-    thoughts: [
-      {
-        type: Schema.Types.ObjectId,
-        ref: "Thought",
-      },
-    ],
     savedNotes: [
       {
         type: Schema.Types.ObjectId,
         ref: "Note",
+      },
+    ],
+    userMeds: [
+      {
+        type: Schema.Types.ObjectId,
+        ref: "Med",
       },
     ],
   },

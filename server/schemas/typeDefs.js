@@ -1,14 +1,37 @@
 const { gql } = require("apollo-server-express");
 
 const typeDefs = gql`
+  scalar Date
+  scalar Time
+  scalar DateTime
+
   type User {
     _id: ID
     username: String
     email: String
     password: String
-    thoughts: [Thought]!
-    savedNotes: [Note]!
+    savedNotes: [Note]
     noteCount: Int
+    userMeds: [Med]!
+  }
+
+  type Med {
+    _id: ID
+    userId: ID
+    medName: String!
+    maxDailyDoses: Int
+    minTimeBetween: Int
+    remindersBool: Boolean!
+    iconType: String
+    doses: [Dose]
+  }
+
+  type Dose {
+    _id: ID!
+    userId: ID!
+    medId: ID!
+    doseScheduled: String
+    doseLogged: DateTime
   }
 
   type Thought {
@@ -51,17 +74,29 @@ const typeDefs = gql`
     total: String!
   }
 
+  input MedInput {
+    medName: String!
+    maxDailyDoses: Int
+    minTimeBetween: Int
+    remindersBool: Boolean!
+    iconType: String
+  }
+
   type Query {
-    users: [User]
     user(username: String!): User
+    me: User
+    meds: [Med]
+    doses: [Dose]
     thoughts(username: String): [Thought]
     thought(thoughtId: ID!): Thought
-    me: User
+    users: [User]
   }
 
   type Mutation {
     addUser(username: String!, email: String!, password: String!): Auth
     login(email: String!, password: String!): Auth
+    addMed(medSettings: MedInput!): Med
+    addDose(medId: ID!, doseScheduled: DateTime, doseLogged: DateTime): Dose
     addThought(thoughtText: String!): Thought
     addComment(thoughtId: ID!, commentText: String!): Thought
     removeThought(thoughtId: ID!): Thought
