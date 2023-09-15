@@ -29,7 +29,21 @@ main {
 }
 
 .bg-colour {
-  background-color: #5cbdea;
+
+  background: #56ccf2; /* fallback for old browsers */
+  background: -webkit-linear-gradient(
+    to right,
+    #2f80ed,
+    #56ccf2
+  ); /* Chrome 10-25, Safari 5.1-6 */
+  background: linear-gradient(
+    to right,
+    #2f80ed,
+    #56ccf2
+  ); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+
+  /* background-color: #5cbdea; */
+  /* background-color: white; */
 }
 
 /**
@@ -380,6 +394,11 @@ h6 {
 
 h1 {
   font-size: 2.25rem;
+}
+
+h1.rem {
+  text-align:center ;
+  margin-top: 5%;
 }
 
 h2 {
@@ -1034,12 +1053,12 @@ a:hover {
 }
 
 .btn.btn-info {
-  background-color: #1bbc9b;
+  background-color: #03285f;
   color: #ffffff;
 }
 
 .btn.btn-info:hover {
-  background-color: #31e1bd;
+  background-color: #5cbdea;
 }
 
 .btn.btn-light {
@@ -1048,7 +1067,7 @@ a:hover {
 }
 
 .btn.btn-light:hover {
-  background-color: #84b8b4;
+  background-color: #5cbdea;
 }
 
 .btn.btn-dark {
@@ -1090,6 +1109,16 @@ a:hover {
 .card {
   border: 1px solid #1a1a1a;
   margin-bottom: 1rem;
+   width: 60%;
+  padding: 1rem;
+  /* background-color: rgba(255, 255, 255, 0.074); */
+  background-color: rgb(59 174 245);
+  border: 1px solid rgba(255, 255, 255, 0.222);
+  -webkit-backdrop-filter: blur(20px);
+  backdrop-filter: blur(20px);
+  border-radius: .7rem;
+  transition: all ease .3s;
+
 }
 
 .card .card-header {
@@ -1711,7 +1740,7 @@ label form [type="radio"] {
   }
 }
 
-/* spin wheel */
+/* animation */
 
 .loader-container {
   display: flex;
@@ -1719,6 +1748,7 @@ label form [type="radio"] {
   align-items: center;
   height: 20em;
 }
+
 
 .loader {
   position: relative;
@@ -1728,11 +1758,11 @@ label form [type="radio"] {
   background-color: rgb(208, 208, 208);
   box-shadow: 0 0em 4em rgba(23, 190, 250, 0.5);
   /* animation: loader-rotate 1s linear infinite; */
-  background-image: url(./images/Screenshot\ 2023-09-12\ at\ 19.37.00.png);
+  background-image: url(./images/Screenshot\ 2023-09-14\ at\ 18.56.51.png);
   background-position: center;
   background-size: cover;
   top: -20% ;
-  right:33%;
+  /* right:33%; */
 }
 
 .loader::before,
@@ -1782,11 +1812,76 @@ label form [type="radio"] {
     opacity: 1;
   }
 }
-
-
 /* med list */
 
-ul.medication.list {
-  display: flex;
+div.left-column {
+  margin-left: -4%;
+  margin-top: -7%;
 }
 
+ul.medication-list {
+  display: table-cell;
+  list-style-type: none;
+  /* display:table; */
+  width:100%
+  
+}
+
+li{
+  margin-bottom: 60px;
+  padding: 2rem;
+  /* border-radius: 10px; */
+  width: 510px;
+    height: 124px;
+    background: rgb(17, 4, 134);
+    border-radius: 15px;
+    /* box-shadow: rgb(0,0,0,0.7) 5px 10px 50px, rgb(0,0,0,0.7) -5px 0px 250px; */
+    display: flex;
+    color: white;
+    justify-content: center;
+    position: relative;
+    flex-direction: column;
+    /* background: linear-gradient(to right, rgb(66 133 255), rgb(44 111 188)); */
+    cursor: pointer;
+    transition: all 0.3s ease-in-out;
+    overflow: hidden;
+}
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+@media screen and (max-width: 768px) {
+  .loader-container {
+    height: 15em; /* Adjust the height for smaller screens */
+  }
+
+  .left-column {
+    margin-left: 0; /* Remove left margin */
+    margin-top: 0; /* Remove top margin */
+  }
+
+  ul.medication-list {
+    /* Adjust styles for smaller screens */
+    width: 100%;
+    padding: 0; /* Remove padding */
+  }
+
+  li {
+    margin-bottom: 30px;
+    width: 80%; /* Make list items narrower */
+    padding: 2rem;
+    font-size: 18px;
+    height: 160px;
+  }
+}
