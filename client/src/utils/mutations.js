@@ -71,46 +71,6 @@ export const ADD_COMMENT = gql`
   }
 `;
 
-export const ADD_NOTE = gql`
-  mutation addNote($noteData: NoteInput!) {
-    addNote(noteData: $noteData) {
-      _id
-      username
-      email
-      savedNotes {
-        _id
-        title
-        medicine
-        startTime
-        period
-        numberOfTime
-        total
-        userId
-      }
-    }
-  }
-`;
-
-export const REMOVE_NOTE = gql`
-  mutation removeNote($noteId: ID!) {
-    removeNote(noteId: $noteId) {
-      _id
-      username
-      email
-      savedNotes {
-        _id
-        title
-        medicine
-        startTime
-        period
-        numberOfTime
-        total
-        userId
-      }
-    }
-  }
-`;
-
 export const UPDATE_MED = gql`
   mutation updateMed($medId: ID!, $medData: MedUpdate!) {
     updateMed(medId: $medId, medData: $medData) {

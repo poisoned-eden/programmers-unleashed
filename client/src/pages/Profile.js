@@ -23,6 +23,8 @@ const Profile = () => {
     },
   });
 
+  console.log(data);
+
   console.log(userData);
 
   const [medFormData, setMedFormData] = useState({

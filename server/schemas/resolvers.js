@@ -27,16 +27,6 @@ const resolvers = {
     note: async (parent, { noteId }) => {
       return Note.findOne({ _id: noteId });
     },
-    me: async (parent, args, context) => {
-      if (context.user) {
-        console.log(context.user);
-        console.log(context.user._id);
-        return User.findOne({ _id: context.user._id })
-          .populate("thoughts")
-          .populate("savedNotes");
-      }
-      throw new AuthenticationError("You need to be logged in!");
-    },
     findme: async (parent, args, context) => {
       if (context.user) {
         console.log("findme");
@@ -146,57 +136,6 @@ const resolvers = {
         } catch (err) {
           throw new Error(err);
         }
-      }
-      throw new AuthenticationError("You need to be logged in!");
-    },
-    addNote: async (parent, { noteData }, context) => {
-      console.log("I am now in addNote.");
-
-      if (context.user) {
-        console.log("context.user exists");
-        const { title, medicine, startTime, period, numberOfTime, total } =
-          noteData;
-        const note = await Note.create({
-          title: title,
-          medicine: medicine,
-          startTime: startTime,
-          period: period,
-          numberOfTime: numberOfTime,
-          total: total,
-          userId: context.user._id,
-        });
-
-        try {
-          const user = await User.findOneAndUpdate(
-            { _id: context.user._id },
-            { $addToSet: { savedNotes: note._id } },
-            { new: true, runValidators: true }
-          ).populate("savedNotes");
-
-          return user;
-        } catch (err) {
-          throw new AuthenticationError(err);
-        }
-      }
-      throw new AuthenticationError("You need to be logged in!");
-    },
-    removeNote: async (parent, { noteId }, context) => {
-      if (context.user) {
-        const note = await Note.findOneAndDelete({
-          _id: noteId,
-          userId: context.user._id,
-        });
-
-        const user = await User.findOneAndUpdate(
-          { _id: context.user._id },
-          {
-            $pull: {
-              savedNotes: note._id,
-            },
-          }
-        );
-
-        return user;
       }
       throw new AuthenticationError("You need to be logged in!");
     },

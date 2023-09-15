@@ -10,8 +10,6 @@ const typeDefs = gql`
     username: String
     email: String
     password: String
-    savedNotes: [Note]
-    noteCount: Int
     userMeds: [Med]!
   }
 
@@ -100,7 +98,7 @@ const typeDefs = gql`
     doses: [Dose]
     thoughts(username: String): [Thought]
     thought(thoughtId: ID!): Thought
-    me: User
+
     findme: User
     note(noteId: ID!): Note
     users: [User]
@@ -115,8 +113,7 @@ const typeDefs = gql`
     addComment(thoughtId: ID!, commentText: String!): Thought
     removeThought(thoughtId: ID!): Thought
     removeComment(thoughtId: ID!, commentId: ID!): Thought
-    addNote(noteData: NoteInput!): User
-    removeNote(noteId: ID!): User
+    
     updateMed(medData: MedUpdate!): Med
     updateDose(doseId: ID!, doseData: DoseUpdate!): Dose
   }

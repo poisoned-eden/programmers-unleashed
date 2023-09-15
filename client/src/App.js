@@ -21,11 +21,9 @@ import SingleThought from "./pages/SingleThought";
 import Profile from "./pages/Profile";
 import Header from "./components/Header";
 import Footer from "./components/Footer";
-import NoteForm from "./components/NoteForm";
-import SavedNotes from "./components/SavedNotes";
 // styling
 import logo from "./logo.svg";
-import 'bootstrap/dist/css/bootstrap.css';
+import "bootstrap/dist/css/bootstrap.css";
 import "./App.css";
 
 // Construct our main GraphQL API endpoint
@@ -68,13 +66,17 @@ function App() {
           <Header />
           <div className="container">
             <Routes>
-              <Route path="/" element={Auth.loggedIn() ? <MedicationReminder /> : <Signup />} />
-              <Route path="/medicationReminder" element={<MedicationReminder />} />
+              <Route
+                path="/"
+                element={Auth.loggedIn() ? <MedicationReminder /> : <Signup />}
+              />
+              <Route
+                path="/medicationReminder"
+                element={<MedicationReminder />}
+              />
               <Route path="/login" element={<Login />} />
               <Route path="/signup" element={<Signup />} />
               <Route path="/me" element={<Profile />} />
-              <Route path="/add" element={<NoteForm />} />
-              <Route path="/notes" element={<SavedNotes />} />
               <Route path="/thoughts/:thoughtId" element={<SingleThought />} />
             </Routes>
           </div>
