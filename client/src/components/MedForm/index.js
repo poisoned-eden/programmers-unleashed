@@ -64,9 +64,17 @@ const MedForm = () => {
 			if (medFormData.remindersBool === "on") {
 				setMedFormData({ ...medFormData, remindersBool: true });
 			}
-			const { data } = await addMed({
-				variables: { medSettings: medFormData },
-			});
+			const { data } = await addMed(
+				{
+					variables: { medSettings: medFormData },
+				},
+				{ 
+					refetchQueries: [
+						QUERY_MEDS, // DocumentNode object parsed with gql
+						'Meds' // Query name
+					],
+				}
+			);
 
 			console.log('med added');
 			console.log(data);

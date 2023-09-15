@@ -9,7 +9,12 @@ import { Container, Row, Col, Card, Button } from 'react-bootstrap';
 import 'react-calendar/dist/Calendar.css';
 
 const AddDoseButton = ({ medId }) => {
-	const [addDose, { error }] = useMutation(ADD_DOSE);
+	const [addDose, { error }] = useMutation(ADD_DOSE, {
+			refetchQueries: [
+			QUERY_MEDS, // DocumentNode object parsed with gql
+			'Meds' // Query name
+		],
+	});
 
 	// , {
 	// 	update(cache, { data: { addDose } }) {
