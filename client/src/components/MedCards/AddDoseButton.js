@@ -3,7 +3,6 @@ import { useQuery, useMutation } from '@apollo/client';
 import { QUERY_ME, QUERY_MEDS } from '../../utils/queries';
 import { ADD_DOSE } from '../../utils/mutations';
 
-import Calendar from 'react-calendar';
 import { Container, Row, Col, Card, Button } from 'react-bootstrap';
 
 import 'react-calendar/dist/Calendar.css';
@@ -29,17 +28,19 @@ const AddDoseButton = ({ medId }) => {
 	// 		  console.error(e);
 	// 		}
 	// 	},
-	// 	refetchQueries: [
-	// 		QUERY_MEDS, // DocumentNode object parsed with gql
-	// 		'Meds' // Query name
-	// 	],
 	// }
 
 	const handleDoseClick = async (medId) => {
 		console.log(medId);
+		console.log(Date.now());
+		console.log(typeof Date.now());
 		try {
 			const { data } = await addDose({
-                variables: { medId: medId },
+                variables: { 
+					medId: medId,
+					doseScheduled: Date.now().toString(),
+					doseLogged: Date.now().toString(), 
+				},
             })
 
 			console.log(data);

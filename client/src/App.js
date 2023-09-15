@@ -52,18 +52,18 @@ const authLink = setContext((_, { headers }) => {
   };
 });
 
-// Set up cache persistance for offline usage
 const cache = new InMemoryCache();
 
-await persistCache({
-  cache,
-  storage: new LocalStorageWrapper(window.localStorage),
-});
+// TODO uncomment when ready to cache // Set up cache persistance for offline usage
+// await persistCache({
+//   cache,
+//   storage: new LocalStorageWrapper(window.localStorage),
+// });
 
 const client = new ApolloClient({
   // Set up our client to execute the `authLink` middleware prior to making the request to our GraphQL API
   link: authLink.concat(httpLink),
-  cache,
+  cache, 
 });
 
 function App() {

@@ -1,16 +1,16 @@
 const { AuthenticationError } = require('apollo-server-express');
 const { User, Thought, Note, Med, Dose } = require('../models');
 const { signToken } = require('../utils/auth');
-const {
-	DateScalar,
-	TimeScalar,
-	DateTimeScalar,
-} = require('graphql-date-scalars');
+// const {
+// 	DateScalar,
+// 	TimeScalar,
+// 	DateTimeScalar,
+// } = require('graphql-date-scalars');
 
 const resolvers = {
-	Date: DateScalar,
-	Time: TimeScalar,
-	DateTime: DateTimeScalar,
+	// Date: DateScalar,
+	// Time: TimeScalar,
+	// DateTime: DateTimeScalar,
 
 	Query: {
 		users: async () => {
@@ -36,8 +36,14 @@ const resolvers = {
 				try {
 					const medsData = await Med.find({
 						userId: context.user._id,
-					}).populate('doses');
-
+					}).populate(
+						{
+							path: 'doses',
+							// TODO edit this to sort by date
+							// match: {'phone': {$eq: phoneNumber}}
+						}
+					);
+					
 					console.log(medsData);
 					return medsData;
 				} catch (err) {

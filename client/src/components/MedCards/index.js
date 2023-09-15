@@ -6,13 +6,13 @@ import { ADD_DOSE } from '../../utils/mutations';
 import Calendar from 'react-calendar';
 import { Container, Row, Col, Card, Button } from 'react-bootstrap';
 import AddDoseButton from './AddDoseButton';
-
 import 'react-calendar/dist/Calendar.css';
+import dayjs from 'dayjs';
 
 const MedCards = (props) => {
-	// console.log(props)
-	const { meds } = props;
-	// console.log(meds);
+	console.log(props)
+	const { meds, calendarValue, today } = props;
+
 
 	return (
 		<>
@@ -23,14 +23,14 @@ const MedCards = (props) => {
 						<span className="medication-icon">
 							{/* TODO add med.icon properly */}
 						</span>
+						<AddDoseButton medId={med._id} />
 						<div className="doses">
 							{med.doses.map((dose) => (
 								<ul key={dose._id}>
-									<li>Scheduled:{dose.doseScheduled}</li>
-									<li>Logged:{dose.doseLogged}</li>
+									<li>Scheduled: {dose.doseScheduled}</li>
+									<li>Logged: {dose.doseLogged}</li>
 								</ul>
 							))}
-							<AddDoseButton medId={med._id} />
 						</div>
 					</Card.Body>
 				</Card>
