@@ -8,7 +8,7 @@ import { Container, Row, Col, Button, Form } from "react-bootstrap";
 
 const MedForm = (props) => {
   console.log(props.medFormData);
-  const [addMed, { error, data }] = useMutation(ADD_MED);
+  const [addMed] = useMutation(ADD_MED);
   const [updateMed] = useMutation(UPDATE_MED);
 
   const handleChange = (event) => {
@@ -51,7 +51,6 @@ const MedForm = (props) => {
       if (props.mutation === "UPDATE_MED") {
         const { data } = await updateMed({
           variables: {
-            medId: props.medFormData.medId,
             medData: props.medFormData,
           },
         });

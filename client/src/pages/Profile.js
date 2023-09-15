@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { Navigate, useParams } from "react-router-dom";
 import { useQuery } from "@apollo/client";
 
-import { QUERY_USER, FIND_ME } from "../utils/queries";
+import { FIND_ME } from "../utils/queries";
 
 import MedForm from "../components/MedForm";
 import MedCard from "../components/MedCard";
@@ -22,6 +22,8 @@ const Profile = () => {
       setUserData(data.findme);
     },
   });
+
+  console.log(userData);
 
   const [medFormData, setMedFormData] = useState({
     medId: "",

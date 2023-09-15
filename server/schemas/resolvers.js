@@ -37,23 +37,13 @@ const resolvers = {
       }
       throw new AuthenticationError("You need to be logged in!");
     },
-  },
-  Date: DateScalar,
-  Time: TimeScalar,
-  DateTime: DateTimeScalar,
-
-  Query: {
     findme: async (parent, args, context) => {
       if (context.user) {
-        try {
-          const userData = await User.findOne({
-            _id: context.user._id,
-          }).populate("userMeds");
-          console.log(userData);
-          return userData;
-        } catch (err) {
-          console.error(err);
-        }
+        console.log("findme");
+        console.log(context.user._id);
+        return User.findOne({
+          _id: context.user._id,
+        }).populate("userMeds");
       }
       throw new AuthenticationError("You need to be logged in!");
     },
@@ -211,8 +201,9 @@ const resolvers = {
       throw new AuthenticationError("You need to be logged in!");
     },
 
-    updateMed: async (parent, { medId, medData }) => {
-      const { medName, maxDailyDoses, minTimeBetween, remindersBool } = medData;
+    updateMed: async (parent, { medData }) => {
+      const { medId, medName, maxDailyDoses, minTimeBetween, remindersBool } =
+        medData;
 
       const med = await Med.findOneAndUpdate(
         {

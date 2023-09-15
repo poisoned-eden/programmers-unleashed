@@ -117,7 +117,7 @@ const typeDefs = gql`
     removeComment(thoughtId: ID!, commentId: ID!): Thought
     addNote(noteData: NoteInput!): User
     removeNote(noteId: ID!): User
-    updateMed(medId: ID!, medData: MedUpdate!): Med
+    updateMed(medData: MedUpdate!): Med
     updateDose(doseId: ID!, doseData: DoseUpdate!): Dose
   }
 `;

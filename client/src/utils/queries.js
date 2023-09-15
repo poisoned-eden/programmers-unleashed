@@ -81,13 +81,6 @@ export const FIND_ME = gql`
         maxDailyDoses
         minTimeBetween
         remindersBool
-        doses {
-          _id
-          userId
-          medId
-          doseScheduled
-          doseLogged
-        }
       }
     }
   }

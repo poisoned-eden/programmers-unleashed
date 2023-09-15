@@ -41,21 +41,23 @@ const MedCard = (props) => {
       </Container>
     );
   } else {
-    <Container key={medFormData.medId}>
-      <MedForm
-        medFormData={medFormData}
-        setMedFormData={setMedFormData}
-        mutation="UPDATE_MED"
-      />
-      <Button
-        variant="primary"
-        onClick={() => {
-          setIsUpdated(false);
-        }}
-      >
-        Save
-      </Button>
-    </Container>;
+    return (
+      <Container key={medFormData.medId}>
+        <MedForm
+          medFormData={medFormData}
+          setMedFormData={setMedFormData}
+          mutation="UPDATE_MED"
+        />
+        <Button
+          variant="primary"
+          onClick={() => {
+            setIsUpdated(false);
+          }}
+        >
+          Save
+        </Button>
+      </Container>
+    );
   }
 };
 
