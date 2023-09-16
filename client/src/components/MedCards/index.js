@@ -43,35 +43,23 @@ const MedCards = (props) => {
 									<li>Logged: {dose.doseLogged}</li>
 									</ul>
 								))} */}
-								<ListGroup>
-									<ListGroup.Item>
-										<ButtonGroup>
-											<Button>Scheduled: 08.00</Button>
-											<Button>Logged taken: 08.45</Button>
-										</ButtonGroup>
-									</ListGroup.Item>
-									<ListGroup.Item>
-										<ButtonGroup>
-											<Button>Scheduled: 12.00</Button>
-											<Button>Logged taken: 13.00</Button>
-										</ButtonGroup>
-									</ListGroup.Item>
-									<ListGroup.Item>
-										<ButtonGroup>
-											<Button>Scheduled: 16.00</Button>
-											{/* @Myra-k, can you please make it so that an overdue dose makes the colour change to highlight it.  Thanks, from Lil */}
-											<Button>Overdue</Button>
-										</ButtonGroup>
-									</ListGroup.Item>
-									<ListGroup.Item>
-										<ButtonGroup>
-											<Button>Scheduled: 20.00</Button>
-											<Button disabled>
-												Not yet due
-											</Button>
-										</ButtonGroup>
-									</ListGroup.Item>
-								</ListGroup>
+								<ButtonGroup>
+									<Button>Scheduled: 08.00</Button>
+									<Button>Logged taken: 08.45</Button>
+								</ButtonGroup>
+								<ButtonGroup>
+									<Button>Scheduled: 12.00</Button>
+									<Button>Logged taken: 13.00</Button>
+								</ButtonGroup>
+								<ButtonGroup>
+									<Button>Scheduled: 16.00</Button>
+									{/* @Myra-k, can you please make it so that an overdue dose makes the colour change to highlight it.  Thanks, from Lil */}
+									<Button>Overdue</Button>
+								</ButtonGroup>
+								<ButtonGroup>
+									<Button>Scheduled: 20.00</Button>
+									<Button disabled>Not yet due</Button>
+								</ButtonGroup>
 							</Accordion.Body>
 						</Accordion>
 					</Card.Footer>
