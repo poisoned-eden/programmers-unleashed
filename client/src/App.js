@@ -25,6 +25,12 @@ import Footer from "./components/Footer";
 import logo from "./logo.svg";
 import "bootstrap/dist/css/bootstrap.css";
 import "./App.css";
+import { loadErrorMessages, loadDevMessages } from "@apollo/client/dev";
+
+if (process.env.NODE_ENV !== "production") {  // Adds messages only in a dev environment
+  loadDevMessages();
+  loadErrorMessages();
+}
 
 // Construct our main GraphQL API endpoint
 const httpLink = createHttpLink({
@@ -44,18 +50,18 @@ const authLink = setContext((_, { headers }) => {
   };
 });
 
-// Set up cache persistance for offline usage
 const cache = new InMemoryCache();
 
-await persistCache({
-  cache,
-  storage: new LocalStorageWrapper(window.localStorage),
-});
+// TODO uncomment when ready to cache // Set up cache persistance for offline usage
+// await persistCache({
+//   cache,
+//   storage: new LocalStorageWrapper(window.localStorage),
+// });
 
 const client = new ApolloClient({
   // Set up our client to execute the `authLink` middleware prior to making the request to our GraphQL API
   link: authLink.concat(httpLink),
-  cache,
+  cache, 
 });
 
 function App() {

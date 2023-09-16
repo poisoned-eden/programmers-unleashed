@@ -3,6 +3,11 @@ import { Navigate, useParams } from "react-router-dom";
 import { useQuery } from "@apollo/client";
 
 import { FIND_ME } from "../utils/queries";
+// import React from 'react';
+// import { Navigate, useParams } from 'react-router-dom';
+// import { useQuery, useMutation } from '@apollo/client';
+// import { QUERY_USER, QUERY_ME, QUERY_MEDS } from '../utils/queries';
+// import { ADD_MED } from '../utils/mutations';
 
 import MedForm from "../components/MedForm";
 import MedCard from "../components/MedCard";
@@ -34,6 +39,25 @@ const Profile = () => {
     minTimeBetween: "4",
     remindersBool: "off",
   });
+
+  //  FIXME
+
+  // const { loading, data } = useQuery(QUERY_ME);
+
+  // if (loading) {
+  // 	return <div>Loading...</div>;
+  // }
+
+  // const user = data.me;
+
+  // if (!user?.username) {
+  // 	return (
+  // 		<h4>
+  // 			You need to be logged in to see this. Use the navigation links
+  // 			above to sign up or log in!
+  // 		</h4>
+  // 	);
+  // }
 
   return (
     <div>

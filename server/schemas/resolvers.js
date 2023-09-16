@@ -1,39 +1,32 @@
 const { AuthenticationError } = require("apollo-server-express");
 const { User, Thought, Note, Med, Dose } = require("../models");
 const { signToken } = require("../utils/auth");
-const {
-  DateScalar,
-  TimeScalar,
-  DateTimeScalar,
-} = require("graphql-date-scalars");
+// const {
+// 	DateScalar,
+// 	TimeScalar,
+// 	DateTimeScalar,
+// } = require('graphql-date-scalars');
 
 const resolvers = {
+  // Date: DateScalar,
+  // Time: TimeScalar,
+  // DateTime: DateTimeScalar,
+
   Query: {
     users: async () => {
       return User.find().populate("thoughts").populate("savedNotes");
     },
-    user: async (parent, { username }) => {
-      return User.findOne({ username })
-        .populate("thoughts")
-        .populate("savedNotes");
-    },
-    thoughts: async (parent, { username }) => {
-      const params = username ? { username } : {};
-      return Thought.find(params).sort({ createdAt: -1 });
-    },
-    thought: async (parent, { thoughtId }) => {
-      return Thought.findOne({ _id: thoughtId });
-    },
-    note: async (parent, { noteId }) => {
-      return Note.findOne({ _id: noteId });
-    },
-    findme: async (parent, args, context) => {
+    me: async (parent, args, context) => {
       if (context.user) {
-        console.log("findme");
-        console.log(context.user._id);
-        return User.findOne({
-          _id: context.user._id,
-        }).populate("userMeds");
+        try {
+          const userData = await User.findOne({
+            _id: context.user._id,
+          }).populate("userMeds");
+          console.log(userData);
+          return userData;
+        } catch (err) {
+          console.error(err);
+        }
       }
       throw new AuthenticationError("You need to be logged in!");
     },
@@ -43,7 +36,11 @@ const resolvers = {
         try {
           const medsData = await Med.find({
             userId: context.user._id,
-          }).populate("doses");
+          }).populate({
+            path: "doses",
+            // TODO edit this to sort by date
+            // match: {'phone': {$eq: phoneNumber}}
+          });
 
           console.log(medsData);
           return medsData;
@@ -63,7 +60,6 @@ const resolvers = {
     },
     login: async (parent, { email, password }) => {
       const user = await User.findOne({ email });
-
       if (!user) {
         throw new AuthenticationError("No user found with this email address");
       }

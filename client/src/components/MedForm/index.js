@@ -6,6 +6,8 @@ import { ADD_MED, UPDATE_MED } from "../../utils/mutations";
 import { FIND_ME } from "../../utils/queries";
 
 import { Container, Row, Col, Button, Form } from "react-bootstrap";
+// import { Container, Row, Col, Button, Form } from 'react-bootstrap';
+// import { QUERY_MEDS } from '../../utils/queries';
 
 const MedForm = (props) => {
   console.log(props.medFormData);
@@ -16,6 +18,32 @@ const MedForm = (props) => {
     const { name, value } = event.target;
     props.setMedFormData({ ...props.medFormData, [name]: value });
   };
+	// const [addMed, { error }] = useMutation(ADD_MED, {
+	// 	update(cache, { data: { addMed } }) {
+	// 		try {
+	// 		  const { meds } = cache.readQuery({ query: QUERY_MEDS });
+	  
+	// 		  cache.writeQuery({
+	// 			query: QUERY_MEDS,
+	// 			data: { meds: [addMed, ...meds] },
+	// 		  });
+	// 		} catch (e) {
+	// 		  console.error(e);
+	// 		}
+	// 	},
+	// 	refetchQueries: [
+	// 		QUERY_MEDS, // DocumentNode object parsed with gql
+	// 		'Meds' // Query name
+	// 	],
+	// });
+
+	// if (error) {
+	// 	console.error(error);
+	// 	return 'Sorry, there was an error adding your medication. Please try again.';
+	// };
+
+	// console.log(medFormData);
+	
 
   const handleFormSubmit = async (event) => {
     event.preventDefault();
@@ -28,6 +56,13 @@ const MedForm = (props) => {
     }
 
     console.log(props.medFormData);
+		// check if form has everything (as per react-bootstrap docs)
+		// const form = event.currentTarget;
+		// if (form.checkValidity() === false) {
+		// 	event.preventDefault();
+		// 	event.stopPropagation();
+		// 	console.log('form not valid');
+		// }
 
     try {
       console.log(props.mutation);
@@ -36,6 +71,21 @@ const MedForm = (props) => {
         const { data } = await addMed({
           variables: { medSettings: props.medFormData },
         });
+		// try {
+		// 	if (medFormData.remindersBool === "on") {
+		// 		setMedFormData({ ...medFormData, remindersBool: true });
+		// 	}
+		// 	const { data } = await addMed(
+		// 		{
+		// 			variables: { medSettings: medFormData },
+		// 		},
+		// 		{ 
+		// 			refetchQueries: [
+		// 				QUERY_MEDS, // DocumentNode object parsed with gql
+		// 				'Meds' // Query name
+		// 			],
+		// 		}
+		// 	);
 
         console.log("med added");
         console.log(data.addMed);
