@@ -1,9 +1,9 @@
 const { gql } = require("apollo-server-express");
 
 const typeDefs = gql`
-  scalar Date
-  scalar Time
-  scalar DateTime
+  # scalar Date
+  # scalar Time
+  # scalar DateTime
 
   type User {
     _id: ID
@@ -27,8 +27,8 @@ const typeDefs = gql`
     _id: ID!
     userId: ID!
     medId: ID!
-    doseScheduled: DateTime
-    doseLogged: DateTime
+    doseScheduled: String
+    doseLogged: String
   }
 
   type Thought {
@@ -108,12 +108,12 @@ const typeDefs = gql`
     addUser(username: String!, email: String!, password: String!): Auth
     login(email: String!, password: String!): Auth
     addMed(medSettings: MedInput!): Med
-    addDose(medId: ID!, doseScheduled: DateTime, doseLogged: DateTime): Dose
+    addDose(medId: ID!, doseScheduled: String, doseLogged: String): Dose
     addThought(thoughtText: String!): Thought
     addComment(thoughtId: ID!, commentText: String!): Thought
     removeThought(thoughtId: ID!): Thought
     removeComment(thoughtId: ID!, commentId: ID!): Thought
-    
+
     updateMed(medData: MedUpdate!): Med
     updateDose(doseId: ID!, doseData: DoseUpdate!): Dose
   }
