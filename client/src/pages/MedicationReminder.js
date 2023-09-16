@@ -5,7 +5,7 @@ import dayjs from 'dayjs';
 
 import MedCards from '../components/MedCards';
 import Calendar from 'react-calendar';
-import { Container, Row, Col, Card } from 'react-bootstrap';
+import { Container, Row, Col, Card, ListGroup } from 'react-bootstrap';
 
 import 'react-calendar/dist/Calendar.css';
 
@@ -37,8 +37,7 @@ const MedicationReminder = () => {
 		setCalendarValue(dayjs(nextValue));
 		console.log(calendarValue);
 		console.log(typeof calendarValue);
-		
-	};
+	}
 
 	return (
 		<main>
@@ -51,7 +50,11 @@ const MedicationReminder = () => {
 						<div className="loader-container" id="pill-image">
 							<div className="loader"></div>
 						</div>
-						<MedCards meds={meds} calendarValue={calendarValue} today={today} />
+						<MedCards
+							meds={meds}
+							calendarValue={calendarValue}
+							today={today}
+						/>
 					</Col>
 					<Col>
 						<Calendar
@@ -62,6 +65,30 @@ const MedicationReminder = () => {
 							{/* Add reminder component here */}
 							{/* Example: <ReminderComponent /> */}
 						</div>
+						<h3>Medications taken on (date shown on calendar)</h3>
+						<ListGroup>
+							<ListGroup.Item>
+								Medication 1: time logged
+							</ListGroup.Item>
+							<ListGroup.Item>
+								Medication 2: time logged
+							</ListGroup.Item>
+							<ListGroup.Item>
+								Medication 1: time logged
+							</ListGroup.Item>
+							<ListGroup.Item>
+								Medication 2: time logged
+							</ListGroup.Item>
+							<ListGroup.Item>
+								Medication 3: time logged
+							</ListGroup.Item>
+							<ListGroup.Item>
+								Medication 3: time logged
+							</ListGroup.Item>
+							<ListGroup.Item>
+								Medication 2: time logged
+							</ListGroup.Item>
+						</ListGroup>
 					</Col>
 				</Row>
 			</Container>
