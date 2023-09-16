@@ -17,19 +17,17 @@ import Auth from "./utils/auth";
 import MedicationReminder from "./pages/MedicationReminder";
 import Signup from "./pages/Signup";
 import Login from "./pages/Login";
-import SingleThought from "./pages/SingleThought";
 import Profile from "./pages/Profile";
 import Header from "./components/Header";
 import Footer from "./components/Footer";
-import NoteForm from "./components/NoteForm";
-import SavedNotes from "./components/SavedNotes";
 // styling
 import logo from "./logo.svg";
-import 'bootstrap/dist/css/bootstrap.css';
+import "bootstrap/dist/css/bootstrap.css";
 import "./App.css";
 import { loadErrorMessages, loadDevMessages } from "@apollo/client/dev";
 
-if (process.env.NODE_ENV !== "production") {  // Adds messages only in a dev environment
+if (process.env.NODE_ENV !== "production") {
+  // Adds messages only in a dev environment
   loadDevMessages();
   loadErrorMessages();
 }
@@ -63,7 +61,7 @@ const cache = new InMemoryCache();
 const client = new ApolloClient({
   // Set up our client to execute the `authLink` middleware prior to making the request to our GraphQL API
   link: authLink.concat(httpLink),
-  cache, 
+  cache,
 });
 
 function App() {
@@ -74,14 +72,17 @@ function App() {
           <Header />
           <div className="container">
             <Routes>
-              <Route path="/" element={Auth.loggedIn() ? <MedicationReminder /> : <Signup />} />
-              <Route path="/medicationReminder" element={<MedicationReminder />} />
+              <Route
+                path="/"
+                element={Auth.loggedIn() ? <MedicationReminder /> : <Signup />}
+              />
+              <Route
+                path="/medicationReminder"
+                element={<MedicationReminder />}
+              />
               <Route path="/login" element={<Login />} />
               <Route path="/signup" element={<Signup />} />
               <Route path="/me" element={<Profile />} />
-              <Route path="/add" element={<NoteForm />} />
-              <Route path="/notes" element={<SavedNotes />} />
-              <Route path="/thoughts/:thoughtId" element={<SingleThought />} />
             </Routes>
           </div>
           <Footer />
