@@ -52,9 +52,14 @@ const typeDefs = gql`
     remindersBool: String!
   }
 
+  input DoseInput {
+    medId: ID
+    doseScheduled: String
+  }
+
   input DoseUpdate {
-    doseScheduled: String!
-    doseLogged: String!
+    doseId: ID
+    doseScheduled: String
   }
 
   type Query {
@@ -67,10 +72,10 @@ const typeDefs = gql`
     login(email: String!, password: String!): Auth
 
     addMed(medSettings: MedInput!): Med
-    addDose(medId: ID!, doseScheduled: String, doseLogged: String): Dose
+    addDose(doseData: DoseInput!): Dose
 
     updateMed(medData: MedUpdate!): Med
-    updateDose(doseId: ID!, doseData: DoseUpdate!): Dose
+    updateDose(doseData: DoseUpdate!): Dose
   }
 `;
 

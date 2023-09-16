@@ -103,9 +103,12 @@ const resolvers = {
         throw new Error(err);
       }
     },
-    addDose: async (parent, { medId, doseScheduled, doseLogged }, context) => {
+
+    addDose: async (parent, { doseData }, context) => {
+      const { medId, doseScheduled } = doseData;
+
       console.log("addDose resolver");
-      console.log({ medId, doseScheduled, doseLogged });
+
       if (context.user) {
         console.log("context.user exists");
         try {
@@ -113,13 +116,13 @@ const resolvers = {
             userId: context.user._id,
             medId: medId,
             doseScheduled: doseScheduled,
-            doseLogged: doseLogged,
+            //doseLogged: doseLogged,
           });
           console.log(newDose);
           const updateMed = await Med.findOneAndUpdate(
             { _id: medId },
             { $addToSet: { doses: newDose._id } },
-            { new: true }
+            { new: true, runValidators: true }
           ).populate("doses");
           console.log(updateMed);
           return newDose;
@@ -152,8 +155,8 @@ const resolvers = {
       return med;
     },
 
-    updateDose: async (parent, { doseId, doseData }) => {
-      const { doseScheduled, doseLogged } = doseData;
+    updateDose: async (parent, { doseData }) => {
+      const { doseId, doseScheduled } = doseData;
 
       const dose = await Dose.findOneAndUpdate(
         {
@@ -162,7 +165,6 @@ const resolvers = {
         {
           $set: {
             doseScheduled: doseScheduled,
-            doseLogged: doseLogged,
           },
         },
         { new: true, runValidators: true }
