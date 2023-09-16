@@ -36,6 +36,7 @@ const MedForm = (props) => {
         data: { me: { ...me, userMeds: [...me.userMeds, addMed] } },
       });
     },
+    refetchQueries: [{ query: QUERY_MEDS }],
   });
 
   const [updateMed] = useMutation(UPDATE_MED, {
@@ -76,6 +77,7 @@ const MedForm = (props) => {
         console.error(e);
       }
     },
+    refetchQueries: [{ query: QUERY_MEDS }],
   });
   // refetchQueries: [
   //   QUERY_MEDS, // DocumentNode object parsed with gql
