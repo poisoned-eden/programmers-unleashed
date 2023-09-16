@@ -8,7 +8,7 @@ import { FIND_ME } from "../../utils/queries";
 import { Container, Row, Col, Button, Form } from "react-bootstrap";
 
 const MedForm = (props) => {
-  const [isUpdated, setIsUpdated] = useState(false);
+  console.log(props.medFormData);
   const [addMed] = useMutation(ADD_MED);
   const [updateMed] = useMutation(UPDATE_MED);
 
@@ -39,7 +39,6 @@ const MedForm = (props) => {
 
         console.log("med added");
         console.log(data.addMed);
-        setIsUpdated(true);
 
         props.setMedFormData({
           medId: "",
@@ -113,9 +112,15 @@ const MedForm = (props) => {
             label="Reminders"
           />
         </Form.Group>
-        <Button type="sumbit" onClick={handleFormSubmit}>
-          Add Medication
-        </Button>
+        {props.mutation === "ADD_MED" ? (
+          <Button type="sumbit" onClick={handleFormSubmit}>
+            Add Medication
+          </Button>
+        ) : (
+          <Button type="sumbit" onClick={handleFormSubmit}>
+            Update Medication
+          </Button>
+        )}
       </Form>
     </div>
   );

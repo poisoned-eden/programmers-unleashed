@@ -141,9 +141,6 @@ const resolvers = {
     },
 
     updateMed: async (parent, { medData }) => {
-      console.log(`it's updating.`);
-      console.log(medData);
-
       const { medId, medName, maxDailyDoses, minTimeBetween, remindersBool } =
         medData;
 
@@ -161,8 +158,6 @@ const resolvers = {
         },
         { new: true, runValidators: true }
       );
-
-      console.log(med);
 
       return med;
     },
