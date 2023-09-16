@@ -3,7 +3,7 @@ import { useQuery, useMutation } from '@apollo/client';
 import { QUERY_ME, QUERY_MEDS } from '../../utils/queries';
 import { ADD_DOSE } from '../../utils/mutations';
 
-import { Container, Row, Col, Card, Button } from 'react-bootstrap';
+import { Container, Row, Col, Card, Button, ButtonGroup } from 'react-bootstrap';
 
 import 'react-calendar/dist/Calendar.css';
 
@@ -51,7 +51,12 @@ const AddDoseButton = ({ medId }) => {
 
     if (error) return <Button onClick={() => handleDoseClick(medId)} className='btn-danger'>Log failed</Button>;
 
-	return <Button onClick={() => handleDoseClick(medId)}>Log Dose</Button>;
+	return (
+		<ButtonGroup>
+			<Button>Last taken: 12.45</Button>
+			<Button onClick={() => handleDoseClick(medId)}>Next due: 16.45</Button>;
+		</ButtonGroup>
+	)
 };
 
 export default AddDoseButton;
