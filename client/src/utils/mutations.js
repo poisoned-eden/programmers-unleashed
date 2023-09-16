@@ -72,8 +72,8 @@ export const ADD_COMMENT = gql`
 `;
 
 export const UPDATE_MED = gql`
-  mutation updateMed($medId: ID!, $medData: MedUpdate!) {
-    updateMed(medId: $medId, medData: $medData) {
+  mutation updateMed($medData: MedUpdate!) {
+    updateMed(medData: $medData) {
       _id
       userId
       medName

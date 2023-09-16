@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Navigate, useParams } from "react-router-dom";
 import { useQuery } from "@apollo/client";
 
@@ -17,16 +17,6 @@ const Profile = () => {
     userMeds: [],
   });
 
-  const { data } = useQuery(FIND_ME, {
-    onCompleted: () => {
-      setUserData(data.findme);
-    },
-  });
-
-  console.log(data);
-
-  console.log(userData);
-
   const [medFormData, setMedFormData] = useState({
     medId: "",
     medName: "",
@@ -34,6 +24,14 @@ const Profile = () => {
     minTimeBetween: "4",
     remindersBool: "off",
   });
+
+  const { data } = useQuery(FIND_ME, {
+    onCompleted: () => {
+      setUserData(data.findme);
+    },
+  });
+
+  console.log(data);
 
   return (
     <div>
@@ -46,6 +44,7 @@ const Profile = () => {
         <MedForm
           medFormData={medFormData}
           setMedFormData={setMedFormData}
+          setUserData={setUserData}
           mutation="ADD_MED"
         />
         {/* TODO Account Settings */}
