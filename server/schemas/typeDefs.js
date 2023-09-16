@@ -10,8 +10,6 @@ const typeDefs = gql`
     username: String
     email: String
     password: String
-    savedNotes: [Note]
-    noteCount: Int
     userMeds: [Med]!
   }
 
@@ -19,10 +17,9 @@ const typeDefs = gql`
     _id: ID
     userId: ID
     medName: String!
-    maxDailyDoses: Int
-    minTimeBetween: Int
-    remindersBool: Boolean!
-    iconType: String
+    maxDailyDoses: String
+    minTimeBetween: String
+    remindersBool: String!
     doses: [Dose]
   }
 
@@ -34,75 +31,46 @@ const typeDefs = gql`
     doseLogged: String
   }
 
-  type Thought {
-    _id: ID
-    thoughtText: String
-    thoughtAuthor: String
-    createdAt: String
-    comments: [Comment]!
-  }
-
-  type Note {
-    _id: ID!
-    title: String!
-    medicine: String!
-    startTime: String!
-    period: String!
-    numberOfTime: String!
-    total: String!
-    userId: String!
-  }
-
-  type Comment {
-    _id: ID
-    commentText: String
-    commentAuthor: String
-    createdAt: String
-  }
-
   type Auth {
     token: ID!
     user: User
   }
 
-  input NoteInput {
-    title: String!
-    medicine: String!
-    startTime: String!
-    period: String!
-    numberOfTime: String!
-    total: String!
+  input MedInput {
+    medId: ID
+    medName: String!
+    maxDailyDoses: String
+    minTimeBetween: String
+    remindersBool: String!
   }
 
-  input MedInput {
+  input MedUpdate {
+    medId: ID
     medName: String!
-    maxDailyDoses: Int
-    minTimeBetween: Int
-    remindersBool: Boolean!
-    iconType: String
+    maxDailyDoses: String!
+    minTimeBetween: String!
+    remindersBool: String!
+  }
+
+  input DoseUpdate {
+    doseScheduled: String!
+    doseLogged: String!
   }
 
   type Query {
-    user(username: String!): User
-    me: User
     meds: [Med]
-    doses: [Dose]
-    thoughts(username: String): [Thought]
-    thought(thoughtId: ID!): Thought
-    users: [User]
+    me: User
   }
 
   type Mutation {
     addUser(username: String!, email: String!, password: String!): Auth
     login(email: String!, password: String!): Auth
+
     addMed(medSettings: MedInput!): Med
     addDose(medId: ID!, doseScheduled: String, doseLogged: String): Dose
-    addThought(thoughtText: String!): Thought
-    addComment(thoughtId: ID!, commentText: String!): Thought
-    removeThought(thoughtId: ID!): Thought
-    removeComment(thoughtId: ID!, commentId: ID!): Thought
-    addNote(noteData: NoteInput!): User
-    removeNote(noteId: ID!): User
+
+    updateMed(medData: MedUpdate!): Med
+    updateDose(doseId: ID!, doseData: DoseUpdate!): Dose
   }
 `;
 

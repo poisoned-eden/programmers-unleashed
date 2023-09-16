@@ -15,7 +15,7 @@
   "devDependencies": {
     "concurrently": "^5.1.0"
   },
-  "dependencies": {
+  "dependencies": {    
     "ansi-regex": "^4.1.1",
     "ansi-styles": "^3.2.1",
     "camelcase": "^5.3.1",
