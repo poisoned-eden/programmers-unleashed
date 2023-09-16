@@ -1,13 +1,8 @@
 import React, { useState } from "react";
-import { Navigate, useParams } from "react-router-dom";
+
 import { useQuery } from "@apollo/client";
 
-import { FIND_ME } from "../utils/queries";
-// import React from 'react';
-// import { Navigate, useParams } from 'react-router-dom';
-// import { useQuery, useMutation } from '@apollo/client';
-// import { QUERY_USER, QUERY_ME, QUERY_MEDS } from '../utils/queries';
-// import { ADD_MED } from '../utils/mutations';
+import { QUERY_MEDS } from "../utils/queries";
 
 import MedForm from "../components/MedForm";
 import MedCard from "../components/MedCard";
@@ -15,23 +10,6 @@ import MedCard from "../components/MedCard";
 import Auth from "../utils/auth";
 
 const Profile = () => {
-  const [userData, setUserData] = useState({
-    _id: "",
-    username: "",
-    email: "",
-    userMeds: [],
-  });
-
-  const { data } = useQuery(FIND_ME, {
-    onCompleted: () => {
-      setUserData(data.findme);
-    },
-  });
-
-  console.log(data);
-
-  console.log(userData);
-
   const [medFormData, setMedFormData] = useState({
     medId: "",
     medName: "",
@@ -40,6 +18,12 @@ const Profile = () => {
     remindersBool: "off",
   });
 
+  const { loading, data } = useQuery(QUERY_MEDS);
+  if (loading) return <h1>loading your meds info...</h1>;
+
+  const meds = data?.meds || [];
+
+  console.log(meds);
   //  FIXME
 
   // const { loading, data } = useQuery(QUERY_ME);
@@ -73,7 +57,7 @@ const Profile = () => {
           mutation="ADD_MED"
         />
         {/* TODO Account Settings */}
-        {userData.userMeds.map((note) => (
+        {meds.map((note) => (
           <MedCard
             medId={note._id}
             medName={note.medName}

@@ -3,47 +3,91 @@ import { Link } from "react-router-dom";
 import { useQuery, useMutation } from "@apollo/client";
 
 import { ADD_MED, UPDATE_MED } from "../../utils/mutations";
-import { FIND_ME } from "../../utils/queries";
 
 import { Container, Row, Col, Button, Form } from "react-bootstrap";
 // import { Container, Row, Col, Button, Form } from 'react-bootstrap';
-// import { QUERY_MEDS } from '../../utils/queries';
+import { QUERY_MEDS, QUERY_ME } from "../../utils/queries";
 
 const MedForm = (props) => {
   console.log(props.medFormData);
-  const [addMed] = useMutation(ADD_MED);
-  const [updateMed] = useMutation(UPDATE_MED);
 
   const handleChange = (event) => {
     const { name, value } = event.target;
     props.setMedFormData({ ...props.medFormData, [name]: value });
   };
-	// const [addMed, { error }] = useMutation(ADD_MED, {
-	// 	update(cache, { data: { addMed } }) {
-	// 		try {
-	// 		  const { meds } = cache.readQuery({ query: QUERY_MEDS });
-	  
-	// 		  cache.writeQuery({
-	// 			query: QUERY_MEDS,
-	// 			data: { meds: [addMed, ...meds] },
-	// 		  });
-	// 		} catch (e) {
-	// 		  console.error(e);
-	// 		}
-	// 	},
-	// 	refetchQueries: [
-	// 		QUERY_MEDS, // DocumentNode object parsed with gql
-	// 		'Meds' // Query name
-	// 	],
-	// });
 
-	// if (error) {
-	// 	console.error(error);
-	// 	return 'Sorry, there was an error adding your medication. Please try again.';
-	// };
+  const [addMed] = useMutation(ADD_MED, {
+    update(cache, { data: { addMed } }) {
+      try {
+        console.log("now adding");
+        const { meds } = cache.readQuery({ query: QUERY_MEDS });
 
-	// console.log(medFormData);
-	
+        cache.writeQuery({
+          query: QUERY_MEDS,
+          data: { meds: [...meds, addMed] },
+        });
+      } catch (e) {
+        console.error(e);
+      }
+
+      const { me } = cache.readQuery({ query: QUERY_ME });
+      cache.writeQuery({
+        query: QUERY_ME,
+        data: { me: { ...me, userMeds: [...me.userMeds, addMed] } },
+      });
+    },
+  });
+
+  const [updateMed] = useMutation(UPDATE_MED, {
+    update(cache, { data: { updateMed } }) {
+      try {
+        console.log("now updateing");
+        const { meds } = cache.readQuery({ query: QUERY_MEDS });
+
+        let index;
+
+        for (var i = 0; i < meds.length; i++) {
+          var note = meds[i];
+          if (note._id === updateMed._id) {
+            index = i;
+          }
+        }
+
+        const prev = meds.slice(0, index);
+        const after = meds.slice(index + 1);
+
+        cache.writeQuery({
+          query: QUERY_MEDS,
+          data: { meds: [...prev, updateMed, ...after] },
+        });
+
+        const { me } = cache.readQuery({ query: QUERY_ME });
+
+        const userprev = me.userMeds.slice(0, index);
+        const userafter = me.userMeds.slice(index + 1);
+
+        cache.writeQuery({
+          query: QUERY_ME,
+          data: {
+            me: { ...me, userMeds: [...userprev, updateMed, ...userafter] },
+          },
+        });
+      } catch (e) {
+        console.error(e);
+      }
+    },
+  });
+  // refetchQueries: [
+  //   QUERY_MEDS, // DocumentNode object parsed with gql
+  //   "Meds", // Query name
+  // ],
+
+  // if (error) {
+  // 	console.error(error);
+  // 	return 'Sorry, there was an error adding your medication. Please try again.';
+  // };
+
+  // console.log(medFormData);
 
   const handleFormSubmit = async (event) => {
     event.preventDefault();
@@ -56,13 +100,13 @@ const MedForm = (props) => {
     }
 
     console.log(props.medFormData);
-		// check if form has everything (as per react-bootstrap docs)
-		// const form = event.currentTarget;
-		// if (form.checkValidity() === false) {
-		// 	event.preventDefault();
-		// 	event.stopPropagation();
-		// 	console.log('form not valid');
-		// }
+    // check if form has everything (as per react-bootstrap docs)
+    // const form = event.currentTarget;
+    // if (form.checkValidity() === false) {
+    // 	event.preventDefault();
+    // 	event.stopPropagation();
+    // 	console.log('form not valid');
+    // }
 
     try {
       console.log(props.mutation);
@@ -71,21 +115,21 @@ const MedForm = (props) => {
         const { data } = await addMed({
           variables: { medSettings: props.medFormData },
         });
-		// try {
-		// 	if (medFormData.remindersBool === "on") {
-		// 		setMedFormData({ ...medFormData, remindersBool: true });
-		// 	}
-		// 	const { data } = await addMed(
-		// 		{
-		// 			variables: { medSettings: medFormData },
-		// 		},
-		// 		{ 
-		// 			refetchQueries: [
-		// 				QUERY_MEDS, // DocumentNode object parsed with gql
-		// 				'Meds' // Query name
-		// 			],
-		// 		}
-		// 	);
+        // try {
+        // 	if (medFormData.remindersBool === "on") {
+        // 		setMedFormData({ ...medFormData, remindersBool: true });
+        // 	}
+        // 	const { data } = await addMed(
+        // 		{
+        // 			variables: { medSettings: medFormData },
+        // 		},
+        // 		{
+        // 			refetchQueries: [
+        // 				QUERY_MEDS, // DocumentNode object parsed with gql
+        // 				'Meds' // Query name
+        // 			],
+        // 		}
+        // 	);
 
         console.log("med added");
         console.log(data.addMed);

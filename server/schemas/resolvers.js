@@ -13,9 +13,6 @@ const resolvers = {
   // DateTime: DateTimeScalar,
 
   Query: {
-    users: async () => {
-      return User.find().populate("thoughts").populate("savedNotes");
-    },
     me: async (parent, args, context) => {
       if (context.user) {
         try {
@@ -32,15 +29,12 @@ const resolvers = {
     },
     // TODO
     meds: async (parent, args, context) => {
+      console.log("med data show up");
       if (context.user) {
         try {
           const medsData = await Med.find({
             userId: context.user._id,
-          }).populate({
-            path: "doses",
-            // TODO edit this to sort by date
-            // match: {'phone': {$eq: phoneNumber}}
-          });
+          }).populate("doses");
 
           console.log(medsData);
           return medsData;

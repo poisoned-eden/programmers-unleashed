@@ -25,7 +25,7 @@ export const ADD_USER = gql`
 `;
 
 export const ADD_MED = gql`
-  mutation AddMed($medSettings: MedInput!) {
+  mutation addMed($medSettings: MedInput!) {
     addMed(medSettings: $medSettings) {
       _id
       userId
@@ -33,13 +33,12 @@ export const ADD_MED = gql`
       maxDailyDoses
       minTimeBetween
       remindersBool
-      iconType
     }
   }
 `;
 
 export const ADD_DOSE = gql`
-  mutation AddDose($medId: ID!, $doseScheduled: String, $doseLogged: String) {
+  mutation addDose($medId: ID!, $doseScheduled: String, $doseLogged: String) {
     addDose(
       medId: $medId
       doseScheduled: $doseScheduled
@@ -50,33 +49,6 @@ export const ADD_DOSE = gql`
       medId
       doseScheduled
       doseLogged
-    }
-  }
-`;
-
-export const ADD_THOUGHT = gql`
-  mutation addThought($thoughtText: String!) {
-    addThought(thoughtText: $thoughtText) {
-      _id
-      thoughtText
-      thoughtAuthor
-      createdAt
-    }
-  }
-`;
-
-export const ADD_COMMENT = gql`
-  mutation addComment($thoughtId: ID!, $commentText: String!) {
-    addComment(thoughtId: $thoughtId, commentText: $commentText) {
-      _id
-      thoughtText
-      thoughtAuthor
-      createdAt
-      comments {
-        _id
-        commentText
-        createdAt
-      }
     }
   }
 `;
