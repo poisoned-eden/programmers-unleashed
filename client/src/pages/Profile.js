@@ -13,8 +13,8 @@ const Profile = () => {
   const [medFormData, setMedFormData] = useState({
     medId: "",
     medName: "",
-    maxDailyDoses: "0",
-    minTimeBetween: "4",
+    maxDailyDoses: 0,
+    minTimeBetween: 4,
     remindersBool: "off",
   });
 
