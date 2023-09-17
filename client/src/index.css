@@ -1093,7 +1093,9 @@ a:hover {
   background-color: #31a9e1;
 }
 
-.card {
+/* med list card */
+
+div.card {
   border: 1px solid #1a1a1a;
   margin-bottom: 1rem;
    width: 60%;
@@ -1108,6 +1110,13 @@ a:hover {
 
 }
 
+div.card2 {
+  position: relative;
+}
+
+div.col {
+  
+}
 .card .card-header {
   padding: 0.375rem;
   background-color: #2d3e50;

@@ -23,8 +23,9 @@ const MedicationReminder = () => {
 	return (
 		<main>
 			<Container>
+				<div className="card">
 				<header>
-					<h1>Medication Reminder</h1>
+					<h1 className='rem'>Medication Reminder</h1>
 				</header>
 				<Row>
 					<Col>
@@ -61,6 +62,7 @@ const MedicationReminder = () => {
 							{/* Add more medication types and icons as needed */}
 						</ul>
 					</Col>
+					<div className="card2">
 					<Col>
 						<Calendar
 							onChange={onChangeCalendar}
@@ -71,7 +73,9 @@ const MedicationReminder = () => {
 							{/* Example: <ReminderComponent /> */}
 						</div>
 					</Col>
+					</div>
 				</Row>
+				</div>
 			</Container>
 		</main>
 	);
