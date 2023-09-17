@@ -388,6 +388,19 @@ h6 {
   line-height: 1.25;
 }
 
+h1.m-0 {
+  text-decoration: underline;
+}
+
+a.text-light {
+  text-decoration: none;
+}
+
+span{
+  color: rgb(17, 44, 160);
+  text-decoration: underline;
+}
+
 h1 {
   font-size: 2.25rem;
 }
@@ -396,6 +409,7 @@ h1.rem {
   text-align:center ;
   margin-top: 5%;
 }
+
 
 h3.today{
 text-align: center;
@@ -1030,10 +1044,124 @@ a:hover {
   padding: 0.3rem 0.9rem;
 }
 
-.btn.btn-lg {
-  font-size: 1.25rem;
-  padding: 0.8rem 1.4rem;
+.btn-16,
+.btn-16 *,
+.btn-16 :after,
+.btn-16 :before,
+.btn-16:after,
+.btn-16:before {
+  border: 0 solid;
+  box-sizing: border-box;
 }
+
+.btn-16 {
+  -webkit-tap-highlight-color: transparent;
+  -webkit-appearance: button;
+  background-color: #0c2faae8;
+  background-image: none;
+  color: #fff;
+  cursor: pointer;
+  font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont,
+    Segoe UI, Roboto, Helvetica Neue, Arial, Noto Sans, sans-serif,
+    Apple Color Emoji, Segoe UI Emoji, Segoe UI Symbol, Noto Color Emoji;
+  font-size: 100%;
+  font-weight: 900;
+  line-height: 1.5;
+  margin: 0;
+  padding: 0;
+  text-transform: uppercase;
+}
+
+
+.btn-16 {
+  border-radius: 99rem;
+  border-width: 2px;
+  padding: 0.8rem 3rem;
+  z-index: 0;
+  text-decoration: none;
+}
+
+a.btn-16:hover {
+color: white;
+}
+
+.btn-16:hover {
+background-color: #006edc;
+}
+
+
+/* logout button */
+
+.btn-17,
+.btn-17 *,
+.btn-17 :after,
+.btn-17 :before,
+.btn-17:after,
+.btn-17:before {
+  border: 0 solid;
+  box-sizing: border-box;
+}
+
+.btn-17 {
+  -webkit-tap-highlight-color: transparent;
+  -webkit-appearance: button;
+  background-color: #aa0d0d;
+  background-image: none;
+  color: #fff;
+  cursor: pointer;
+  font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont,
+    Segoe UI, Roboto, Helvetica Neue, Arial, Noto Sans, sans-serif,
+    Apple Color Emoji, Segoe UI Emoji, Segoe UI Symbol, Noto Color Emoji;
+  font-size: 100%;
+  font-weight: 900;
+  line-height: 1.5;
+  margin: 0;
+  -webkit-mask-image: -webkit-radial-gradient(#9f0808, #fff);
+  padding: 0;
+  text-transform: uppercase;
+}
+
+
+.btn-17 {
+  border-radius: 99rem;
+  border-width: 2px;
+  padding: 0.8rem 3rem;
+  z-index: 0;
+}
+
+
+.btn-17:after,
+.btn-17:before {
+  --skew: 0.2;
+  background: #f6352b79;
+  color: white;
+  content: "";
+  display: block;
+  height: 102%;
+  left: calc(-50% - 50% * var(--skew));
+  pointer-events: none;
+  position: absolute;
+  top: -104%;
+  transform: skew(calc(150deg * var(--skew))) translateY(var(--progress, 0));
+  transition: transform 0.2s ease;
+  width: 100%;
+}
+
+.btn-17:after {
+  --progress: 0%;
+  left: calc(50% + 50% * var(--skew));
+  top: 102%;
+  z-index: -1;
+}
+
+.btn-17:hover:before {
+  --progress: 100%;
+}
+
+.btn-17:hover:after {
+  --progress: -102%;
+}
+
 
 .btn.btn-block {
   width: 100%;
@@ -1043,7 +1171,7 @@ a:hover {
 
 .btn.btn-primary {
   background-color: #03285f;
-  color: #d9e9e8;
+  color: #d9e9e9;
 }
 
 .btn.btn-primary:hover {
@@ -1176,7 +1304,7 @@ div.react-calendar {
   border: 1px solid #a0a096;
   font-family: Arial, Helvetica, sans-serif;
   line-height: 1.125em;
-  background-color: rgb(255 255 255 / 34%);
+  background-color: rgb(255 255 255 / 0%);
   border: 1px solid rgba(255, 255, 255, 0.222);
   -webkit-backdrop-filter: blur(20px);
   backdrop-filter: blur(20px);
@@ -1327,6 +1455,10 @@ div.react-calendar {
 .react-calendar--selectRange .react-calendar__tile--hover {
   background-color: #e6e6e6;
   
+}
+
+hr.cal {
+  margin-bottom: 12%;
 }
 
 .card .card-header {
@@ -2035,30 +2167,10 @@ ul.medication-list {
   
 }
 
-/* li{
-  margin-bottom: 60px;
-  padding: 2rem; */
-  /* border-radius: 10px; */
-  /* width: 510px;
-    height: 124px;
-    background: rgb(17, 4, 134);
-    border-radius: 15px; */
-    /* box-shadow: rgb(0,0,0,0.7) 5px 10px 50px, rgb(0,0,0,0.7) -5px 0px 250px; */
-    /* display: flex;
-    color: white;
-    justify-content: center;
-    position: relative;
-    flex-direction: column; */
-    /* background: linear-gradient(to right, rgb(66 133 255), rgb(44 111 188)); */
-    /* cursor: pointer;
-    transition: all 0.3s ease-in-out;
-    overflow: hidden;
-} */
-
 div.list.list-group {
   border: 1px solid #a0a096;
   font-family: Arial, Helvetica, sans-serif;
-  background-color: rgb(255 255 255 / 34%);
+  background-color: rgba(255, 255, 255, 0.153);
   border: 1px solid rgba(255, 255, 255, 0.222);
   -webkit-backdrop-filter: blur(20px);
   backdrop-filter: blur(20px);
@@ -2069,16 +2181,15 @@ div.list.list-group {
   overflow: auto;
   scroll-snap-type: x mandatory;
   padding: 10px;
-  gap: 10px;
+  /* gap: 10px; */
   scroll-padding: 10px;
-  height: 220px;
+  height: 270px;
 }
   
 div.list-group-item {
   background-color: rgb(255 255 255 / 0%);
   border-color: cornflowerblue;
-  
-
+  border: none;
 }
 
 
