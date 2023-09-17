@@ -87,14 +87,14 @@ const AddDoseButton = ({ med }) => {
 
 	return (
 		<InputGroup>
-			<Button onClick={handleDoseClick}>Log</Button>
+			<Button onClick={handleDoseClick}>Log now</Button>
 			<Form.Control
 				aria-label="The time of the dose"
 				type="time"
 				value={doseTime}
 				onChange={handleChange}
 			/>
-			<Button onClick={handleDoseClick}>Log</Button>
+			<Button onClick={handleDoseClick}>Log at time</Button>
 		</InputGroup>
 	);
 };

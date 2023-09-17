@@ -4,16 +4,7 @@ import { QUERY_ME, QUERY_MEDS } from '../../utils/queries';
 import { ADD_DOSE } from '../../utils/mutations';
 
 import Calendar from 'react-calendar';
-import {
-	Container,
-	Row,
-	Col,
-	Card,
-	Button,
-	Accordion,
-	ListGroup,
-	ButtonGroup,
-} from 'react-bootstrap';
+import { Container,	Row, Col, Card, Button,	Accordion, ListGroup, ButtonGroup, } from 'react-bootstrap';
 import AddDoseButton from './AddDoseButton';
 import 'react-calendar/dist/Calendar.css';
 
@@ -36,12 +27,20 @@ const MedCards = (props) => {
 						Doses today: {numDosesToday}
 						{maxDailyDoses > 0 && `/${maxDailyDoses}`}
 					</ListGroup.Item>
-					{mostRecentTime && 
+					{mostRecentTime && (
 						<>
-							<ListGroup.Item>Last taken at: {dayjs(mostRecentTime).format('HH:mm')}</ListGroup.Item>
-							<ListGroup.Item>Next scheduled: {dayjs(mostRecentTime, 'HH:mm').add(minTimeBetween, 'h').format('HH:mm')}</ListGroup.Item>
+							<ListGroup.Item>
+								Last taken at:{' '}
+								{dayjs(mostRecentTime).format('HH:mm')}
+							</ListGroup.Item>
+							<ListGroup.Item>
+								Next scheduled:{' '}
+								{dayjs(mostRecentTime, 'HH:mm')
+									.add(minTimeBetween, 'h')
+									.format('HH:mm')}
+							</ListGroup.Item>
 						</>
-					}
+					)}
 				</ListGroup>
 				<AddDoseButton med={med} numDosesToday={numDosesToday} />
 			</Card.Body>
@@ -51,7 +50,12 @@ const MedCards = (props) => {
 					<Accordion.Body>
 						<ul>
 							{med.doses.map((dose) => (
-								<li  key={dose._id}>{dayjs.utc(dose.doseLogged).tz(zone).toString()}</li>
+								<li key={dose._id}>
+									{dayjs
+										.utc(dose.doseLogged)
+										.tz(zone)
+										.toString()}
+								</li>
 							))}
 						</ul>
 					</Accordion.Body>
