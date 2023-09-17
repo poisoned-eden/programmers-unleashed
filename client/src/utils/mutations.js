@@ -69,6 +69,8 @@ export const UPDATE_MED = gql`
         doseScheduled
         doseLogged
       }
+      mostRecentDose
+      mostRecentTime
     }
   }
 `;

@@ -13,14 +13,10 @@ const doseSchema = new Schema({
     required: true,
   },
 	doseScheduled: {
-		type: Date,
-    required: true,
-    default: Date.now,
-    get: (timestamp) => dateFormat(timestamp),
+		type: String,
 	},
 	doseLogged: {
-		type: Date,
-    get: (timestamp) => dateFormat(timestamp),
+		type: String,
 	},
 });
 

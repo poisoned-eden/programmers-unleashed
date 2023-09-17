@@ -34,8 +34,14 @@ const resolvers = {
         try {
           const medsData = await Med.find({
             userId: context.user._id,
-          }).populate("doses");
-
+          }).populate({
+            path: "doses",
+            options: {
+              sort: {
+                'doseLogged': -1
+              },
+            }
+          });
           console.log(medsData);
           return medsData;
         } catch (err) {
@@ -103,26 +109,50 @@ const resolvers = {
         throw new Error(err);
       }
     },
-    addDose: async (parent, { medId, doseScheduled, doseLogged }, context) => {
+    addDose: async (parent, { medId, doseScheduled, doseLogged, mostRecentTime }, context) => {
       console.log("addDose resolver");
-      console.log({ medId, doseScheduled, doseLogged });
+      console.log({ medId, doseScheduled, doseLogged, mostRecentTime });
       if (context.user) {
         console.log("context.user exists");
         try {
           const newDose = await Dose.create({
             userId: context.user._id,
             medId: medId,
-            doseScheduled: doseScheduled,
+            // doseScheduled: doseScheduled,
             doseLogged: doseLogged,
           });
           console.log(newDose);
-          const updateMed = await Med.findOneAndUpdate(
-            { _id: medId },
-            { $addToSet: { doses: newDose._id } },
-            { new: true }
-          ).populate("doses");
-          console.log(updateMed);
-          return newDose;
+          console.log(mostRecentTime);
+
+          // if the dose is logged at a time before the mostRecent time, just update normally
+          if (mostRecentTime > doseLogged) {
+            const updateMed = await Med.findOneAndUpdate(
+              { _id: medId },
+              { 
+                $addToSet: { doses: newDose._id },
+              },
+              { new: true }
+            ).populate("doses");
+            console.log(updateMed);
+            return newDose;
+
+          } else {
+            // if the dose is logged at a time equal or greater than the most recent time, update med mostRecentDose and mostRecentTime
+            const updateMed = await Med.findOneAndUpdate(
+              { _id: medId },
+              { 
+                $set: { 
+                  mostRecentDose: newDose._id,
+                  mostRecentTime: mostRecentTime
+                },
+                $addToSet: { doses: newDose._id },
+              },
+              { new: true }
+            ).populate("doses").populate('mostRecentDose');
+            console.log(updateMed);
+
+            return newDose;
+          }
         } catch (err) {
           throw new Error(err);
         }

@@ -21,6 +21,8 @@ const typeDefs = gql`
     minTimeBetween: String
     remindersBool: String!
     doses: [Dose]
+    mostRecentDose: ID
+    mostRecentTime: String
   }
 
   type Dose {
@@ -47,9 +49,11 @@ const typeDefs = gql`
   input MedUpdate {
     medId: ID
     medName: String!
-    maxDailyDoses: String!
-    minTimeBetween: String!
+    maxDailyDoses: String
+    minTimeBetween: String
     remindersBool: String!
+    mostRecentDose: ID
+    mostRecentTime: String
   }
 
   input DoseUpdate {
@@ -67,7 +71,7 @@ const typeDefs = gql`
     login(email: String!, password: String!): Auth
 
     addMed(medSettings: MedInput!): Med
-    addDose(medId: ID!, doseScheduled: String, doseLogged: String): Dose
+    addDose(medId: ID!, doseScheduled: String, doseLogged: String, mostRecentTime: String): Dose
 
     updateMed(medData: MedUpdate!): Med
     updateDose(doseId: ID!, doseData: DoseUpdate!): Dose

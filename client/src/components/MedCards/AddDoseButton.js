@@ -1,19 +1,36 @@
 import React, { useState } from 'react';
-import { useQuery, useMutation } from '@apollo/client';
+import { useQuery, useMutation, makeVar } from '@apollo/client';
 import { QUERY_ME, QUERY_MEDS } from '../../utils/queries';
 import { ADD_DOSE } from '../../utils/mutations';
+import dayjs from 'dayjs';
+import customParseFormat from 'dayjs/plugin/customParseFormat';
+import utc from 'dayjs/plugin/utc';
+import  timezone from 'dayjs/plugin/timezone'; // dependent on utc plugin
 
-import { Container, Row, Col, Card, Button, ButtonGroup } from 'react-bootstrap';
-
+import {
+	Container,
+	Row,
+	Col,
+	Card,
+	Button,
+	ButtonGroup,
+	SplitButton,
+	InputGroup,
+	Form,
+} from 'react-bootstrap';
 import 'react-calendar/dist/Calendar.css';
 
-const AddDoseButton = ({ medId }) => {
+const AddDoseButton = ({ med }) => {
 	const [addDose, { error }] = useMutation(ADD_DOSE, {
-			refetchQueries: [
+		refetchQueries: [
 			QUERY_MEDS, // DocumentNode object parsed with gql
-			'Meds' // Query name
+			'Meds', // Query name
 		],
 	});
+
+	const [doseTime, setDoseTime] = useState(dayjs().format('HH:mm'));
+
+	const { _id, minTimeBetween, maxDailyDoses, doses, mostRecentTime } = med;
 
 	// , {
 	// 	update(cache, { data: { addDose } }) {
@@ -30,33 +47,56 @@ const AddDoseButton = ({ medId }) => {
 	// 	},
 	// }
 
-	const handleDoseClick = async (medId) => {
-		console.log(medId);
-		console.log(Date.now());
-		console.log(typeof Date.now());
+	const handleChange = (event) => {
+		console.log(event.target.value);
+		setDoseTime(event.target.value);
+	};
+
+	const handleDoseClick = async () => {
+		const logTime = dayjs(doseTime, 'HH:mm');
+		const scheduleTime = dayjs(doseTime, 'HH:mm').add(minTimeBetween, 'h');
+		console.log(logTime);
+		console.log(scheduleTime);
+		let medMostRecent = logTime;
+		if (mostRecentTime && mostRecentTime > logTime) {
+			medMostRecent = mostRecentTime;
+		}
+		console.log(dayjs(doseTime, 'HH:mm'));
 		try {
 			const { data } = await addDose({
-                variables: { 
-					medId: medId,
-					doseScheduled: Date.now().toString(),
-					doseLogged: Date.now().toString(), 
+				variables: {
+					medId: _id,
+					doseLogged: dayjs(doseTime, 'HH:mm').toDate(),
+					// doseScheduled: scheduleTime.toDate(),
+					mostRecentTime: medMostRecent,
 				},
-            })
+			});
 
 			console.log(data);
 		} catch (err) {
 			console.error(err);
 		}
-	}
+	};
 
-    if (error) return <Button onClick={() => handleDoseClick(medId)} className='btn-danger'>Log failed</Button>;
+	if (error)
+		return (
+			<Button onClick={() => handleDoseClick(_id)} className="btn-danger">
+				Log failed
+			</Button>
+		);
 
 	return (
-		<ButtonGroup>
-			<Button>Last taken: 12.45</Button>
-			<Button onClick={() => handleDoseClick(medId)}>Next due: 16.45</Button>;
-		</ButtonGroup>
-	)
+		<InputGroup>
+			<Button onClick={handleDoseClick}>Log</Button>
+			<Form.Control
+				aria-label="The time of the dose"
+				type="time"
+				value={doseTime}
+				onChange={handleChange}
+			/>
+			<Button onClick={handleDoseClick}>Log</Button>
+		</InputGroup>
+	);
 };
 
 export default AddDoseButton;

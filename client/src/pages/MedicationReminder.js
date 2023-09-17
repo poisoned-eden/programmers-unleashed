@@ -2,6 +2,9 @@ import React, { useState } from 'react';
 import { useQuery } from '@apollo/client';
 import { QUERY_ME, QUERY_MEDS } from '../utils/queries';
 import dayjs from 'dayjs';
+import customParseFormat from 'dayjs/plugin/customParseFormat';
+import utc from 'dayjs/plugin/utc';
+import timezone from 'dayjs/plugin/timezone'; // dependent on utc plugin
 
 import MedCards from '../components/MedCards';
 import Calendar from 'react-calendar';
@@ -16,6 +19,14 @@ const MedicationReminder = () => {
 	// if (loading) return 'loading your data...';
 
 	const { loading: medsLoading, data: medsData } = useQuery(QUERY_MEDS);
+
+	dayjs.extend(customParseFormat);
+	dayjs.extend(utc);
+	console.log(dayjs().utcOffset());
+	dayjs.extend(timezone);
+	const zone = dayjs.tz.setDefault(dayjs.tz.guess());
+
+
 	if (medsLoading) return 'loading your meds info...';
 
 	const meds = medsData?.meds || [];
@@ -50,11 +61,14 @@ const MedicationReminder = () => {
 						<div className="loader-container" id="pill-image">
 							<div className="loader"></div>
 						</div>
-						<MedCards
-							meds={meds}
-							calendarValue={calendarValue}
-							today={today}
-						/>
+						{meds.map((med) => <MedCards
+								med={med}
+								calendarValue={calendarValue}
+								today={today}
+								dayjs={dayjs}
+								// zone={zone}
+							/>
+						)}
 					</Col>
 					<Col>
 						<Calendar
