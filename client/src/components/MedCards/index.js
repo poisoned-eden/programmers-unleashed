@@ -11,7 +11,7 @@ import 'react-calendar/dist/Calendar.css';
 const MedCards = (props) => {
 	const { med, calendarValue, today, dayjs, zone } = props;
 	const { _id, minTimeBetween, maxDailyDoses, doses, mostRecentTime } = med;
-
+  
 	const numDosesToday = doses.count || 0;
 
 	return (
