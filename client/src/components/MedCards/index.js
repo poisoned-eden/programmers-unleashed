@@ -41,13 +41,16 @@ const MedCards = (props) => {
             <Accordion>
               <Accordion.Header>Dose schedule</Accordion.Header>
               <Accordion.Body>
-                {med.doses.map((dose) => (
-                  <ButtonGroup key={dose._id}>
-                    <Button>
-                      Scheduled: {dose.doseDate} {dose.doseTime} o'clock
-                    </Button>
-                  </ButtonGroup>
-                ))}
+                {med.doses.map(
+                  (dose) =>
+                    dose.doseDate === props.calendarValue && (
+                      <ButtonGroup key={dose._id}>
+                        <Button>
+                          Scheduled: {dose.doseDate} {dose.doseTime} o'clock
+                        </Button>
+                      </ButtonGroup>
+                    )
+                )}
               </Accordion.Body>
             </Accordion>
           </Card.Footer>
