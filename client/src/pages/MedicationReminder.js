@@ -70,13 +70,20 @@ const MedicationReminder = () => {
               {/* Add reminder component here */}
               {/* Example: <ReminderComponent /> */}
             </div>
+			<hr className="cal"></hr>
             <ListGroup className="list">
               <ListGroup.Item>Medication 1: time logged</ListGroup.Item>
+			  <hr></hr>
               <ListGroup.Item>Medication 2: time logged</ListGroup.Item>
+			  <hr></hr>
               <ListGroup.Item>Medication 1: time logged</ListGroup.Item>
+			  <hr></hr>
               <ListGroup.Item>Medication 2: time logged</ListGroup.Item>
+			  <hr></hr>
               <ListGroup.Item>Medication 3: time logged</ListGroup.Item>
+			  <hr></hr>
               <ListGroup.Item>Medication 3: time logged</ListGroup.Item>
+			  <hr></hr>
               <ListGroup.Item>Medication 2: time logged</ListGroup.Item>
             </ListGroup>
           </Col>
