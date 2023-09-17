@@ -1,63 +1,55 @@
-import React, { useState } from "react";
-import { useQuery, useMutation } from "@apollo/client";
-import { QUERY_ME, QUERY_MEDS } from "../../utils/queries";
-import { ADD_DOSE } from "../../utils/mutations";
+import React, { useState } from 'react';
+import { useQuery, useMutation, makeVar } from '@apollo/client';
+import { QUERY_ME, QUERY_MEDS } from '../../utils/queries';
+import { ADD_DOSE } from '../../utils/mutations';
 
-import Calendar from "react-calendar";
-import {
-  Container,
-  Row,
-  Col,
-  Card,
-  Button,
-  Accordion,
-  ListGroup,
-  ButtonGroup,
-} from "react-bootstrap";
-import AddDoseButton from "./AddDoseButton";
-import "react-calendar/dist/Calendar.css";
-import dayjs from "dayjs";
+import Calendar from 'react-calendar';
+import { Container, Row, Col, Card, Button, Accordion, ListGroup, ButtonGroup } from 'react-bootstrap';
+import AddDoseButton from '../AddDoseButton';
+import 'react-calendar/dist/Calendar.css';
 
 const MedCards = (props) => {
-  console.log(props);
-  const { meds, calendarValue, today } = props;
+	const { med, calendarValue, today, dayjs, zone } = props;
+	const { _id, minTimeBetween, maxDailyDoses, doses, mostRecentTime } = med;
+  
+	const numDosesToday = doses.count || 0;
 
-  return (
-    <>
-      {meds.map((med) => (
-        <Card key={med._id}>
-          <Card.Title>{med.medName}</Card.Title>
-          <Card.Body>
-            <span className="medication-icon">
-              {/* @Myra-k, did I see on your previous work you want to add a few different icons for different types of medication? I think that's a good idea.  I didn't mean to delete it, sorry, just haven't managed to implement it in the meds.map.  If you find the icons and link to them at the top of this component, I can set it in the backend to make it a choice stored in the db.  From Lil */}
-            </span>
-            <AddDoseButton
-              medId={med._id}
-              maxDailyDoses={med.maxDailyDoses}
-              minTimeBetween={med.minTimeBetween}
-            />
-          </Card.Body>
-          <Card.Footer>
-            <Accordion>
-              <Accordion.Header>Dose schedule</Accordion.Header>
-              <Accordion.Body>
-                {med.doses.map(
-                  (dose) =>
-                    dose.doseDate === props.calendarValue && (
-                      <ButtonGroup key={dose._id}>
-                        <Button>
-                          Scheduled: {dose.doseDate} {dose.doseTime} o'clock
-                        </Button>
-                      </ButtonGroup>
-                    )
-                )}
-              </Accordion.Body>
-            </Accordion>
-          </Card.Footer>
-        </Card>
-      ))}
-    </>
-  );
+	return (
+		<Card className="card3" key={med._id}>
+			<Card.Title>{med.medName}</Card.Title>
+			<Card.Body>
+				<span className="medication-icon">Icon 1/2/3</span>
+				<ListGroup variant="flush">
+					<ListGroup.Item>
+						Doses today: {med.doses.count || 0}
+						{med.maxDailyDoses > 0 && `/${med.maxDailyDoses}`}
+					</ListGroup.Item>
+					{med.mostRecentTime && (
+						<>
+							<ListGroup.Item>Last taken at: {dayjs(med.mostRecentTime).format('HH:mm')}</ListGroup.Item>
+							<ListGroup.Item>
+								Next scheduled:{' '}
+								{dayjs(med.mostRecentTime, 'HH:mm').add(med.minTimeBetween, 'h').format('HH:mm')}
+							</ListGroup.Item>
+						</>
+					)}
+				</ListGroup>
+				<AddDoseButton med={med} today={today} />
+			</Card.Body>
+			<Card.Footer>
+				<Accordion>
+					<Accordion.Header>Dose schedule</Accordion.Header>
+					<Accordion.Body>
+						<ul>
+							{med.doses.map((dose) => (
+								<li key={dose._id}>{dose.doseTime}</li>
+							))}
+						</ul>
+					</Accordion.Body>
+				</Accordion>
+			</Card.Footer>
+		</Card>
+	);
 };
 
 export default MedCards;

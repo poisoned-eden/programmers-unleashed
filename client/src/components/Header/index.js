@@ -13,18 +13,18 @@ const Header = () => {
       <div className="container flex-row justify-space-between-lg justify-center align-center">
         <div>
           <Link className="text-light" to="/">
-            <h1 className="m-0">MediMate</h1>
+            <h1 className="m-0">Medi<span>Mate</span></h1>
           </Link>
           <p className="m-0"> Your Medication, Your Time, Your Health!</p>
         </div>
         <div>
           {Auth.loggedIn() ? (
             <>
-              <Link className="btn btn-lg btn-info m-2" to="/me">
+              <Link className="btn-16" to="/me">
                 {Auth.getProfile().data.username}'s profile
               </Link>
 
-              <button className="btn btn-lg btn-light m-2" onClick={logout}>
+              <button className="btn-17" onClick={logout}>
                 Logout
               </button>
             </>
