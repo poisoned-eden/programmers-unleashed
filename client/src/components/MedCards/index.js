@@ -25,7 +25,7 @@ const MedCards = (props) => {
   return (
     <>
       {meds.map((med) => (
-        <Card key={med._id}>
+        <Card className="card3" key={med._id}>
           <Card.Title>{med.medName}</Card.Title>
           <Card.Body>
             <span className="medication-icon">
