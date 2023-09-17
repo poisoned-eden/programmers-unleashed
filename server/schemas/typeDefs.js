@@ -1,17 +1,15 @@
 const { gql } = require("apollo-server-express");
 
 const typeDefs = gql`
-  scalar Date
-  scalar Time
-  scalar DateTime
+  # scalar Date
+  # scalar Time
+  # scalar DateTime
 
   type User {
     _id: ID
     username: String
     email: String
     password: String
-    savedNotes: [Note]
-    noteCount: Int
     userMeds: [Med]!
   }
 
@@ -19,10 +17,9 @@ const typeDefs = gql`
     _id: ID
     userId: ID
     medName: String!
-    maxDailyDoses: Int
-    minTimeBetween: Int
-    remindersBool: Boolean!
-    iconType: String
+    maxDailyDoses: String
+    minTimeBetween: String
+    remindersBool: String!
     doses: [Dose]
   }
 
@@ -30,34 +27,9 @@ const typeDefs = gql`
     _id: ID!
     userId: ID!
     medId: ID!
-    doseScheduled: String
-    doseLogged: DateTime
-  }
-
-  type Thought {
-    _id: ID
-    thoughtText: String
-    thoughtAuthor: String
-    createdAt: String
-    comments: [Comment]!
-  }
-
-  type Note {
-    _id: ID!
-    title: String!
-    medicine: String!
-    startTime: String!
-    period: String!
-    numberOfTime: String!
-    total: String!
-    userId: String!
-  }
-
-  type Comment {
-    _id: ID
-    commentText: String
-    commentAuthor: String
-    createdAt: String
+    doseDate: String
+    doseTime: String
+    doseLogged: String
   }
 
   type Auth {
@@ -65,44 +37,52 @@ const typeDefs = gql`
     user: User
   }
 
-  input NoteInput {
-    title: String!
-    medicine: String!
-    startTime: String!
-    period: String!
-    numberOfTime: String!
-    total: String!
+  input MedInput {
+    medId: ID
+    medName: String!
+    maxDailyDoses: String
+    minTimeBetween: String
+    remindersBool: String!
   }
 
-  input MedInput {
+  input MedUpdate {
+    medId: ID
     medName: String!
-    maxDailyDoses: Int
-    minTimeBetween: Int
-    remindersBool: Boolean!
-    iconType: String
+    maxDailyDoses: String!
+    minTimeBetween: String!
+    remindersBool: String!
+  }
+
+  input DoseInput {
+    medId: ID
+    doseDate: String
+    doseTime: String
+    doseLogged: String
+  }
+
+  input DoseUpdate {
+    doseId: ID
+    doseDate: String
+    doseTime: String
+    doseLogged: String
   }
 
   type Query {
-    user(username: String!): User
-    me: User
+    med(medId: ID): Med
     meds: [Med]
-    doses: [Dose]
-    thoughts(username: String): [Thought]
-    thought(thoughtId: ID!): Thought
-    users: [User]
+    dosesByDate(date: String): [Dose]
+    me: User
   }
 
   type Mutation {
     addUser(username: String!, email: String!, password: String!): Auth
     login(email: String!, password: String!): Auth
+
     addMed(medSettings: MedInput!): Med
-    addDose(medId: ID!, doseScheduled: DateTime, doseLogged: DateTime): Dose
-    addThought(thoughtText: String!): Thought
-    addComment(thoughtId: ID!, commentText: String!): Thought
-    removeThought(thoughtId: ID!): Thought
-    removeComment(thoughtId: ID!, commentId: ID!): Thought
-    addNote(noteData: NoteInput!): User
-    removeNote(noteId: ID!): User
+    addDose(doseData: DoseInput!): Dose
+
+    updateMed(medData: MedUpdate!): Med
+    updateDose(doseData: DoseUpdate!): Dose
   }
 `;
 

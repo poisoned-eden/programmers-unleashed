@@ -1,24 +1,41 @@
-import React, { useState } from 'react';
-import { useQuery } from '@apollo/client';
-import { QUERY_ME, QUERY_THOUGHTS } from '../utils/queries';
+import React, { useState } from "react";
+import { useQuery } from "@apollo/client";
+import { QUERY_ME, QUERY_MEDS } from "../utils/queries";
+import dayjs from "dayjs";
 
-import Calendar from 'react-calendar';
-import { Container, Row, Col, Card } from 'react-bootstrap';
+import MedCards from "../components/MedCards";
+import Calendar from "react-calendar";
+import { Container, Row, Col, Card, ListGroup } from "react-bootstrap";
 
-import 'react-calendar/dist/Calendar.css';
+import "react-calendar/dist/Calendar.css";
 
 const MedicationReminder = () => {
-	const { loading, data } = useQuery(QUERY_ME);
-	const [calendarValue, setCalendarValue] = useState(new Date());
+  const [calendarValue, setCalendarValue] = useState(
+    dayjs().format("YYYY-MM-DD")
+  );
+  // const { loading, data } = useQuery(QUERY_ME);
+  // const { loading: medsLoading, data: medsData } = useQuery(QUERY_MEDS);
+  // if (loading) return 'loading your data...';
 
-	const meds = data?.me.userMeds || [];
+  //console.log(calendarValue);
 
-	function onChangeCalendar(nextValue) {
-		setCalendarValue(nextValue);
-		console.log(calendarValue);
-	};
+  const { loading: medsLoading, data: medsData } = useQuery(QUERY_MEDS);
+  if (medsLoading) return "loading your meds info...";
 
-	if (loading) return 'loading your data...';
+  const meds = medsData?.meds || [];
+  //   const today = dayjs(); // gets current datetime
+  //   // TODO move all this to makeVar
+  //   let timeframe = "";
+  //   if (calendarValue.isBefore(today, "date")) {
+  //     timeframe = "past";
+  //     console.log(timeframe);
+  //   } else if (calendarValue.isAfter(today, "date")) {
+  //     timeframe = "future";
+  //     console.log(timeframe);
+  //   } else {
+  //     timeframe = "today";
+  //     console.log(timeframe);
+  //   }
 
 	return (
 		<main>
@@ -79,6 +96,50 @@ const MedicationReminder = () => {
 			</Container>
 		</main>
 	);
+
+  function onChangeCalendar(nextValue) {
+    setCalendarValue(dayjs(nextValue).format("YYYY-MM-DD"));
+  }
+
+  return (
+    <main>
+      <Container>
+        <header>
+          <h1>Medication Reminder</h1>
+        </header>
+        <Row>
+          <Col>
+            <div className="loader-container" id="pill-image">
+              <div className="loader"></div>
+            </div>
+            <MedCards
+              meds={meds}
+              calendarValue={calendarValue}
+              //today={today}
+            />
+          </Col>
+          <Col>
+            <Calendar onChange={onChangeCalendar} value={calendarValue} />
+            <div className="reminder">
+              {/* Add reminder component here */}
+              {/* Example: <ReminderComponent /> */}
+            </div>
+            <h3>Medications taken on (date shown on calendar)</h3>
+            <ListGroup>
+              <ListGroup.Item>Medication 1: time logged</ListGroup.Item>
+              <ListGroup.Item>Medication 2: time logged</ListGroup.Item>
+              <ListGroup.Item>Medication 1: time logged</ListGroup.Item>
+              <ListGroup.Item>Medication 2: time logged</ListGroup.Item>
+              <ListGroup.Item>Medication 3: time logged</ListGroup.Item>
+              <ListGroup.Item>Medication 3: time logged</ListGroup.Item>
+              <ListGroup.Item>Medication 2: time logged</ListGroup.Item>
+            </ListGroup>
+          </Col>
+        </Row>
+      </Container>
+    </main>
+  );
+
 };
 
 export default MedicationReminder;
