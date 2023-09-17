@@ -4,7 +4,7 @@ import { QUERY_ME, QUERY_MEDS } from '../../utils/queries';
 import { ADD_DOSE } from '../../utils/mutations';
 
 import Calendar from 'react-calendar';
-import { Container,	Row, Col, Card, Button,	Accordion, ListGroup, ButtonGroup, } from 'react-bootstrap';
+import { Container, Row, Col, Card, Button, Accordion, ListGroup, ButtonGroup } from 'react-bootstrap';
 import AddDoseButton from './AddDoseButton';
 import 'react-calendar/dist/Calendar.css';
 
@@ -14,27 +14,33 @@ const MedCards = (props) => {
 
 	const numDosesToday = doses.count || 0;
 
-console.log(med);
 	return (
-						<Card key={med._id}>
+		<>
+			{med.map((med) => (
+				<Card className="card3" key={med._id}>
 					<Card.Title>{med.medName}</Card.Title>
 					<Card.Body>
-						<span className="medication-icon">
-							{/* @Myra-k, did I see on your previous work you want to add a few different icons for different types of medication? I think that's a good idea.  I didn't mean to delete it, sorry, just haven't managed to implement it in the meds.map.  If you find the icons and link to them at the top of this component, I can set it in the backend to make it a choice stored in the db.  From Lil */}
-						</span>
+						<span className="medication-icon">Icon 1/2/3</span>
 						<ListGroup variant="flush">
-					<ListGroup.Item>
-						Doses today: {numDosesToday}
-						{maxDailyDoses > 0 && `/${maxDailyDoses}`}
-					</ListGroup.Item>
-					{mostRecentTime && 
-						<>
-							<ListGroup.Item>Last taken at: {dayjs(mostRecentTime).format('HH:mm')}</ListGroup.Item>
-							<ListGroup.Item>Next scheduled: {dayjs(mostRecentTime, 'HH:mm').add(minTimeBetween, 'h').format('HH:mm')}</ListGroup.Item>
-						</>
-					}
-				</ListGroup>
-				<AddDoseButton med={med} numDosesToday={numDosesToday} />
+							<ListGroup.Item>
+								Doses today: {med.doses.count || 0}
+								{med.maxDailyDoses > 0 && `/${med.maxDailyDoses}`}
+							</ListGroup.Item>
+							{med.mostRecentTime && (
+								<>
+									<ListGroup.Item>
+										Last taken at: {dayjs(med.mostRecentTime).format('HH:mm')}
+									</ListGroup.Item>
+									<ListGroup.Item>
+										Next scheduled:{' '}
+										{dayjs(med.mostRecentTime, 'HH:mm')
+											.add(med.minTimeBetween, 'h')
+											.format('HH:mm')}
+									</ListGroup.Item>
+								</>
+							)}
+						</ListGroup>
+						<AddDoseButton med={med} today={today} />
 					</Card.Body>
 					<Card.Footer>
 						<Accordion>
@@ -42,33 +48,16 @@ console.log(med);
 							<Accordion.Body>
 								<ul>
 									{med.doses.map((dose) => (
-										<li key={dose._id}>
-											{dose.doseTime}
-										</li>
+										<li key={dose._id}>{dose.doseTime}</li>
 									))}
 								</ul>
-								<ButtonGroup>
-									<Button>Scheduled: 08.00</Button>
-									<Button>Logged taken: 08.45</Button>
-								</ButtonGroup>
-								<ButtonGroup>
-									<Button>Scheduled: 12.00</Button>
-									<Button>Logged taken: 13.00</Button>
-								</ButtonGroup>
-								<ButtonGroup>
-									<Button>Scheduled: 16.00</Button>
-									{/* @Myra-k, can you please make it so that an overdue dose makes the colour change to highlight it.  Thanks, from Lil */}
-									<Button>Overdue</Button>
-								</ButtonGroup>
-								<ButtonGroup>
-									<Button>Scheduled: 20.00</Button>
-									<Button disabled>Not yet due</Button>
-								</ButtonGroup>
 							</Accordion.Body>
 						</Accordion>
 					</Card.Footer>
 				</Card>
-				);
+			))}
+		</>
+	);
 };
 
 export default MedCards;

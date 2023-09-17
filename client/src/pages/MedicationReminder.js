@@ -52,85 +52,57 @@ const MedicationReminder = () => {
 		console.log(typeof calendarValue);
 	}
 
-	return (
-		<main>
-			<Container>
-				<div className="card">
-					<header>
-						<h1 className="rem">Medication Reminder</h1>
-					</header>
-					<Row>
-						<Col>
-							<div className="loader-container" id="pill-image">
-								<div className="loader"></div>
-							</div>
-							{meds.map((med) => (
-								<Card key={med._id}>
-									<Card.Title>{med.medName}</Card.Title>
-									<Card.Body>
-										<span className="medication-icon">
-											Icon 1/2/3
-										</span>
-										<ListGroup variant="flush">
-											<ListGroup.Item>
-												Doses today: {med.doses.count || 0}
-												{med.maxDailyDoses > 0 && `/${med.maxDailyDoses}`}
-											</ListGroup.Item>
-											{med.mostRecentTime && (
-												<>
-													<ListGroup.Item>
-														Last taken at: {dayjs(med.mostRecentTime).format('HH:mm')}
-													</ListGroup.Item>
-													<ListGroup.Item>
-														Next scheduled:{' '}
-														{dayjs(med.mostRecentTime, 'HH:mm')
-															.add(med.minTimeBetween, 'h')
-															.format('HH:mm')}
-													</ListGroup.Item>
-												</>
-											)}
-										</ListGroup>
-										<AddDoseButton med={med} today={today} />
-									</Card.Body>
-									<Card.Footer>
-										<Accordion>
-											<Accordion.Header>Dose schedule</Accordion.Header>
-											<Accordion.Body>
-												<ul>
-													{med.doses.map((dose) => (
-														<li key={dose._id}>{dose.doseTime}</li>
-													))}
-												</ul>
-											</Accordion.Body>
-										</Accordion>
-									</Card.Footer>
-								</Card>
-							))}
-						</Col>
-						<div className="card2">
-							<Col>
-								<Calendar onChange={onChangeCalendar} value={calendarValue} />
-								<div className="reminder">
-									{/* Add reminder component here */}
-									{/* Example: <ReminderComponent /> */}
-								</div>
-								<h3>Medications taken on (date shown on calendar)</h3>
-								<ListGroup>
-									<ListGroup.Item>Medication 1: time logged</ListGroup.Item>
-									<ListGroup.Item>Medication 2: time logged</ListGroup.Item>
-									<ListGroup.Item>Medication 1: time logged</ListGroup.Item>
-									<ListGroup.Item>Medication 2: time logged</ListGroup.Item>
-									<ListGroup.Item>Medication 3: time logged</ListGroup.Item>
-									<ListGroup.Item>Medication 3: time logged</ListGroup.Item>
-									<ListGroup.Item>Medication 2: time logged</ListGroup.Item>
-								</ListGroup>
-							</Col>
-						</div>
-					</Row>
-				</div>
-			</Container>
-		</main>
-	);
+	
+
+  function onChangeCalendar(nextValue) {
+    setCalendarValue(dayjs(nextValue).format("YYYY-MM-DD"));
+  }
+
+  return (
+    <main>
+		<div className="card">
+      <Container>
+        <header>
+          <h1 className="rem">Medication Reminder</h1>
+        </header>
+        <Row>
+          <Col>
+            <div className="loader-container" id="pill-image">
+              <div className="loader"></div>
+            </div>
+			<h3 className="today">Todays Pills</h3>
+            <MedCards
+              meds={meds}
+              calendarValue={calendarValue}
+              //today={today}
+            />
+          </Col>
+		  <div className="card2">
+          <Col>
+		  <h3 className="taken">Medications taken on</h3>
+            <Calendar onChange={onChangeCalendar} value={calendarValue} />
+            <div className="reminder">
+              {/* Add reminder component here */}
+              {/* Example: <ReminderComponent /> */}
+            </div>
+            <ListGroup className="list">
+              <ListGroup.Item>Medication 1: time logged</ListGroup.Item>
+              <ListGroup.Item>Medication 2: time logged</ListGroup.Item>
+              <ListGroup.Item>Medication 1: time logged</ListGroup.Item>
+              <ListGroup.Item>Medication 2: time logged</ListGroup.Item>
+              <ListGroup.Item>Medication 3: time logged</ListGroup.Item>
+              <ListGroup.Item>Medication 3: time logged</ListGroup.Item>
+              <ListGroup.Item>Medication 2: time logged</ListGroup.Item>
+            </ListGroup>
+          </Col>
+		  </div>
+        </Row>
+      </Container>
+	  </div>
+    </main>
+  );
+
+
 };
 
 export default MedicationReminder;
