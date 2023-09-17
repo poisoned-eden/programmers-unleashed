@@ -1,5 +1,5 @@
-const { Schema, model } = require('mongoose');
-const dateFormat = require('../utils/dateFormat');
+const { Schema, model } = require("mongoose");
+const dateFormat = require("../utils/dateFormat");
 
 const doseSchema = new Schema({
   userId: {
@@ -12,18 +12,17 @@ const doseSchema = new Schema({
     ref: "Med",
     required: true,
   },
-	doseScheduled: {
-		type: Date,
-    required: true,
-    default: Date.now,
-    get: (timestamp) => dateFormat(timestamp),
-	},
-	doseLogged: {
-		type: Date,
-    get: (timestamp) => dateFormat(timestamp),
-	},
+  doseDate: {
+    type: String,
+  },
+  doseTime: {
+    type: String,
+  },
+  doseLogged: {
+    type: String,
+  },
 });
 
-const Dose = model('Dose', doseSchema);
+const Dose = model("Dose", doseSchema);
 
 module.exports = Dose;
