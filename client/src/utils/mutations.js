@@ -25,82 +25,61 @@ export const ADD_USER = gql`
 `;
 
 export const ADD_MED = gql`
-  mutation AddMed($medSettings: MedInput!) {
-    addMed( medSettings: $medSettings) {
+  mutation addMed($medSettings: MedInput!) {
+    addMed(medSettings: $medSettings) {
       _id
       userId
       medName
       maxDailyDoses
       minTimeBetween
       remindersBool
-      iconType
     }
   }
 `;
 
-export const ADD_THOUGHT = gql`
-  mutation addThought($thoughtText: String!) {
-    addThought(thoughtText: $thoughtText) {
+export const ADD_DOSE = gql`
+  mutation addDose($doseData: DoseInput!) {
+    addDose(doseData: $doseData) {
       _id
-      thoughtText
-      thoughtAuthor
-      createdAt
+      userId
+      medId
+      doseDate
+      doseTime
+      doseLogged
     }
   }
 `;
 
-export const ADD_COMMENT = gql`
-  mutation addComment($thoughtId: ID!, $commentText: String!) {
-    addComment(thoughtId: $thoughtId, commentText: $commentText) {
+export const UPDATE_MED = gql`
+  mutation updateMed($medData: MedUpdate!) {
+    updateMed(medData: $medData) {
       _id
-      thoughtText
-      thoughtAuthor
-      createdAt
-      comments {
+      userId
+      medName
+      maxDailyDoses
+      minTimeBetween
+      remindersBool
+      doses {
         _id
-        commentText
-        createdAt
-      }
-    }
-  }
-`;
-
-export const ADD_NOTE = gql`
-  mutation addNote($noteData: NoteInput!) {
-    addNote(noteData: $noteData) {
-      _id
-      username
-      email
-      savedNotes {
-        _id
-        title
-        medicine
-        startTime
-        period
-        numberOfTime
-        total
         userId
+        medId
+        doseDate
+        doseTime
+        doseLogged
       }
     }
   }
 `;
 
-export const REMOVE_NOTE = gql`
-  mutation removeNote($noteId: ID!) {
-    removeNote(noteId: $noteId) {
+export const UPDATE_DOSE = gql`
+  mutation updateDose($doseData: DoseUpdate!) {
+    updateDose(doseData: $doseData) {
       _id
-      username
-      email
-      savedNotes {
-        _id
-        title
-        medicine
-        startTime
-        period
-        numberOfTime
-        total
-        userId
-      }
+      userId
+      medId
+      doseDate
+      doseTime
+      doseLogged
     }
   }
 `;
