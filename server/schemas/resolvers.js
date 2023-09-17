@@ -59,15 +59,23 @@ const resolvers = {
       throw new AuthenticationError("You need to be logged in!");
     },
 
-    dosesByDate: async (parent, { date }, context) => {
+    dosesByDate: async (parent, { doseDate }, context) => {
+      console.log("I get into doses query");
       if (context.user) {
         try {
           const doseData = await Dose.find({
             userId: context.user._id,
-            doseDate: date,
+            doseDate: doseDate,
           });
 
-          return doseData;
+          const medData = doseData.map(async (dose) => {
+            const med = await Med.findOne({
+              _id: dose.medId,
+            }).populate("doses");
+            return med;
+          });
+
+          return medData;
         } catch (err) {
           console.error(err);
         }

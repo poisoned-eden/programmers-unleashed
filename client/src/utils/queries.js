@@ -62,3 +62,25 @@ export const QUERY_ME = gql`
     }
   }
 `;
+
+export const QUERY_DOSES = gql`
+  query dosesByDate($doseDate: String) {
+    dosesByDate(doseDate: $doseDate) {
+      _id
+      userId
+      medName
+      maxDailyDoses
+      minTimeBetween
+      remindersBool
+
+      doses {
+        _id
+        userId
+        medId
+        doseDate
+        doseTime
+        doseLogged
+      }
+    }
+  }
+`;

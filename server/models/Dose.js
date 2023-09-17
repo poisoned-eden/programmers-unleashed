@@ -5,12 +5,10 @@ const doseSchema = new Schema({
   userId: {
     type: Schema.Types.ObjectId,
     ref: "User",
-    required: true,
   },
   medId: {
     type: Schema.Types.ObjectId,
     ref: "Med",
-    required: true,
   },
   doseDate: {
     type: String,
