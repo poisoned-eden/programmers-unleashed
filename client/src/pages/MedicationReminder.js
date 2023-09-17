@@ -6,7 +6,6 @@ import customParseFormat from 'dayjs/plugin/customParseFormat';
 import utc from 'dayjs/plugin/utc';
 import timezone from 'dayjs/plugin/timezone'; // dependent on utc plugin
 
-import MedCards from '../components/AddDoseButton';
 import Calendar from 'react-calendar';
 import { Accordion, Container, Row, Col, Card, ListGroup } from 'react-bootstrap';
 import AddDoseButton from '../components/AddDoseButton';
