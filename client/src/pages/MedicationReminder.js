@@ -59,51 +59,51 @@ const MedicationReminder = () => {
 	}
 
 
-  return (
-	<main>
-		<div className="card">
-	  		<Container>
-        			<header>
-          				<h1 className="rem">Medication Reminder</h1>
-        			</header>
-        			<Row>
-          				<Col>
-            					<div className="loader-container" id="pill-image">
-              						<div className="loader"></div>
-            					</div>
-						<h3 className="today">Todays Pills</h3>
-            					{meds.map((med) => (<MedCards med={med} calendarValue={calendarValue} today={today} />))}
-          				</Col>
-		  			<div className="card2">
-          					<Col>
-		  					<h3 className="taken">Medications taken on</h3>
-							<Calendar onChange={onChangeCalendar} value={calendarValue} />
-							<div className="reminder">
-								{/* Add reminder component here */}
-								{/* Example: <ReminderComponent /> */}
-							</div>
-							<hr className="cal"></hr>
-							<ListGroup className="list">
-								<ListGroup.Item>Medication 1: time logged</ListGroup.Item>
-								<hr></hr>
-								<ListGroup.Item>Medication 2: time logged</ListGroup.Item>
-								<hr></hr>
-								<ListGroup.Item>Medication 1: time logged</ListGroup.Item>
-								<hr></hr>
-								<ListGroup.Item>Medication 2: time logged</ListGroup.Item>
-								<hr></hr>
-								<ListGroup.Item>Medication 3: time logged</ListGroup.Item>
-								<hr></hr>
-								<ListGroup.Item>Medication 3: time logged</ListGroup.Item>
-								<hr></hr>
-								<ListGroup.Item>Medication 2: time logged</ListGroup.Item>
-							</ListGroup>
-						</Col>
-					</div>
-				</Row>
-			</Container>
-		</div>
-	</main>
-);
-
+	  return (
+		<main>
+			<div className="card">
+		  		<Container>
+	        			<header>
+	          				<h1 className="rem">Medication Reminder</h1>
+	        			</header>
+	        			<Row>
+	          				<Col>
+	            					<div className="loader-container" id="pill-image">
+	              						<div className="loader"></div>
+	            					</div>
+							<h3 className="today">Todays Pills</h3>
+	            					{meds.map((med) => (<MedCards med={med} calendarValue={calendarValue} today={today} />))}
+	          				</Col>
+			  			<div className="card2">
+	          					<Col>
+			  					<h3 className="taken">Medications taken on</h3>
+								<Calendar onChange={onChangeCalendar} value={calendarValue} />
+								<div className="reminder">
+									{/* Add reminder component here */}
+									{/* Example: <ReminderComponent /> */}
+								</div>
+								<hr className="cal"></hr>
+								<ListGroup className="list">
+									<ListGroup.Item>Medication 1: time logged</ListGroup.Item>
+									<hr></hr>
+									<ListGroup.Item>Medication 2: time logged</ListGroup.Item>
+									<hr></hr>
+									<ListGroup.Item>Medication 1: time logged</ListGroup.Item>
+									<hr></hr>
+									<ListGroup.Item>Medication 2: time logged</ListGroup.Item>
+									<hr></hr>
+									<ListGroup.Item>Medication 3: time logged</ListGroup.Item>
+									<hr></hr>
+									<ListGroup.Item>Medication 3: time logged</ListGroup.Item>
+									<hr></hr>
+									<ListGroup.Item>Medication 2: time logged</ListGroup.Item>
+								</ListGroup>
+							</Col>
+						</div>
+					</Row>
+				</Container>
+			</div>
+		</main>
+	);
+};
 export default MedicationReminder;
