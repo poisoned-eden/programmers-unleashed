@@ -20,6 +20,7 @@ import {
 	Form,
 } from 'react-bootstrap';
 import 'react-calendar/dist/Calendar.css';
+import { async } from "regenerator-runtime";
 
 // const AddDoseButton = ({ medId, maxDailyDoses, minTimeBetween }) => {
 //   const [addDose, { error }] = useMutation(ADD_DOSE);
@@ -80,9 +81,10 @@ const AddDoseButton = ({ med }) => {
 //     return timeArr;
 //   };
 
-	const handleChange = (event) => {
+	const handleChange = async (event) => {
 		console.log(event.target.value);
-		setDoseTime(event.target.value);
+		await setDoseTime(event.target.value);
+		console.log(doseTime);
 	};
 
 	const handleDoseClick = async () => {
@@ -94,6 +96,8 @@ const AddDoseButton = ({ med }) => {
 		if (mostRecentTime && mostRecentTime > logTime) {
 			medMostRecent = mostRecentTime;
 		}
+		// TODO set up new mutations for 'newest dose' or 'previous dose' 
+		// so I can use different cache updating techniques for them both
 		console.log(dayjs(doseTime, 'HH:mm'));
 		try {
 			const { data } = await addDose({

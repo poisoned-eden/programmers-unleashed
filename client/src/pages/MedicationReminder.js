@@ -6,9 +6,10 @@ import customParseFormat from 'dayjs/plugin/customParseFormat';
 import utc from 'dayjs/plugin/utc';
 import timezone from 'dayjs/plugin/timezone'; // dependent on utc plugin
 
-import MedCards from '../components/MedCards';
+import MedCards from '../components/AddDoseButton';
 import Calendar from 'react-calendar';
-import { Container, Row, Col, Card, ListGroup } from 'react-bootstrap';
+import { Accordion, Container, Row, Col, Card, ListGroup } from 'react-bootstrap';
+import AddDoseButton from '../components/AddDoseButton';
 
 import 'react-calendar/dist/Calendar.css';
 
@@ -35,13 +36,13 @@ const MedicationReminder = () => {
 	// TODO move all this to makeVar
 	let timeframe = '';
 	if (calendarValue.isBefore(today, 'date')) {
-	timeframe = 'past';
+		timeframe = 'past';
 		console.log(timeframe);
 	} else if (calendarValue.isAfter(today, 'date')) {
-	timeframe = 'future';
+		timeframe = 'future';
 		console.log(timeframe);
 	} else {
-	timeframe = 'today';
+		timeframe = 'today';
 		console.log(timeframe);
 	}
 
@@ -67,27 +68,44 @@ const MedicationReminder = () => {
 								<Card key={med._id}>
 									<Card.Title>{med.medName}</Card.Title>
 									<Card.Body>
-										{/* TODO add med.icon properly */}
-										<span className="medication-icon">Icon 1</span>
-										{med.doses.map((dose) => (
-											<ul key={dose._id}>
-												<li>Scheduled:{dose.doseScheduled}</li>
-												<li>Logged:{dose.doseLogged}</li>
-											</ul>
-										))}
+										<span className="medication-icon">
+											{/* @Myra-k, did I see on your previous work you want to add a few different icons for different types of medication? I think that's a good idea.  I didn't mean to delete it, sorry, just haven't managed to implement it in the meds.map.  If you find the icons and link to them at the top of this component, I can set it in the backend to make it a choice stored in the db.  From Lil */}
+										</span>
+										<ListGroup variant="flush">
+											<ListGroup.Item>
+												Doses today: {med.doses.count || 0}
+												{med.maxDailyDoses > 0 && `/${med.maxDailyDoses}`}
+											</ListGroup.Item>
+											{med.mostRecentTime && (
+												<>
+													<ListGroup.Item>
+														Last taken at: {dayjs(med.mostRecentTime).format('HH:mm')}
+													</ListGroup.Item>
+													<ListGroup.Item>
+														Next scheduled:{' '}
+														{dayjs(med.mostRecentTime, 'HH:mm')
+															.add(med.minTimeBetween, 'h')
+															.format('HH:mm')}
+													</ListGroup.Item>
+												</>
+											)}
+										</ListGroup>
+										<AddDoseButton med={med} />
 									</Card.Body>
+									<Card.Footer>
+										<Accordion>
+											<Accordion.Header>Dose schedule</Accordion.Header>
+											<Accordion.Body>
+												<ul>
+													{med.doses.map((dose) => (
+														<li key={dose._id}>{dose.doseTime}</li>
+													))}
+												</ul>
+											</Accordion.Body>
+										</Accordion>
+									</Card.Footer>
 								</Card>
 							))}
-
-							<ul className="medication-list">
-								<li>
-									Medication Type 2<span className="medication-icon">Icon 2</span>
-								</li>
-								<li>
-									Medication Type 3<span className="medication-icon">Icon 3</span>
-								</li>
-								{/* Add more medication types and icons as needed */}
-							</ul>
 						</Col>
 						<div className="card2">
 							<Col>
@@ -96,30 +114,16 @@ const MedicationReminder = () => {
 									{/* Add reminder component here */}
 									{/* Example: <ReminderComponent /> */}
 								</div>
-<h3>Medications taken on (date shown on calendar)</h3>
-						<ListGroup>
-							<ListGroup.Item>
-								Medication 1: time logged
-							</ListGroup.Item>
-							<ListGroup.Item>
-								Medication 2: time logged
-							</ListGroup.Item>
-							<ListGroup.Item>
-								Medication 1: time logged
-							</ListGroup.Item>
-							<ListGroup.Item>
-								Medication 2: time logged
-							</ListGroup.Item>
-							<ListGroup.Item>
-								Medication 3: time logged
-							</ListGroup.Item>
-							<ListGroup.Item>
-								Medication 3: time logged
-							</ListGroup.Item>
-							<ListGroup.Item>
-								Medication 2: time logged
-							</ListGroup.Item>
-						</ListGroup>
+								<h3>Medications taken on (date shown on calendar)</h3>
+								<ListGroup>
+									<ListGroup.Item>Medication 1: time logged</ListGroup.Item>
+									<ListGroup.Item>Medication 2: time logged</ListGroup.Item>
+									<ListGroup.Item>Medication 1: time logged</ListGroup.Item>
+									<ListGroup.Item>Medication 2: time logged</ListGroup.Item>
+									<ListGroup.Item>Medication 3: time logged</ListGroup.Item>
+									<ListGroup.Item>Medication 3: time logged</ListGroup.Item>
+									<ListGroup.Item>Medication 2: time logged</ListGroup.Item>
+								</ListGroup>
 							</Col>
 						</div>
 					</Row>
