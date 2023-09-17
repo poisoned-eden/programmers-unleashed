@@ -13,7 +13,30 @@ export const QUERY_MEDS = gql`
         _id
         userId
         medId
-        doseScheduled
+        doseDate
+        doseTime
+        doseLogged
+      }
+    }
+  }
+`;
+
+export const QUERY_MED = gql`
+  query Med($medId: ID) {
+    med(medId: $medId) {
+      _id
+      userId
+      medName
+      maxDailyDoses
+      minTimeBetween
+      remindersBool
+
+      doses {
+        _id
+        userId
+        medId
+        doseDate
+        doseTime
         doseLogged
       }
       mostRecentDose

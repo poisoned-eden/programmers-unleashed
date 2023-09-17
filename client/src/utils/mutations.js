@@ -38,16 +38,13 @@ export const ADD_MED = gql`
 `;
 
 export const ADD_DOSE = gql`
-  mutation addDose($medId: ID!, $doseScheduled: String, $doseLogged: String) {
-    addDose(
-      medId: $medId
-      doseScheduled: $doseScheduled
-      doseLogged: $doseLogged
-    ) {
+  mutation addDose($doseData: DoseInput!) {
+    addDose(doseData: $doseData) {
       _id
       userId
       medId
-      doseScheduled
+      doseDate
+      doseTime
       doseLogged
     }
   }
@@ -66,7 +63,8 @@ export const UPDATE_MED = gql`
         _id
         userId
         medId
-        doseScheduled
+        doseDate
+        doseTime
         doseLogged
       }
       mostRecentDose
@@ -76,12 +74,13 @@ export const UPDATE_MED = gql`
 `;
 
 export const UPDATE_DOSE = gql`
-  mutation updateDose($doseId: ID!, $doseData: DoseUpdate!) {
-    updateDose(doseId: $doseId, doseData: $doseData) {
+  mutation updateDose($doseData: DoseUpdate!) {
+    updateDose(doseData: $doseData) {
       _id
       userId
       medId
-      doseScheduled
+      doseDate
+      doseTime
       doseLogged
     }
   }

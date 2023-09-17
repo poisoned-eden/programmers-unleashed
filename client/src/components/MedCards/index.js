@@ -14,54 +14,51 @@ const MedCards = (props) => {
 
 	const numDosesToday = doses.count || 0;
 
-	console.log(med);
 	return (
-		<Card key={med._id}>
-			<Card.Title>{med.medName}</Card.Title>
-			<Card.Body>
-				<span className="medication-icon">
-					{/* @Myra-k, did I see on your previous work you want to add a few different icons for different types of medication? I think that's a good idea.  I didn't mean to delete it, sorry, just haven't managed to implement it in the meds.map.  If you find the icons and link to them at the top of this component, I can set it in the backend to make it a choice stored in the db.  From Lil */}
-				</span>
-				<ListGroup variant="flush">
-					<ListGroup.Item>
-						Doses today: {numDosesToday}
-						{maxDailyDoses > 0 && `/${maxDailyDoses}`}
-					</ListGroup.Item>
-					{mostRecentTime && (
-						<>
-							<ListGroup.Item>
-								Last taken at:{' '}
-								{dayjs(mostRecentTime).format('HH:mm')}
-							</ListGroup.Item>
-							<ListGroup.Item>
-								Next scheduled:{' '}
-								{dayjs(mostRecentTime, 'HH:mm')
-									.add(minTimeBetween, 'h')
-									.format('HH:mm')}
-							</ListGroup.Item>
-						</>
-					)}
-				</ListGroup>
-				<AddDoseButton med={med} numDosesToday={numDosesToday} />
-			</Card.Body>
-			<Card.Footer>
-				<Accordion>
-					<Accordion.Header>Dose schedule</Accordion.Header>
-					<Accordion.Body>
-						<ul>
-							{med.doses.map((dose) => (
-								<li key={dose._id}>
-									{dayjs
-										.utc(dose.doseLogged)
-										.tz(zone)
-										.toString()}
-								</li>
-							))}
-						</ul>
-					</Accordion.Body>
-				</Accordion>
-			</Card.Footer>
-		</Card>
+		<>
+			{meds.map((med) => (
+				<Card key={med._id}>
+					<Card.Title>{med.medName}</Card.Title>
+					<Card.Body>
+						<span className="medication-icon">
+							{/* @Myra-k, did I see on your previous work you want to add a few different icons for different types of medication? I think that's a good idea.  I didn't mean to delete it, sorry, just haven't managed to implement it in the meds.map.  If you find the icons and link to them at the top of this component, I can set it in the backend to make it a choice stored in the db.  From Lil */}
+						</span>
+						<AddDoseButton medId={med._id} />
+					</Card.Body>
+					<Card.Footer>
+						<Accordion>
+							<Accordion.Header>Dose schedule</Accordion.Header>
+							<Accordion.Body>
+								<ul>
+									{med.doses.map((dose) => (
+										<li key={dose._id}>
+											{dose.doseTime}
+										</li>
+									))}
+								</ul>
+								<ButtonGroup>
+									<Button>Scheduled: 08.00</Button>
+									<Button>Logged taken: 08.45</Button>
+								</ButtonGroup>
+								<ButtonGroup>
+									<Button>Scheduled: 12.00</Button>
+									<Button>Logged taken: 13.00</Button>
+								</ButtonGroup>
+								<ButtonGroup>
+									<Button>Scheduled: 16.00</Button>
+									{/* @Myra-k, can you please make it so that an overdue dose makes the colour change to highlight it.  Thanks, from Lil */}
+									<Button>Overdue</Button>
+								</ButtonGroup>
+								<ButtonGroup>
+									<Button>Scheduled: 20.00</Button>
+									<Button disabled>Not yet due</Button>
+								</ButtonGroup>
+							</Accordion.Body>
+						</Accordion>
+					</Card.Footer>
+				</Card>
+			))}
+		</>
 	);
 };
 

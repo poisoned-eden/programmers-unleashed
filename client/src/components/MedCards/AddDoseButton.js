@@ -1,51 +1,50 @@
-import React, { useState } from 'react';
-import { useQuery, useMutation, makeVar } from '@apollo/client';
-import { QUERY_ME, QUERY_MEDS } from '../../utils/queries';
-import { ADD_DOSE } from '../../utils/mutations';
+import React, { useState } from "react";
+import { useQuery, useMutation, makeVar } from "@apollo/client";
+import { QUERY_ME, QUERY_MEDS } from "../../utils/queries";
+import { ADD_DOSE } from "../../utils/mutations";
+
 import dayjs from 'dayjs';
 import customParseFormat from 'dayjs/plugin/customParseFormat';
 import utc from 'dayjs/plugin/utc';
-import  timezone from 'dayjs/plugin/timezone'; // dependent on utc plugin
+import timezone from 'dayjs/plugin/timezone'; // dependent on utc plugin
 
-import {
-	Container,
-	Row,
-	Col,
-	Card,
-	Button,
-	ButtonGroup,
-	SplitButton,
-	InputGroup,
-	Form,
-} from 'react-bootstrap';
-import 'react-calendar/dist/Calendar.css';
+const AddDoseButton = ({ medId, maxDailyDoses, minTimeBetween }) => {
+  const [addDose, { error }] = useMutation(ADD_DOSE);
 
-const AddDoseButton = ({ med }) => {
+  const getTimeArr = (maxDailyDoses, minTimeBetween) => {
+    const timeArr = [];
+
+    var dateCount = 0;
+    var currentDate = new Date();
+    var currentHour = new Date().getHours();
+
+    for (var i = 0; i < 8; i++) {
+      if (
+        currentHour > 22 ||
+        currentHour < 8 ||
+        dateCount >= parseInt(maxDailyDoses)
+      ) {
+        currentDate.setDate(currentDate.getDate() + 1);
+        currentHour = 8;
+        dateCount = 0;
+      }
+
+      console.log(dateCount);
+
+const AddDoseButton = ({ medId }) => {
 	const [addDose, { error }] = useMutation(ADD_DOSE, {
-		refetchQueries: [
+			refetchQueries: [
 			QUERY_MEDS, // DocumentNode object parsed with gql
-			'Meds', // Query name
+			'Meds' // Query name
 		],
 	});
 
-	const [doseTime, setDoseTime] = useState(dayjs().format('HH:mm'));
+      currentHour += parseInt(minTimeBetween);
+      dateCount += 1;
+    }
 
-	const { _id, minTimeBetween, maxDailyDoses, doses, mostRecentTime } = med;
-
-	// , {
-	// 	update(cache, { data: { addDose } }) {
-	// 		try {
-	// 		  const { doses } = cache.readQuery({ query: QUERY_MEDS });
-
-	// 		  cache.writeQuery({
-	// 			query: QUERY_MEDS,
-	// 			data: { meds: [addMed, ...meds] },
-	// 		  });
-	// 		} catch (e) {
-	// 		  console.error(e);
-	// 		}
-	// 	},
-	// }
+    return timeArr;
+  };
 
 	const handleChange = (event) => {
 		console.log(event.target.value);
@@ -72,11 +71,12 @@ const AddDoseButton = ({ med }) => {
 				},
 			});
 
-			console.log(data);
-		} catch (err) {
-			console.error(err);
-		}
-	};
+        console.log(data);
+      });
+    } catch (err) {
+      console.error(err);
+    }
+  };;
 
 	if (error)
 		return (

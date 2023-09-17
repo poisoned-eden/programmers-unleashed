@@ -29,7 +29,6 @@ const resolvers = {
     },
     // TODO
     meds: async (parent, args, context) => {
-      console.log("med data show up");
       if (context.user) {
         try {
           const medsData = await Med.find({
@@ -44,6 +43,38 @@ const resolvers = {
           });
           console.log(medsData);
           return medsData;
+        } catch (err) {
+          console.error(err);
+        }
+      }
+      throw new AuthenticationError("You need to be logged in!");
+    },
+
+    med: async (parent, { medId }, context) => {
+      if (context.user) {
+        try {
+          const medData = await Med.findOne({
+            _id: medId,
+            userId: context.user._id,
+          }).populate("doses");
+
+          return medData;
+        } catch (err) {
+          console.error(err);
+        }
+      }
+      throw new AuthenticationError("You need to be logged in!");
+    },
+
+    dosesByDate: async (parent, { date }, context) => {
+      if (context.user) {
+        try {
+          const doseData = await Dose.find({
+            userId: context.user._id,
+            doseDate: date,
+          });
+
+          return doseData;
         } catch (err) {
           console.error(err);
         }
@@ -109,7 +140,10 @@ const resolvers = {
         throw new Error(err);
       }
     },
-    addDose: async (parent, { medId, doseScheduled, doseLogged, mostRecentTime }, context) => {
+
+    addDose: async (parent, { doseData }, context) => {
+      const { medId, doseDate, doseTime, doseLogged, mostRecentTime } = doseData;
+
       console.log("addDose resolver");
       console.log({ medId, doseScheduled, doseLogged, mostRecentTime });
       if (context.user) {
@@ -118,7 +152,8 @@ const resolvers = {
           const newDose = await Dose.create({
             userId: context.user._id,
             medId: medId,
-            // doseScheduled: doseScheduled,
+            // doseDate: doseDate,
+            doseTime: doseTime,
             doseLogged: doseLogged,
           });
           console.log(newDose);
@@ -182,8 +217,8 @@ const resolvers = {
       return med;
     },
 
-    updateDose: async (parent, { doseId, doseData }) => {
-      const { doseScheduled, doseLogged } = doseData;
+    updateDose: async (parent, { doseData }) => {
+      const { doseId, doseDate, doseTime, doseLogged } = doseData;
 
       const dose = await Dose.findOneAndUpdate(
         {
@@ -191,7 +226,8 @@ const resolvers = {
         },
         {
           $set: {
-            doseScheduled: doseScheduled,
+            doseDate: doseDate,
+            doseTime: doseTime,
             doseLogged: doseLogged,
           },
         },

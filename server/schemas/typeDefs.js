@@ -29,7 +29,8 @@ const typeDefs = gql`
     _id: ID!
     userId: ID!
     medId: ID!
-    doseScheduled: String
+    doseDate: String
+    doseTime: String
     doseLogged: String
   }
 
@@ -56,13 +57,32 @@ const typeDefs = gql`
     mostRecentTime: String
   }
 
+  input DoseInput {
+    medId: ID
+    doseDate: String
+    doseTime: String
+    doseLogged: String
+    # need to add mostRecentTime to be passed to Med update
+  }
+
+  input DoseInput {
+    medId: ID
+    doseDate: String
+    doseTime: String
+    doseLogged: String
+  }
+
   input DoseUpdate {
-    doseScheduled: String!
-    doseLogged: String!
+    doseId: ID
+    doseDate: String
+    doseTime: String
+    doseLogged: String
   }
 
   type Query {
+    med(medId: ID): Med
     meds: [Med]
+    dosesByDate(date: String): [Dose]
     me: User
   }
 
@@ -71,10 +91,10 @@ const typeDefs = gql`
     login(email: String!, password: String!): Auth
 
     addMed(medSettings: MedInput!): Med
-    addDose(medId: ID!, doseScheduled: String, doseLogged: String, mostRecentTime: String): Dose
+    addDose(doseData: DoseInput!): Dose
 
     updateMed(medData: MedUpdate!): Med
-    updateDose(doseId: ID!, doseData: DoseUpdate!): Dose
+    updateDose(doseData: DoseUpdate!): Dose
   }
 `;
 
