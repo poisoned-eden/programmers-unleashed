@@ -21,12 +21,6 @@ const medSchema = new Schema({
 		type: Boolean,
 		default: false,
 	},
-	doses: [
-		{
-			type: Schema.Types.ObjectId,
-			ref: 'Dose',
-		},
-	],
 	mostRecentDose: {
 		type: Schema.Types.ObjectId,
 		ref: 'Dose',
@@ -34,6 +28,12 @@ const medSchema = new Schema({
 	mostRecentTime: {
 		type: String,
 	},
+	doses: [
+		{
+			type: Schema.Types.ObjectId,
+			ref: 'Dose',
+		},
+	],
 
 	// TODO add icon
 });

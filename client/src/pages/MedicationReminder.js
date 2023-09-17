@@ -31,7 +31,8 @@ const MedicationReminder = () => {
 	if (medsLoading) return 'loading your meds info...';
 
 	const meds = medsData?.meds || [];
-	const today = dayjs(); // gets current datetime
+	const today = new Date(); // gets current datetime
+	console.log(today);
 	// TODO move all this to makeVar
 	let timeframe = '';
 	if (calendarValue.isBefore(today, 'date')) {
@@ -68,7 +69,7 @@ const MedicationReminder = () => {
 									<Card.Title>{med.medName}</Card.Title>
 									<Card.Body>
 										<span className="medication-icon">
-											{/* @Myra-k, did I see on your previous work you want to add a few different icons for different types of medication? I think that's a good idea.  I didn't mean to delete it, sorry, just haven't managed to implement it in the meds.map.  If you find the icons and link to them at the top of this component, I can set it in the backend to make it a choice stored in the db.  From Lil */}
+											Icon 1/2/3
 										</span>
 										<ListGroup variant="flush">
 											<ListGroup.Item>
@@ -89,7 +90,7 @@ const MedicationReminder = () => {
 												</>
 											)}
 										</ListGroup>
-										<AddDoseButton med={med} />
+										<AddDoseButton med={med} today={today} />
 									</Card.Body>
 									<Card.Footer>
 										<Accordion>

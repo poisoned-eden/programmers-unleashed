@@ -20,9 +20,9 @@ const typeDefs = gql`
 		maxDailyDoses: Int
 		minTimeBetween: Int
 		remindersBool: Boolean
-		doses: [Dose]
 		mostRecentDose: ID
 		mostRecentTime: String
+		doses: [Dose]
 	}
 
 	type Dose {
