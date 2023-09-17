@@ -12,16 +12,15 @@ const doseSchema = new Schema({
     ref: "Med",
     required: true,
   },
-  doseScheduled: {
-    type: Date,
-    required: true,
-    default: Date.now,
-    get: (timestamp) => dateFormat(timestamp),
+  doseDate: {
+    type: String,
   },
-  // doseLogged: {
-  // 	type: Date,
-  //   get: (timestamp) => dateFormat(timestamp),
-  // },
+  doseTime: {
+    type: String,
+  },
+  doseLogged: {
+    type: String,
+  },
 });
 
 const Dose = model("Dose", doseSchema);
