@@ -47,57 +47,6 @@ const MedicationReminder = () => {
 		console.log(timeframe);
 	}
 
-  return (
-    <main>
-		<div className="card">
-      <Container>
-        <header>
-          <h1 className="rem">Medication Reminder</h1>
-        </header>
-        <Row>
-          <Col>
-            <div className="loader-container" id="pill-image">
-              <div className="loader"></div>
-            </div>
-			<h3 className="today">Todays Pills</h3>
-            <MedCards
-              meds={meds}
-              calendarValue={calendarValue}
-              //today={today}
-            />
-          </Col>
-		  <div className="card2">
-          <Col>
-		  <h3 className="taken">Medications taken on</h3>
-            <Calendar onChange={onChangeCalendar} value={calendarValue} />
-            <div className="reminder">
-              {/* Add reminder component here */}
-              {/* Example: <ReminderComponent /> */}
-            </div>
-			<hr className="cal"></hr>
-            <ListGroup className="list">
-              <ListGroup.Item>Medication 1: time logged</ListGroup.Item>
-			  <hr></hr>
-              <ListGroup.Item>Medication 2: time logged</ListGroup.Item>
-			  <hr></hr>
-              <ListGroup.Item>Medication 1: time logged</ListGroup.Item>
-			  <hr></hr>
-              <ListGroup.Item>Medication 2: time logged</ListGroup.Item>
-			  <hr></hr>
-              <ListGroup.Item>Medication 3: time logged</ListGroup.Item>
-			  <hr></hr>
-              <ListGroup.Item>Medication 3: time logged</ListGroup.Item>
-			  <hr></hr>
-              <ListGroup.Item>Medication 2: time logged</ListGroup.Item>
-            </ListGroup>
-          </Col>
-		  </div>
-        </Row>
-      </Container>
-	  </div>
-    </main>
-  );
-
 	function onChangeCalendar(nextValue) {
 		setCalendarValue(dayjs(nextValue));
 		console.log(calendarValue);
@@ -109,47 +58,52 @@ const MedicationReminder = () => {
 		setCalendarValue(dayjs(nextValue).format('YYYY-MM-DD'));
 	}
 
-	return (
-		<main>
-			<div className="card">
-				<Container>
-					<header>
-						<h1 className="rem">Medication Reminder</h1>
-					</header>
-					<Row>
-						<Col>
-							<div className="loader-container" id="pill-image">
-								<div className="loader"></div>
+
+  return (
+	<main>
+		<div className="card">
+	  		<Container>
+        			<header>
+          				<h1 className="rem">Medication Reminder</h1>
+        			</header>
+        			<Row>
+          				<Col>
+            					<div className="loader-container" id="pill-image">
+              						<div className="loader"></div>
+            					</div>
+						<h3 className="today">Todays Pills</h3>
+            					{meds.map((med) => (<MedCards med={med} calendarValue={calendarValue} today={today} />))}
+          				</Col>
+		  			<div className="card2">
+          					<Col>
+		  					<h3 className="taken">Medications taken on</h3>
+							<Calendar onChange={onChangeCalendar} value={calendarValue} />
+							<div className="reminder">
+								{/* Add reminder component here */}
+								{/* Example: <ReminderComponent /> */}
 							</div>
-							<h3 className="today">Todays Pills</h3>
-							{meds.map((med) => (
-								<MedCards med={med} calendarValue={calendarValue} today={today} />
-							))}
+							<hr className="cal"></hr>
+							<ListGroup className="list">
+								<ListGroup.Item>Medication 1: time logged</ListGroup.Item>
+								<hr></hr>
+								<ListGroup.Item>Medication 2: time logged</ListGroup.Item>
+								<hr></hr>
+								<ListGroup.Item>Medication 1: time logged</ListGroup.Item>
+								<hr></hr>
+								<ListGroup.Item>Medication 2: time logged</ListGroup.Item>
+								<hr></hr>
+								<ListGroup.Item>Medication 3: time logged</ListGroup.Item>
+								<hr></hr>
+								<ListGroup.Item>Medication 3: time logged</ListGroup.Item>
+								<hr></hr>
+								<ListGroup.Item>Medication 2: time logged</ListGroup.Item>
+							</ListGroup>
 						</Col>
-						<div className="card2">
-							<Col>
-								<h3 className="taken">Medications taken on</h3>
-								<Calendar onChange={onChangeCalendar} value={calendarValue} />
-								<div className="reminder">
-									{/* Add reminder component here */}
-									{/* Example: <ReminderComponent /> */}
-								</div>
-								<ListGroup className="list">
-									<ListGroup.Item>Medication 1: time logged</ListGroup.Item>
-									<ListGroup.Item>Medication 2: time logged</ListGroup.Item>
-									<ListGroup.Item>Medication 1: time logged</ListGroup.Item>
-									<ListGroup.Item>Medication 2: time logged</ListGroup.Item>
-									<ListGroup.Item>Medication 3: time logged</ListGroup.Item>
-									<ListGroup.Item>Medication 3: time logged</ListGroup.Item>
-									<ListGroup.Item>Medication 2: time logged</ListGroup.Item>
-								</ListGroup>
-							</Col>
-						</div>
-					</Row>
-				</Container>
-			</div>
-		</main>
-	);
-};
+					</div>
+				</Row>
+			</Container>
+		</div>
+	</main>
+);
 
 export default MedicationReminder;
