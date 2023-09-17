@@ -31,22 +31,24 @@ const MedicationReminder = () => {
 	if (medsLoading) return 'loading your meds info...';
 
 	const meds = medsData?.meds || [];
-	//   const today = dayjs(); // gets current datetime
-	//   // TODO move all this to makeVar
-	//   let timeframe = "";
-	//   if (calendarValue.isBefore(today, "date")) {
-	//     timeframe = "past";
-	//     console.log(timeframe);
-	//   } else if (calendarValue.isAfter(today, "date")) {
-	//     timeframe = "future";
-	//     console.log(timeframe);
-	//   } else {
-	//     timeframe = "today";
-	//     console.log(timeframe);
-	//   }
+	const today = dayjs(); // gets current datetime
+	// TODO move all this to makeVar
+	let timeframe = '';
+	if (calendarValue.isBefore(today, 'date')) {
+	timeframe = 'past';
+		console.log(timeframe);
+	} else if (calendarValue.isAfter(today, 'date')) {
+	timeframe = 'future';
+		console.log(timeframe);
+	} else {
+	timeframe = 'today';
+		console.log(timeframe);
+	}
 
 	function onChangeCalendar(nextValue) {
-		setCalendarValue(dayjs(nextValue).format('YYYY-MM-DD'));
+		setCalendarValue(dayjs(nextValue));
+		console.log(calendarValue);
+		console.log(typeof calendarValue);
 	}
 
 	return (
@@ -94,6 +96,30 @@ const MedicationReminder = () => {
 									{/* Add reminder component here */}
 									{/* Example: <ReminderComponent /> */}
 								</div>
+<h3>Medications taken on (date shown on calendar)</h3>
+						<ListGroup>
+							<ListGroup.Item>
+								Medication 1: time logged
+							</ListGroup.Item>
+							<ListGroup.Item>
+								Medication 2: time logged
+							</ListGroup.Item>
+							<ListGroup.Item>
+								Medication 1: time logged
+							</ListGroup.Item>
+							<ListGroup.Item>
+								Medication 2: time logged
+							</ListGroup.Item>
+							<ListGroup.Item>
+								Medication 3: time logged
+							</ListGroup.Item>
+							<ListGroup.Item>
+								Medication 3: time logged
+							</ListGroup.Item>
+							<ListGroup.Item>
+								Medication 2: time logged
+							</ListGroup.Item>
+						</ListGroup>
 							</Col>
 						</div>
 					</Row>

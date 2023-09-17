@@ -17,6 +17,8 @@ export const QUERY_MEDS = gql`
         doseTime
         doseLogged
       }
+      mostRecentDose
+      mostRecentTime
     }
   }
 `;
@@ -30,7 +32,6 @@ export const QUERY_MED = gql`
       maxDailyDoses
       minTimeBetween
       remindersBool
-
       doses {
         _id
         userId
@@ -51,7 +52,6 @@ export const QUERY_ME = gql`
       _id
       username
       email
-
       userMeds {
         _id
         userId

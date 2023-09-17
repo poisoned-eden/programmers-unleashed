@@ -145,14 +145,14 @@ const resolvers = {
       const { medId, doseDate, doseTime, doseLogged, mostRecentTime } = doseData;
 
       console.log("addDose resolver");
-      console.log({ medId, doseScheduled, doseLogged, mostRecentTime });
+      console.log({ medId, doseDate, doseTime, doseLogged, mostRecentTime });
       if (context.user) {
         console.log("context.user exists");
         try {
           const newDose = await Dose.create({
             userId: context.user._id,
             medId: medId,
-            // doseDate: doseDate,
+            doseDate: doseDate,
             doseTime: doseTime,
             doseLogged: doseLogged,
           });

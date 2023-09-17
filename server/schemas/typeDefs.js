@@ -62,14 +62,7 @@ const typeDefs = gql`
     doseDate: String
     doseTime: String
     doseLogged: String
-    # need to add mostRecentTime to be passed to Med update
-  }
-
-  input DoseInput {
-    medId: ID
-    doseDate: String
-    doseTime: String
-    doseLogged: String
+    mostRecentTime: String
   }
 
   input DoseUpdate {
@@ -77,6 +70,7 @@ const typeDefs = gql`
     doseDate: String
     doseTime: String
     doseLogged: String
+    mostRecentTime: String
   }
 
   type Query {

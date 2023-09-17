@@ -8,30 +8,43 @@ import customParseFormat from 'dayjs/plugin/customParseFormat';
 import utc from 'dayjs/plugin/utc';
 import timezone from 'dayjs/plugin/timezone'; // dependent on utc plugin
 
-const AddDoseButton = ({ medId, maxDailyDoses, minTimeBetween }) => {
-  const [addDose, { error }] = useMutation(ADD_DOSE);
+import {
+	Container,
+	Row,
+	Col,
+	Card,
+	Button,
+	ButtonGroup,
+	SplitButton,
+	InputGroup,
+	Form,
+} from 'react-bootstrap';
+import 'react-calendar/dist/Calendar.css';
 
-  const getTimeArr = (maxDailyDoses, minTimeBetween) => {
-    const timeArr = [];
+// const AddDoseButton = ({ medId, maxDailyDoses, minTimeBetween }) => {
+//   const [addDose, { error }] = useMutation(ADD_DOSE);
 
-    var dateCount = 0;
-    var currentDate = new Date();
-    var currentHour = new Date().getHours();
+//   const getTimeArr = (maxDailyDoses, minTimeBetween) => {
+//     const timeArr = [];
 
-    for (var i = 0; i < 8; i++) {
-      if (
-        currentHour > 22 ||
-        currentHour < 8 ||
-        dateCount >= parseInt(maxDailyDoses)
-      ) {
-        currentDate.setDate(currentDate.getDate() + 1);
-        currentHour = 8;
-        dateCount = 0;
-      }
+//     var dateCount = 0;
+//     var currentDate = new Date();
+//     var currentHour = new Date().getHours();
 
-      console.log(dateCount);
+//     for (var i = 0; i < 8; i++) {
+//       if (
+//         currentHour > 22 ||
+//         currentHour < 8 ||
+//         dateCount >= parseInt(maxDailyDoses)
+//       ) {
+//         currentDate.setDate(currentDate.getDate() + 1);
+//         currentHour = 8;
+//         dateCount = 0;
+//       }
 
-const AddDoseButton = ({ medId }) => {
+//       console.log(dateCount);
+
+const AddDoseButton = ({ med }) => {
 	const [addDose, { error }] = useMutation(ADD_DOSE, {
 			refetchQueries: [
 			QUERY_MEDS, // DocumentNode object parsed with gql
@@ -39,12 +52,33 @@ const AddDoseButton = ({ medId }) => {
 		],
 	});
 
-      currentHour += parseInt(minTimeBetween);
-      dateCount += 1;
-    }
 
-    return timeArr;
-  };
+	const [doseTime, setDoseTime] = useState(dayjs().format('HH:mm'));
+
+	const { _id, minTimeBetween, maxDailyDoses, doses, mostRecentTime } = med;
+
+	// , {
+	// 	update(cache, { data: { addDose } }) {
+	// 		try {
+	// 		  const { doses } = cache.readQuery({ query: QUERY_MEDS });
+
+	// 		  cache.writeQuery({
+	// 			query: QUERY_MEDS,
+	// 			data: { meds: [addMed, ...meds] },
+	// 		  });
+	// 		} catch (e) {
+	// 		  console.error(e);
+	// 		}
+	// 	},
+	// }
+
+
+//       currentHour += parseInt(minTimeBetween);
+//       dateCount += 1;
+//     }
+
+//     return timeArr;
+//   };
 
 	const handleChange = (event) => {
 		console.log(event.target.value);
@@ -71,12 +105,12 @@ const AddDoseButton = ({ medId }) => {
 				},
 			});
 
-        console.log(data);
-      });
-    } catch (err) {
-      console.error(err);
-    }
-  };;
+        	console.log(data);
+    //   });
+    	} catch (err) {
+      		console.error(err);
+    	};
+  	};
 
 	if (error)
 		return (
