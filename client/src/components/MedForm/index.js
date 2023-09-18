@@ -210,11 +210,11 @@ const MedForm = (props) => {
 					/>
 				</Form.Group>
 				{props.mutation === 'ADD_MED' ? (
-					<Button type="sumbit" onClick={handleFormSubmit}>
+					<Button type="submit" onClick={handleFormSubmit}>
 						Add Medication
 					</Button>
 				) : (
-					<Button type="sumbit" onClick={handleFormSubmit}>
+					<Button type="submit" onClick={handleFormSubmit}>
 						Update Medication
 					</Button>
 				)}
