@@ -11,6 +11,7 @@ import MedCard from '../components/MedCard';
 import Auth from '../utils/auth';
 
 const Profile = () => {
+	console.log('Profile');
 	const { loading: meLoading, data: meData } = useQuery(QUERY_ME);
 	const { loading: medsLoading, data: medsData } = useQuery(QUERY_MEDS);
 	
