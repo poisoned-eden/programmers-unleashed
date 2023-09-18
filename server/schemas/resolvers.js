@@ -147,10 +147,10 @@ const resolvers = {
 		},
 
 		addDose: async (parent, { doseData }, context) => {
-			const { medId, doseDate, doseTime, doseLogged, mostRecentTime } = doseData;
+			const { medId, doseDate, doseTime, doseLogged, mostRecentBool } = doseData;
 
 			console.log('addDose resolver');
-			console.log({ medId, doseDate, doseTime, doseLogged, mostRecentTime });
+			console.log({ medId, doseDate, doseTime, doseLogged, mostRecentBool });
 			if (context.user) {
 				console.log('context.user exists');
 				try {
@@ -162,34 +162,45 @@ const resolvers = {
 						doseLogged: doseLogged,
 					});
 					console.log(newDose);
-					console.log(mostRecentTime);
-
+					
 					// if the dose is logged at a time before the mostRecent time, just update normally
-					if (mostRecentTime > doseLogged) {
+					if (mostRecentBool) {
 						const updateMed = await Med.findOneAndUpdate(
 							{ _id: medId },
 							{
-								$addToSet: { doses: newDose._id },
-							},
-							{ new: true },
-						).populate('doses');
-						console.log(updateMed);
-						return newDose;
-					} else {
-						// if the dose is logged at a time equal or greater than the most recent time, update med mostRecentDose and mostRecentTime
-						const updateMed = await Med.findOneAndUpdate(
-							{ _id: medId },
-							{
-								$set: {
-									mostRecentDose: newDose._id,
-									mostRecentTime: mostRecentTime,
-								},
+								$set: { mostRecentDose: newDose._id },
 								$addToSet: { doses: newDose._id },
 							},
 							{ new: true },
 						)
-							.populate('doses')
-							.populate('mostRecentDose');
+						.populate('mostRecentDose')
+						.populate({
+							path: 'doses',
+							options: {
+								sort: {
+									doseLogged: -1,
+								},
+							},
+						});
+						console.log(updateMed);
+						return newDose;
+					} else {
+						const updateMed = await Med.findOneAndUpdate(
+							{ _id: medId },
+							{
+								$addToSet: { doses: newDose._id },
+							},
+							{ new: true },
+						)
+						.populate('mostRecentDose')
+						.populate({
+							path: 'doses',
+							options: {
+								sort: {
+									doseLogged: -1,
+								},
+							},
+						});
 						console.log(updateMed);
 
 						return newDose;

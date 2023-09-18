@@ -53,6 +53,13 @@ const AddDoseButton = ({ med }) => {
 		const doseDate = splitDate(today);
 		console.log({doseLogged, doseDate});
 
+		console.log(doseLogged.valueOf());
+		console.log(mostRecentDose.doseLogged.valueOf())
+		let mostRecentBool = true;
+		if ( mostRecentDose && doseLogged.valueOf() < mostRecentDose.doseLogged.valueOf() ) {
+			mostRecentBool = false;
+		}
+
 		const doseData = {
 			medId: _id,
 			doseDate: doseDate,
@@ -71,6 +78,7 @@ const AddDoseButton = ({ med }) => {
 			const { data } = await addDose({
 				variables: {
 					doseData: doseData,
+					mostRecentBool: mostRecentBool,
 				},
 			});
 

@@ -8,7 +8,6 @@ export const QUERY_MEDS = gql`
 			maxDailyDoses
 			minTimeBetween
 			remindersBool
-			mostRecentTime
 			mostRecentDose {
 				_id
 				doseDate
@@ -35,7 +34,6 @@ export const QUERY_MED = gql`
 			minTimeBetween
 			remindersBool
 			mostRecentDose
-			mostRecentTime
 			doses {
 				_id
 				userId
@@ -63,7 +61,6 @@ export const QUERY_ME = gql`
 				minTimeBetween
 				remindersBool
 				mostRecentDose
-				mostRecentTime
 				doses {
 					_id
 					userId
