@@ -41,13 +41,7 @@ const Profile = () => {
 				<MedForm mutation="ADD_MED" />
 				{/* TODO Account Settings */}
 				{medsData.meds.map((med) => (
-					<MedCard
-						medId={med._id}
-						medName={med.medName}
-						maxDailyDoses={med.maxDailyDoses}
-						minTimeBetween={med.minTimeBetween}
-						remindersBool={med.remindersBool}
-					/>
+					<MedCard med={med} />
 				))}
 			</div>
 		</div>

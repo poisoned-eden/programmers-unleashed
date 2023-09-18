@@ -10,24 +10,18 @@ import MedForm from "../../components/MedForm";
 
 const MedCard = (props) => {
   const [isUpdated, setIsUpdated] = useState(false);
-  const [medFormData, setMedFormData] = useState({
-    medId: props.medId,
-    medName: props.medName,
-    maxDailyDoses: props.maxDailyDoses,
-    minTimeBetween: props.minTimeBetween,
-    remindersBool: props.remindersBool,
-  });
+  const { _id, medName, maxDailyDoses, minTimeBetween, remindersBool } = props.med;
 
   if (!isUpdated) {
     return (
-      <Container key={medFormData.medId}>
+      <Container key={_id}>
         <Card.Body>
-          <Card.Title>{medFormData.medName}</Card.Title>
+          <Card.Title>{medName}</Card.Title>
           <Card.Text>
-            Max. daily doses: {medFormData.maxDailyDoses} times
+            Max. daily doses: {maxDailyDoses} times
           </Card.Text>
           <Card.Text>
-            Min. time between: {medFormData.minTimeBetween} hours
+            Min. time between: {minTimeBetween} hours
           </Card.Text>
           <Button
             variant="primary"
@@ -42,12 +36,8 @@ const MedCard = (props) => {
     );
   } else {
     return (
-      <Container key={medFormData.medId}>
-        <MedForm
-          medFormData={medFormData}
-          setMedFormData={setMedFormData}
-          mutation="UPDATE_MED"
-        />
+      <Container key={_id}>
+        <MedForm mutation="UPDATE_MED" />
         <Button
           variant="primary"
           onClick={() => {
