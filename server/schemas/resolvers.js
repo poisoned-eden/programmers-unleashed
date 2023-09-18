@@ -1,6 +1,6 @@
-const { AuthenticationError } = require("apollo-server-express");
-const { User, Med, Dose } = require("../models");
-const { signToken } = require("../utils/auth");
+const { AuthenticationError } = require('apollo-server-express');
+const { User, Med, Dose } = require('../models');
+const { signToken } = require('../utils/auth');
 // const {
 // 	DateScalar,
 // 	TimeScalar,
@@ -8,235 +8,240 @@ const { signToken } = require("../utils/auth");
 // } = require('graphql-date-scalars');
 
 const resolvers = {
-  // Date: DateScalar,
-  // Time: TimeScalar,
-  // DateTime: DateTimeScalar,
+	// Date: DateScalar,
+	// Time: TimeScalar,
+	// DateTime: DateTimeScalar,
 
-  Query: {
-    me: async (parent, args, context) => {
-      if (context.user) {
-        try {
-          const userData = await User.findOne({
-            _id: context.user._id,
-          }).populate("userMeds");
-          console.log(userData);
-          return userData;
-        } catch (err) {
-          console.error(err);
-        }
-      }
-      throw new AuthenticationError("You need to be logged in!");
-    },
-    // TODO
-    meds: async (parent, args, context) => {
-      if (context.user) {
-        try {
-          const medsData = await Med.find({
-            userId: context.user._id,
-          }).populate({
-            path: "doses",
-            options: {
-              sort: {
-                'doseLogged': -1
-              },
-            }
-          });
-          console.log(medsData);
-          return medsData;
-        } catch (err) {
-          console.error(err);
-        }
-      }
-      throw new AuthenticationError("You need to be logged in!");
-    },
+	Query: {
+		me: async (parent, args, context) => {
+			if (context.user) {
+				try {
+					const userData = await User.findOne({
+						_id: context.user._id,
+					})
+					.populate('userMeds');
+					console.log(userData);
+					return userData;
+				} catch (err) {
+					console.error(err);
+				}
+			}
+			throw new AuthenticationError('You need to be logged in!');
+		},
+		// TODO
+		meds: async (parent, { today }, context) => {
+			if (context.user) {
+				try {
+					const medsData = await Med.find({
+						userId: context.user._id,
+					})
+					.populate('mostRecentDose')
+					.populate({
+						path: 'doses',
+						match: { doseDate: { $eq: today }},
+						options: {
+							sort: {
+								doseLogged: -1,
+							},
+						},
+					});
+					console.log(medsData);
 
-    med: async (parent, { medId }, context) => {
-      if (context.user) {
-        try {
-          const medData = await Med.findOne({
-            _id: medId,
-            userId: context.user._id,
-          }).populate("doses");
+					return medsData;
+				} catch (err) {
+					console.log('meds caught an error');
+					console.error(err);
+				}
+			}
+			throw new AuthenticationError('You need to be logged in!');
+		},
 
-          return medData;
-        } catch (err) {
-          console.error(err);
-        }
-      }
-      throw new AuthenticationError("You need to be logged in!");
-    },
+		med: async (parent, { medId }, context) => {
+			if (context.user) {
+				try {
+					const medData = await Med.findOne({
+						_id: medId,
+						userId: context.user._id,
+					}).populate('doses');
 
-    dosesByDate: async (parent, { date }, context) => {
-      if (context.user) {
-        try {
-          const doseData = await Dose.find({
-            userId: context.user._id,
-            doseDate: date,
-          });
+					return medData;
+				} catch (err) {
+					console.error(err);
+				}
+			}
+			throw new AuthenticationError('You need to be logged in!');
+		},
 
-          return doseData;
-        } catch (err) {
-          console.error(err);
-        }
-      }
-      throw new AuthenticationError("You need to be logged in!");
-    },
-  },
+		dosesByDate: async (parent, { date }, context) => {
+			if (context.user) {
+				try {
+					const doseData = await Dose.find({
+						userId: context.user._id,
+						doseDate: date,
+					});
 
-  Mutation: {
-    addUser: async (parent, { username, email, password }) => {
-      const user = await User.create({ username, email, password });
-      const token = signToken(user);
-      return { token, user };
-    },
-    login: async (parent, { email, password }) => {
-      const user = await User.findOne({ email });
-      if (!user) {
-        throw new AuthenticationError("No user found with this email address");
-      }
+					return doseData;
+				} catch (err) {
+					console.error(err);
+				}
+			}
+			throw new AuthenticationError('You need to be logged in!');
+		},
+	},
 
-      const correctPw = await user.isCorrectPassword(password);
+	Mutation: {
+		addUser: async (parent, { username, email, password }) => {
+			const user = await User.create({ username, email, password });
+			const token = signToken(user);
+			return { token, user };
+		},
+		login: async (parent, { email, password }) => {
+			const user = await User.findOne({ email });
+			if (!user) {
+				throw new AuthenticationError('No user found with this email address');
+			}
 
-      if (!correctPw) {
-        throw new AuthenticationError("Incorrect credentials");
-      }
+			const correctPw = await user.isCorrectPassword(password);
 
-      const token = signToken(user);
+			if (!correctPw) {
+				throw new AuthenticationError('Incorrect credentials');
+			}
 
-      return { token, user };
-    },
-    // WORKS
-    addMed: async (parent, { medSettings }, context) => {
-      console.log("addMed resolver");
-      console.log(medSettings);
-      const { medId, medName, maxDailyDoses, minTimeBetween, remindersBool } =
-        medSettings;
-      try {
-        const newMed = await Med.create({
-          userId: context.user._id,
-          medName: medName,
-          maxDailyDoses: maxDailyDoses,
-          minTimeBetween: minTimeBetween,
-          remindersBool: remindersBool,
-        });
-        console.log(newMed);
+			const token = signToken(user);
 
-        try {
-          const userUpdate = await User.findOneAndUpdate(
-            { _id: context.user._id },
-            { $addToSet: { userMeds: newMed._id } },
-            { new: true, runValidators: true }
-          ).populate("userMeds");
+			return { token, user };
+		},
+		// WORKS
+		addMed: async (parent, { medSettings }, context) => {
+			console.log('addMed resolver');
+			console.log(medSettings);
+			const { medId, medName, maxDailyDoses, minTimeBetween, remindersBool } = medSettings;
+			try {
+				const newMed = await Med.create({
+					userId: context.user._id,
+					medName: medName,
+					maxDailyDoses: maxDailyDoses,
+					minTimeBetween: minTimeBetween,
+					remindersBool: remindersBool,
+				});
+				console.log(newMed);
 
-          console.log(userUpdate);
-        } catch (err) {
-          console.log("update user failed");
-          throw new Error(err);
-        }
+				try {
+					const userUpdate = await User.findOneAndUpdate(
+						{ _id: context.user._id },
+						{ $addToSet: { userMeds: newMed._id } },
+						{ new: true, runValidators: true },
+					).populate('userMeds');
 
-        return newMed;
-      } catch (err) {
-        console.log("add med failed");
-        throw new Error(err);
-      }
-    },
+					console.log(userUpdate);
+				} catch (err) {
+					console.log('update user failed');
+					throw new Error(err);
+				}
 
-    addDose: async (parent, { doseData }, context) => {
-      const { medId, doseDate, doseTime, doseLogged, mostRecentTime } = doseData;
+				return newMed;
+			} catch (err) {
+				console.log('add med failed');
+				throw new Error(err);
+			}
+		},
 
-      console.log("addDose resolver");
-      console.log({ medId, doseDate, doseTime, doseLogged, mostRecentTime });
-      if (context.user) {
-        console.log("context.user exists");
-        try {
-          const newDose = await Dose.create({
-            userId: context.user._id,
-            medId: medId,
-            doseDate: doseDate,
-            doseTime: doseTime,
-            doseLogged: doseLogged,
-          });
-          console.log(newDose);
-          console.log(mostRecentTime);
+		addDose: async (parent, { doseData }, context) => {
+			const { medId, doseDate, doseTime, doseLogged, mostRecentTime } = doseData;
 
-          // if the dose is logged at a time before the mostRecent time, just update normally
-          if (mostRecentTime > doseLogged) {
-            const updateMed = await Med.findOneAndUpdate(
-              { _id: medId },
-              { 
-                $addToSet: { doses: newDose._id },
-              },
-              { new: true }
-            ).populate("doses");
-            console.log(updateMed);
-            return newDose;
+			console.log('addDose resolver');
+			console.log({ medId, doseDate, doseTime, doseLogged, mostRecentTime });
+			if (context.user) {
+				console.log('context.user exists');
+				try {
+					const newDose = await Dose.create({
+						userId: context.user._id,
+						medId: medId,
+						doseDate: doseDate,
+						doseTime: doseTime,
+						doseLogged: doseLogged,
+					});
+					console.log(newDose);
+					console.log(mostRecentTime);
 
-          } else {
-            // if the dose is logged at a time equal or greater than the most recent time, update med mostRecentDose and mostRecentTime
-            const updateMed = await Med.findOneAndUpdate(
-              { _id: medId },
-              { 
-                $set: { 
-                  mostRecentDose: newDose._id,
-                  mostRecentTime: mostRecentTime
-                },
-                $addToSet: { doses: newDose._id },
-              },
-              { new: true }
-            ).populate("doses").populate('mostRecentDose');
-            console.log(updateMed);
+					// if the dose is logged at a time before the mostRecent time, just update normally
+					if (mostRecentTime > doseLogged) {
+						const updateMed = await Med.findOneAndUpdate(
+							{ _id: medId },
+							{
+								$addToSet: { doses: newDose._id },
+							},
+							{ new: true },
+						).populate('doses');
+						console.log(updateMed);
+						return newDose;
+					} else {
+						// if the dose is logged at a time equal or greater than the most recent time, update med mostRecentDose and mostRecentTime
+						const updateMed = await Med.findOneAndUpdate(
+							{ _id: medId },
+							{
+								$set: {
+									mostRecentDose: newDose._id,
+									mostRecentTime: mostRecentTime,
+								},
+								$addToSet: { doses: newDose._id },
+							},
+							{ new: true },
+						)
+							.populate('doses')
+							.populate('mostRecentDose');
+						console.log(updateMed);
 
-            return newDose;
-          }
-        } catch (err) {
-          throw new Error(err);
-        }
-      }
-      throw new AuthenticationError("You need to be logged in!");
-    },
+						return newDose;
+					}
+				} catch (err) {
+					throw new Error(err);
+				}
+			}
+			throw new AuthenticationError('You need to be logged in!');
+		},
 
-    updateMed: async (parent, { medData }) => {
-      const { medId, medName, maxDailyDoses, minTimeBetween, remindersBool } =
-        medData;
+		updateMed: async (parent, { medData }) => {
+			const { medId, medName, maxDailyDoses, minTimeBetween, remindersBool } = medData;
 
-      const med = await Med.findOneAndUpdate(
-        {
-          _id: medId,
-        },
-        {
-          $set: {
-            medName: medName,
-            maxDailyDoses: maxDailyDoses,
-            minTimeBetween: minTimeBetween,
-            remindersBool: remindersBool,
-          },
-        },
-        { new: true, runValidators: true }
-      );
+			const med = await Med.findOneAndUpdate(
+				{
+					_id: medId,
+				},
+				{
+					$set: {
+						medName: medName,
+						maxDailyDoses: maxDailyDoses,
+						minTimeBetween: minTimeBetween,
+						remindersBool: remindersBool,
+					},
+				},
+				{ new: true, runValidators: true },
+			);
 
-      return med;
-    },
+			return med;
+		},
 
-    updateDose: async (parent, { doseData }) => {
-      const { doseId, doseDate, doseTime, doseLogged } = doseData;
+		updateDose: async (parent, { doseData }) => {
+			const { doseId, doseDate, doseTime, doseLogged } = doseData;
 
-      const dose = await Dose.findOneAndUpdate(
-        {
-          _id: doseId,
-        },
-        {
-          $set: {
-            doseDate: doseDate,
-            doseTime: doseTime,
-            doseLogged: doseLogged,
-          },
-        },
-        { new: true, runValidators: true }
-      );
+			const dose = await Dose.findOneAndUpdate(
+				{
+					_id: doseId,
+				},
+				{
+					$set: {
+						doseDate: doseDate,
+						doseTime: doseTime,
+						doseLogged: doseLogged,
+					},
+				},
+				{ new: true, runValidators: true },
+			);
 
-      return dose;
-    },
-  },
+			return dose;
+		},
+	},
 };
 
 module.exports = resolvers;

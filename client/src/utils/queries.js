@@ -1,20 +1,22 @@
 import { gql } from '@apollo/client';
 
 export const QUERY_MEDS = gql`
-	query Meds {
-		meds {
+	query Meds($today: String) {
+		meds(today: $today) {
 			_id
-			userId
 			medName
 			maxDailyDoses
 			minTimeBetween
 			remindersBool
-			mostRecentDose
 			mostRecentTime
+			mostRecentDose {
+				_id
+				doseDate
+				doseTime
+				doseLogged
+			}
 			doses {
 				_id
-				userId
-				medId
 				doseDate
 				doseTime
 				doseLogged

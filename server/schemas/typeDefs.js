@@ -15,20 +15,20 @@ const typeDefs = gql`
 
 	type Med {
 		_id: ID
-		userId: ID
+		userId: User
 		medName: String!
 		maxDailyDoses: Int
 		minTimeBetween: Int
 		remindersBool: Boolean
-		mostRecentDose: ID
+		mostRecentDose: Dose
 		mostRecentTime: String
 		doses: [Dose]
 	}
 
 	type Dose {
 		_id: ID!
-		userId: ID!
-		medId: ID!
+		userId: User
+		medId: Med
 		doseDate: String
 		doseTime: String
 		doseLogged: String
@@ -75,7 +75,7 @@ const typeDefs = gql`
 
 	type Query {
 		med(medId: ID): Med
-		meds: [Med]
+		meds(today: String): [Med]
 		dosesByDate(date: String): [Dose]
 		me: User
 	}

@@ -1,7 +1,9 @@
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import { useQuery, useMutation, makeVar } from '@apollo/client';
 import { QUERY_ME, QUERY_MEDS } from '../../utils/queries';
 import { ADD_DOSE } from '../../utils/mutations';
+import { setDoseLoggedTime, splitDate, splitTime, dateTimeFormat } from '../../utils/dtUtils';
+import { TodayContext } from '../../utils/TodayContext';
 
 import dayjs from 'dayjs';
 import customParseFormat from 'dayjs/plugin/customParseFormat';
@@ -10,7 +12,9 @@ import timezone from 'dayjs/plugin/timezone'; // dependent on utc plugin
 
 import { Button, InputGroup, Form, Alert } from 'react-bootstrap';
 
-const AddDoseButton = ({ med, today }) => {
+const AddDoseButton = ({ med }) => {
+	const { today, setToday } = useContext(TodayContext);
+
 	const [addDose, { error }] = useMutation(ADD_DOSE, {
 		refetchQueries: [
 			QUERY_MEDS, // DocumentNode object parsed with gql
@@ -18,13 +22,9 @@ const AddDoseButton = ({ med, today }) => {
 		],
 	});
 
-	const [doseTime, setDoseTime] = useState(dayjs().format('HH:mm'));
+	const [doseTime, setDoseTime] = useState(splitTime());
 
-	console.log(new Date());
-	console.log(new Date().getHours());
-	console.log(new Date().getMinutes());
-
-	const { _id, minTimeBetween, maxDailyDoses, doses, mostRecentDose, mostRecentTime } = med;
+	const { _id, minTimeBetween, maxDailyDoses, doses, mostRecentDose } = med;
 
 	// , {
 	// 	update(cache, { data: { addDose } }) {
@@ -42,36 +42,26 @@ const AddDoseButton = ({ med, today }) => {
 	// }
 
 	const handleChange = async (event) => {
-		console.log(event.target.value);
+		// console.log(event.target.value);
 		await setDoseTime(event.target.value);
-		console.log(doseTime);
+		// console.log(doseTime);
 	};
 
 	const handleDoseClick = async (event) => {
 		event.preventDefault();
-
-		const hr = doseTime.split(':')[0];
-		const mn = doseTime.split(':')[1];
-
-		const doseLogged = today.setHours(hr, mn).toString();
-		const doseDate = today.toString().split('T')[0];
+		const doseLogged = setDoseLoggedTime(doseTime);
+		const doseDate = splitDate(today);
+		console.log({doseLogged, doseDate});
 
 		const doseData = {
 			medId: _id,
 			doseDate: doseDate,
 			doseTime: doseTime,
-			doseLogged: doseLogged
-		}
+			doseLogged: doseLogged,
+		};
 
 		console.log(doseData);
 
-		// 	const scheduleTime = dayjs(doseTime, 'HH:mm').add(minTimeBetween, 'h');
-		// 	console.log(logTime);
-		// 	console.log(scheduleTime);
-		// 	let medMostRecent = logTime;
-		// 	if (mostRecentTime && mostRecentTime > logTime) {
-		// 		medMostRecent = mostRecentTime;
-		// 	}
 		// 	// TODO set up new mutations for 'newest dose' or 'previous dose'
 		// 	// so I can use different cache updating techniques for them both
 		// 	console.log(dayjs(doseTime, 'HH:mm'));
@@ -79,7 +69,7 @@ const AddDoseButton = ({ med, today }) => {
 			const { data } = await addDose({
 				variables: {
 					doseData: doseData,
-				}
+				},
 			});
 
 			console.log(data);
@@ -95,7 +85,7 @@ const AddDoseButton = ({ med, today }) => {
 				<Form.Control aria-label="The time of the dose" type="time" value={doseTime} onChange={handleChange} />
 				<Button onClick={handleDoseClick}>Log at time</Button>
 			</InputGroup>
-				{error && <Alert>Logging dose failed. Please try again.</Alert>}
+			{error && <Alert>Logging dose failed. Please try again.</Alert>}
 		</>
 	);
 };
