@@ -8,12 +8,41 @@ import { Container, Row, Col, Card, Button, Accordion, ListGroup, ButtonGroup } 
 import { TodayContext } from '../../utils/TodayContext';
 import AddDoseButton from '../AddDoseButton';
 import 'react-calendar/dist/Calendar.css';
+import { forEach } from 'lodash';
 
 const MedCards = ({ med }) => {
-	const { today } = useContext(TodayContext);
+	// const { today } = useContext(TodayContext);
+	const past24hr = makeVar([]);
+	
 	const { _id, medName, maxDailyDoses, minTimeBetween, remindersBool, mostRecentDose, mostRecentTime, doses } = med;
 
-	const numDosesToday = doses.length || 0;
+	const now = new Date(); // returns date time that's an hour early
+	const nowMs = now.getTime();  // returns integer of ms
+	const yesterdayMs = now - ( 1000 * 60 * 60 * 24 ); 
+	console.log( 'now ' + now ); 
+	console.log( 'now datestring ' + now.toString() );  // returns an hour early
+	console.log( 'nowms datestring ' + new Date(nowMs).toString() ); // returns correct time
+	console.log( 'nowMs ' + nowMs);  // returns integer of ms
+	console.log( 'pastMs ' + yesterdayMs );  // returns integer of ms
+	console.log( 'pastMs string ' + new Date(yesterdayMs).toString() ); // returns correct time 1 day ago
+
+	// TODO set conditional empty list saying "no doses in last 24hrs" in dropdown
+
+	for ( const key in doses ) {
+		// getTime of dose
+		const doseMs = new Date(doses[key].doseLogged).getTime(); // TODO consider adding ms field to dose
+		console.log('doseMs ' + doseMs);
+
+		if (doseMs > yesterdayMs) {
+			// put into array
+
+			past24hr([...past24hr(), doses[key]]);
+			console.log(past24hr());
+		}
+		// console.log(doses[key]);
+	}
+
+	const numDosesToday = past24hr().length || 0;
 
 	console.log(splitTime(new Date()));
 
@@ -41,7 +70,7 @@ const MedCards = ({ med }) => {
 					</>)}
 
 				</ListGroup>
-				<AddDoseButton med={med} today={today} />
+				<AddDoseButton med={med} />
 			</Card.Body>
 			<Card.Footer>
 				<Accordion>

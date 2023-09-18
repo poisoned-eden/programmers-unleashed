@@ -13,18 +13,18 @@ import MedCards from '../components/MedCards';
 import 'react-calendar/dist/Calendar.css';
 
 const MedicationReminder = () => {
-	const { today, setToday } = useContext(TodayContext);
+	// const { today, setToday } = useContext(TodayContext);
 	// console.log(today);
 	const dateToday = splitDate(new Date());
 	
-	setToday(dateToday);
+	// setToday(dateToday);
 	
-	console.log(today);
-	const [calendarValue, setCalendarValue] = useState(today);
+	// console.log(today);
+	const [calendarValue, setCalendarValue] = useState(dateToday);
 
 	const { loading: medsLoading, data: medsData, error } = useQuery(QUERY_MEDS, {
 		variables: { 
-			today: today,
+			today: dateToday,
 		}
 	});
 
@@ -34,19 +34,6 @@ const MedicationReminder = () => {
 
 	const meds = medsData?.meds || [];
 	console.log(meds);
-	// console.log(today);
-	// // TODO move all this to makeVar
-	// let timeframe = '';
-	// if (calendarValue.isBefore(today, 'date')) {
-	// 	timeframe = 'past';
-	// 	console.log(timeframe);
-	// } else if (calendarValue.isAfter(today, 'date')) {
-	// 	timeframe = 'future';
-	// 	console.log(timeframe);
-	// } else {
-	// 	timeframe = 'today';
-	// 	console.log(timeframe);
-	// }
 
 	function onChangeCalendar(nextValue) {
 		setCalendarValue(splitDate(nextValue));

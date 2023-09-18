@@ -13,7 +13,8 @@ import timezone from 'dayjs/plugin/timezone'; // dependent on utc plugin
 import { Button, InputGroup, Form, Alert } from 'react-bootstrap';
 
 const AddDoseButton = ({ med }) => {
-	const { today, setToday } = useContext(TodayContext);
+	// const { today, setToday } = useContext(TodayContext);
+	const today = new Date();
 
 	const [addDose, { error }] = useMutation(ADD_DOSE, {
 		refetchQueries: ['Meds'],

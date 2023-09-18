@@ -67,7 +67,7 @@ await client.refetchQueries({
 function App() {
 	
 
-	const [today, setToday] = useState(new Date());
+	// const [today, setToday] = useState(new Date());
 
 	return (
 		<ApolloProvider client={client}>
@@ -75,7 +75,7 @@ function App() {
 				<div className="flex-column bg-colour justify-flex-start min-100-vh">
 					<Header />
 					<div className="container">
-						<TodayContext.Provider value={{ today, setToday }}>
+						{/* <TodayContext.Provider value={{ today, setToday }}> */}
 							<Routes>
 								<Route path="/" element={Auth.loggedIn() ? <MedicationReminder /> : <Signup />} />
 								<Route path="/medicationReminder" element={<MedicationReminder />} />
@@ -83,7 +83,7 @@ function App() {
 								<Route path="/signup" element={<Signup />} />
 								<Route path="/me" element={<Profile />} />
 							</Routes>
-						</TodayContext.Provider>
+						{/* </TodayContext.Provider> */}
 					</div>
 					<Footer />
 				</div>
