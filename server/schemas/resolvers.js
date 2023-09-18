@@ -1,27 +1,25 @@
 const { AuthenticationError } = require('apollo-server-express');
-const { User, Thought, Note, Med, Dose } = require('../models');
+const { User, Med, Dose } = require('../models');
 const { signToken } = require('../utils/auth');
-const {
-	DateScalar,
-	TimeScalar,
-	DateTimeScalar,
-} = require('graphql-date-scalars');
+// const {
+// 	DateScalar,
+// 	TimeScalar,
+// 	DateTimeScalar,
+// } = require('graphql-date-scalars');
 
 const resolvers = {
-	Date: DateScalar,
-	Time: TimeScalar,
-	DateTime: DateTimeScalar,
+	// Date: DateScalar,
+	// Time: TimeScalar,
+	// DateTime: DateTimeScalar,
 
 	Query: {
-		users: async () => {
-			return User.find().populate('thoughts').populate('savedNotes');
-		},
 		me: async (parent, args, context) => {
 			if (context.user) {
 				try {
 					const userData = await User.findOne({
 						_id: context.user._id,
-					}).populate('userMeds');
+					})
+					.populate('userMeds');
 					console.log(userData);
 					return userData;
 				} catch (err) {
@@ -30,16 +28,58 @@ const resolvers = {
 			}
 			throw new AuthenticationError('You need to be logged in!');
 		},
-		// TODO 
+		// TODO
 		meds: async (parent, args, context) => {
 			if (context.user) {
 				try {
 					const medsData = await Med.find({
 						userId: context.user._id,
+					})
+					.populate('mostRecentDose')
+					.populate({
+						path: 'doses',
+						options: {
+							sort: {
+								doseLogged: -1,
+							},
+						},
+					});
+					console.log(medsData);
+
+					return medsData;
+				} catch (err) {
+					console.log('meds caught an error');
+					console.error(err);
+				}
+			}
+			throw new AuthenticationError('You need to be logged in!');
+		},
+
+		med: async (parent, { medId }, context) => {
+			if (context.user) {
+				try {
+					const medData = await Med.findOne({
+						_id: medId,
+						userId: context.user._id,
 					}).populate('doses');
 
-					console.log(medsData);
-					return medsData;
+					return medData;
+				} catch (err) {
+					console.error(err);
+				}
+			}
+			throw new AuthenticationError('You need to be logged in!');
+		},
+
+		dosesByDate: async (parent, { date }, context) => {
+			if (context.user) {
+				try {
+					const doseData = await Dose.find({
+						userId: context.user._id,
+						doseDate: date,
+					});
+
+					return doseData;
 				} catch (err) {
 					console.error(err);
 				}
@@ -56,11 +96,8 @@ const resolvers = {
 		},
 		login: async (parent, { email, password }) => {
 			const user = await User.findOne({ email });
-
 			if (!user) {
-				throw new AuthenticationError(
-					'No user found with this email address'
-				);
+				throw new AuthenticationError('No user found with this email address');
 			}
 
 			const correctPw = await user.isCorrectPassword(password);
@@ -77,10 +114,14 @@ const resolvers = {
 		addMed: async (parent, { medSettings }, context) => {
 			console.log('addMed resolver');
 			console.log(medSettings);
+			const { medId, medName, maxDailyDoses, minTimeBetween, remindersBool } = medSettings;
 			try {
 				const newMed = await Med.create({
 					userId: context.user._id,
-					...medSettings,
+					medName: medName,
+					maxDailyDoses: maxDailyDoses,
+					minTimeBetween: minTimeBetween,
+					remindersBool: remindersBool,
 				});
 				console.log(newMed);
 
@@ -88,7 +129,7 @@ const resolvers = {
 					const userUpdate = await User.findOneAndUpdate(
 						{ _id: context.user._id },
 						{ $addToSet: { userMeds: newMed._id } },
-						{ new: true, runValidators: true }
+						{ new: true, runValidators: true },
 					).populate('userMeds');
 
 					console.log(userUpdate);
@@ -103,112 +144,112 @@ const resolvers = {
 				throw new Error(err);
 			}
 		},
-		addDose: async (
-			parent,
-			{ medId, doseScheduled, doseLogged },
-			context
-		) => {
+
+		addDose: async (parent, { doseData }, context) => {
+			const { medId, doseDate, doseTime, doseLogged, mostRecentBool } = doseData;
+
 			console.log('addDose resolver');
-			console.log({ medId, doseScheduled, doseLogged });
+			console.log({ medId, doseDate, doseTime, doseLogged, mostRecentBool });
 			if (context.user) {
 				console.log('context.user exists');
 				try {
 					const newDose = await Dose.create({
 						userId: context.user._id,
 						medId: medId,
-						doseScheduled: doseScheduled,
+						doseDate: doseDate,
+						doseTime: doseTime,
 						doseLogged: doseLogged,
 					});
 					console.log(newDose);
-					const updateMed = await Med.findOneAndUpdate(
-						{ _id: medId },
-						{ $addToSet: { doses: newDose._id } },
-						{ new: true }
-					).populate('doses');
-					console.log(updateMed);
-					return newDose;
+					
+					// if the dose is logged at a time before the mostRecent time, just update normally
+					if (mostRecentBool) {
+						const updateMed = await Med.findOneAndUpdate(
+							{ _id: medId },
+							{
+								$set: { mostRecentDose: newDose._id },
+								$addToSet: { doses: newDose._id },
+							},
+							{ new: true },
+						)
+						.populate('mostRecentDose')
+						.populate({
+							path: 'doses',
+							options: {
+								sort: {
+									doseLogged: -1,
+								},
+							},
+						});
+						console.log(updateMed);
+						return newDose;
+					} else {
+						const updateMed = await Med.findOneAndUpdate(
+							{ _id: medId },
+							{
+								$addToSet: { doses: newDose._id },
+							},
+							{ new: true },
+						)
+						.populate('mostRecentDose')
+						.populate({
+							path: 'doses',
+							options: {
+								sort: {
+									doseLogged: -1,
+								},
+							},
+						});
+						console.log(updateMed);
+
+						return newDose;
+					}
 				} catch (err) {
 					throw new Error(err);
 				}
 			}
 			throw new AuthenticationError('You need to be logged in!');
 		},
-		removeNote: async (parent, { noteId }, context) => {
-			if (context.user) {
-				const note = await Note.findOneAndDelete({
-					_id: noteId,
-					userId: context.user._id,
-				});
 
-				const user = await User.findOneAndUpdate(
-					{ _id: context.user._id },
-					{
-						$pull: {
-							savedNotes: note._id,
-						},
-					}
-				);
+		updateMed: async (parent, { medData }) => {
+			const { medId, medName, maxDailyDoses, minTimeBetween, remindersBool } = medData;
 
-				return user;
-			}
-			throw new AuthenticationError('You need to be logged in!');
+			const med = await Med.findOneAndUpdate(
+				{
+					_id: medId,
+				},
+				{
+					$set: {
+						medName: medName,
+						maxDailyDoses: maxDailyDoses,
+						minTimeBetween: minTimeBetween,
+						remindersBool: remindersBool,
+					},
+				},
+				{ new: true, runValidators: true },
+			);
+
+			return med;
 		},
-		addNote: async (parent, { noteData }, context) => {
-			console.log('I am now in addNote.');
 
-			if (context.user) {
-				console.log('context.user exists');
-				const {
-					title,
-					medicine,
-					startTime,
-					period,
-					numberOfTime,
-					total,
-				} = noteData;
-				const note = await Note.create({
-					title: title,
-					medicine: medicine,
-					startTime: startTime,
-					period: period,
-					numberOfTime: numberOfTime,
-					total: total,
-					userId: context.user._id,
-				});
+		updateDose: async (parent, { doseData }) => {
+			const { doseId, doseDate, doseTime, doseLogged } = doseData;
 
-				try {
-					const user = await User.findOneAndUpdate(
-						{ _id: context.user._id },
-						{ $addToSet: { savedNotes: note._id } },
-						{ new: true, runValidators: true }
-					).populate('savedNotes');
+			const dose = await Dose.findOneAndUpdate(
+				{
+					_id: doseId,
+				},
+				{
+					$set: {
+						doseDate: doseDate,
+						doseTime: doseTime,
+						doseLogged: doseLogged,
+					},
+				},
+				{ new: true, runValidators: true },
+			);
 
-					return user;
-				} catch (err) {
-					throw new AuthenticationError(err);
-				}
-			}
-			throw new AuthenticationError('You need to be logged in!');
-		},
-		removeNote: async (parent, { noteId }, context) => {
-			if (context.user) {
-				const note = await Note.findOneAndDelete({
-					_id: noteId,
-					userId: context.user._id,
-				});
-
-				const user = await User.findOneAndUpdate(
-					{ _id: context.user._id },
-					{
-						$pull: {
-							savedNotes: note._id,
-						},
-					}
-				);
-
-				return user;
-			}
-			throw new AuthenticationError('You need to be logged in!');
+			return dose;
 		},
 	},
 };

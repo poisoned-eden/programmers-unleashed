@@ -1,26 +1,95 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { useMutation } from '@apollo/client';
+import { useQuery, useMutation } from '@apollo/client';
 
-import { ADD_MED } from '../../utils/mutations';
+import { ADD_MED, UPDATE_MED } from '../../utils/mutations';
 
 import { Container, Row, Col, Button, Form } from 'react-bootstrap';
+// import { Container, Row, Col, Button, Form } from 'react-bootstrap';
+import { QUERY_MEDS, QUERY_ME } from '../../utils/queries';
 
-const MedForm = () => {
-	const [medFormData, setMedFormData] = useState({
-		medName: '',
-		maxDailyDoses: 0,
-		minTimeBetween: 4,
-		remindersBool: false,
-	});
-
-	console.log(medFormData);
-	const [addMed] = useMutation(ADD_MED);
+const MedForm = (props) => {
+	const { medFormData, setMedFormData, mutation } = props;
 
 	const handleChange = (event) => {
 		const { name, value } = event.target;
-		setMedFormData({ ...medFormData, [name]: value });
+		props.setMedFormData({ ...props.medFormData, [name]: value });
 	};
+
+	const [addMed] = useMutation(ADD_MED, {
+		update(cache, { data: { addMed } }) {
+			try {
+				console.log('now adding');
+				const { meds } = cache.readQuery({ query: QUERY_MEDS });
+
+				cache.writeQuery({
+					query: QUERY_MEDS,
+					data: { meds: [...meds, addMed] },
+				});
+			} catch (e) {
+				console.error(e);
+			}
+
+			const { me } = cache.readQuery({ query: QUERY_ME });
+			cache.writeQuery({
+				query: QUERY_ME,
+				data: { me: { ...me, userMeds: [...me.userMeds, addMed] } },
+			});
+		},
+		refetchQueries: [{ query: QUERY_MEDS }],
+	});
+
+	const [updateMed] = useMutation(UPDATE_MED, {
+		update(cache, { data: { updateMed } }) {
+			try {
+				console.log('now updateing');
+				const { meds } = cache.readQuery({ query: QUERY_MEDS });
+
+				let index;
+
+				for (var i = 0; i < meds.length; i++) {
+					var note = meds[i];
+					if (note._id === updateMed._id) {
+						index = i;
+					}
+				}
+
+				const prev = meds.slice(0, index);
+				const after = meds.slice(index + 1);
+
+				cache.writeQuery({
+					query: QUERY_MEDS,
+					data: { meds: [...prev, updateMed, ...after] },
+				});
+
+				const { me } = cache.readQuery({ query: QUERY_ME });
+
+				const userprev = me.userMeds.slice(0, index);
+				const userafter = me.userMeds.slice(index + 1);
+
+				cache.writeQuery({
+					query: QUERY_ME,
+					data: {
+						me: { ...me, userMeds: [...userprev, updateMed, ...userafter] },
+					},
+				});
+			} catch (e) {
+				console.error(e);
+			}
+		},
+		refetchQueries: [{ query: QUERY_MEDS }],
+	});
+	// refetchQueries: [
+	//   QUERY_MEDS, // DocumentNode object parsed with gql
+	//   "Meds", // Query name
+	// ],
+
+	// if (error) {
+	// 	console.error(error);
+	// 	return 'Sorry, there was an error adding your medication. Please try again.';
+	// };
+
+	// console.log(medFormData);
 
 	const handleFormSubmit = async (event) => {
 		event.preventDefault();
@@ -33,27 +102,63 @@ const MedForm = () => {
 		}
 
 		console.log(medFormData);
+		const medSettings = medFormData;
+		console.log(medSettings);
+		if (medFormData.remindersBool === 'on') {
+			medSettings.remindersBool = true;
+		} else {
+			medSettings.remindersBool = false;
+		}
+		console.log(medSettings);
 
 		try {
-			if (medFormData.remindersBool === "on") {
-				setMedFormData({ ...medFormData, remindersBool: true });
-			}
-			const { data } = await addMed({
-				variables: { medSettings: medFormData },
-			});
+			console.log(props.mutation);
 
-			console.log('med added');
-			console.log(data);
+			if (props.mutation === 'ADD_MED') {
+				const { data } = await addMed({
+					variables: { medSettings: medSettings },
+				});
+				// try {
+				// 	if (medFormData.remindersBool === "on") {
+				// 		setMedFormData({ ...medFormData, remindersBool: true });
+				// 	}
+				// 	const { data } = await addMed(
+				// 		{
+				// 			variables: { medSettings: medFormData },
+				// 		},
+				// 		{
+				// 			refetchQueries: [
+				// 				QUERY_MEDS, // DocumentNode object parsed with gql
+				// 				'Meds' // Query name
+				// 			],
+				// 		}
+				// 	);
+
+				console.log('med added');
+				console.log(data.addMed);
+
+				props.setMedFormData({
+					medId: '',
+					medName: '',
+					maxDailyDoses: 0,
+					minTimeBetween: 4,
+					remindersBool: false,
+				});
+			}
+
+			if (props.mutation === 'UPDATE_MED') {
+				const { data } = await updateMed({
+					variables: {
+						medData: medSettings,
+					},
+				});
+
+				console.log('med updated');
+				console.log(data.updateMed);
+			}
 		} catch (err) {
 			console.error(err);
 		}
-
-		setMedFormData({
-			medName: '',
-			maxDailyDoses: 0,
-			minTimeBetween: 4,
-			remindersBool: false,
-		});
 	};
 
 	return (
@@ -67,7 +172,7 @@ const MedForm = () => {
 						type="text"
 						name="medName"
 						id="medName-input"
-						value={medFormData.medName}
+						value={props.medFormData.medName}
 						onChange={handleChange}
 						placeholder="Enter the medication name"
 					/>
@@ -78,26 +183,24 @@ const MedForm = () => {
 						type="number"
 						name="maxDailyDoses"
 						id="maxDailyDoses-input"
-						value={medFormData.maxDailyDoses}
+						value={props.medFormData.maxDailyDoses}
 						onChange={handleChange}
 						placeholder="0"
 					/>
 				</Form.Group>
 				<Form.Group>
-					<Form.Label>Minimum time allowed between doses</Form.Label>
+					<Form.Label>Minimum time allowed between doses in hours</Form.Label>
 					<Form.Control
 						type="number"
 						name="minTimeBetween"
 						id="minTimeBetween-input"
-						value={medFormData.minTimeBetween}
+						value={props.medFormData.minTimeBetween}
 						onChange={handleChange}
 						placeholder="4"
 					/>
 				</Form.Group>
 				<Form.Group>
-					<Form.Label>
-						Would you like reminders for this medication?
-					</Form.Label>
+					<Form.Label>Would you like reminders for this medication?</Form.Label>
 					<Form.Check
 						type="switch"
 						name="remindersBool"
@@ -106,9 +209,15 @@ const MedForm = () => {
 						label="Reminders"
 					/>
 				</Form.Group>
-				<Button type="sumbit" onClick={handleFormSubmit}>
-					Add Medication
-				</Button>
+				{props.mutation === 'ADD_MED' ? (
+					<Button type="sumbit" onClick={handleFormSubmit}>
+						Add Medication
+					</Button>
+				) : (
+					<Button type="sumbit" onClick={handleFormSubmit}>
+						Update Medication
+					</Button>
+				)}
 			</Form>
 		</div>
 	);
