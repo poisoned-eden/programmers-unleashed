@@ -16,6 +16,7 @@ import Login from './pages/Login';
 import Profile from './pages/Profile';
 import Header from './components/Header';
 import Footer from './components/Footer';
+import Welcome from './pages/Welcome';
 // styling
 import logo from './logo.svg';
 import 'bootstrap/dist/css/bootstrap.css';
@@ -61,29 +62,23 @@ const client = new ApolloClient({
 });
 
 await client.refetchQueries({
-	include: "all", // Consider using "active" instead!
+	include: 'all', // Consider using "active" instead!
 });
 
 function App() {
-	
-
-	// const [today, setToday] = useState(new Date());
-
 	return (
 		<ApolloProvider client={client}>
 			<Router>
 				<div className="flex-column bg-colour justify-flex-start min-100-vh">
 					<Header />
 					<div className="container">
-						{/* <TodayContext.Provider value={{ today, setToday }}> */}
-							<Routes>
-								<Route path="/" element={Auth.loggedIn() ? <MedicationReminder /> : <Signup />} />
-								<Route path="/medicationReminder" element={<MedicationReminder />} />
-								<Route path="/login" element={<Login />} />
-								<Route path="/signup" element={<Signup />} />
-								<Route path="/me" element={<Profile />} />
-							</Routes>
-						{/* </TodayContext.Provider> */}
+						<Routes>
+							<Route path="/" element={Auth.loggedIn() ? <MedicationReminder /> : <Welcome />} />
+							<Route path="/medicationReminder" element={<MedicationReminder />} />
+							<Route path="/login" element={<Login />} />
+							<Route path="/signup" element={<Signup />} />
+							<Route path="/me" element={<Profile />} />
+						</Routes>
 					</div>
 					<Footer />
 				</div>
