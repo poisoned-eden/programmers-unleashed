@@ -38,7 +38,6 @@ const resolvers = {
 					.populate('mostRecentDose')
 					.populate({
 						path: 'doses',
-						match: { doseDate: { $eq: today }},
 						options: {
 							sort: {
 								doseLogged: -1,
