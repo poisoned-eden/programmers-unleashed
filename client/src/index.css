@@ -401,13 +401,13 @@ h1 {
 }
 
 h1.rem {
-<<<<<<< Updated upstream
+
   text-align: center;
   margin-top: 5%;
-=======
+
 	text-align: center;
 	margin-top: 5%;
->>>>>>> Stashed changes
+
 }
 
 h2 {
@@ -1136,19 +1136,6 @@ a:hover {
 }
 
 .card {
-<<<<<<< Updated upstream
-  border: 1px solid #1a1a1a;
-  margin-bottom: 1rem;
-  width: 60%;
-  padding: 1rem;
-  /* background-color: rgba(255, 255, 255, 0.074); */
-  background-color: rgb(59 174 245);
-  border: 1px solid rgba(255, 255, 255, 0.222);
-  -webkit-backdrop-filter: blur(20px);
-  backdrop-filter: blur(20px);
-  border-radius: 0.7rem;
-  transition: all ease 0.3s;
-=======
 	border: 1px solid #1a1a1a;
 	margin-bottom: 1rem;
 	width: 60%;
@@ -1160,7 +1147,6 @@ a:hover {
 	backdrop-filter: blur(20px);
 	border-radius: 0.7rem;
 	transition: all ease 0.3s;
->>>>>>> Stashed changes
 }
 
 .card .card-header {
@@ -1792,20 +1778,6 @@ label form [type='radio'] {
 }
 
 .loader {
-<<<<<<< Updated upstream
-  position: relative;
-  width: 5em;
-  height: 5em;
-  border-radius: 50%;
-  background-color: rgb(208, 208, 208);
-  box-shadow: 0 0em 4em rgba(23, 190, 250, 0.5);
-  /* animation: loader-rotate 1s linear infinite; */
-  background-image: url(./images/Screenshot\ 2023-09-14\ at\ 18.56.51.png);
-  background-position: center;
-  background-size: cover;
-  top: -20%;
-  /* right:33%; */
-=======
 	position: relative;
 	width: 5em;
 	height: 5em;
@@ -1818,7 +1790,6 @@ label form [type='radio'] {
 	background-size: cover;
 	top: -20%;
 	/* right:33%; */
->>>>>>> Stashed changes
 }
 
 .loader::before,
@@ -1876,17 +1847,10 @@ div.left-column {
 }
 
 ul.medication-list {
-<<<<<<< Updated upstream
-  display: table-cell;
-  list-style-type: none;
-  /* display:table; */
-  width: 100%;
-=======
 	display: table-cell;
 	list-style-type: none;
 	/* display:table; */
 	width: 100%;
->>>>>>> Stashed changes
 }
 
 li {
