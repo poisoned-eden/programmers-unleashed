@@ -9,12 +9,16 @@ import { Container, Row, Col, Button, Form } from 'react-bootstrap';
 import { QUERY_MEDS, QUERY_ME } from '../../utils/queries';
 
 const MedForm = (props) => {
+	console.log('MedForm');
+	
 	const { mutation, _id } = props;
+	console.log(props);
+
 
 	const defaultFormData = {
 			medName: '',
-			maxDailyDoses: 0,
-			minTimeBetween: 4,
+			maxDailyDoses: '0',
+			minTimeBetween: '4',
 			remindersBool: 'off',
 		};
 
@@ -23,6 +27,7 @@ const MedForm = (props) => {
 	const handleChange = (event) => {
 		const { name, value } = event.target;
 		setMedFormData({ ...medFormData, [name]: value });
+		console.log(medFormData);
 	};
 
 	const [addMed] = useMutation(ADD_MED, {
@@ -122,30 +127,18 @@ const MedForm = (props) => {
 		} else {
 			medSettings.remindersBool = false;
 		}
-		console.log(medSettings);
 
+		medSettings.maxDailyDoses = Number(medSettings.maxDailyDoses);
+		medSettings.minTimeBetween = Number(medSettings.minTimeBetween);
+		console.log(medSettings);
+		
+		console.log(mutation);
 		try {
-			console.log(mutation);
 
 			if (mutation === 'ADD_MED') {
 				const { data } = await addMed({
 					variables: { medSettings: medSettings },
 				});
-				// try {
-				// 	if (medFormData.remindersBool === "on") {
-				// 		setMedFormData({ ...medFormData, remindersBool: true });
-				// 	}
-				// 	const { data } = await addMed(
-				// 		{
-				// 			variables: { medSettings: medFormData },
-				// 		},
-				// 		{
-				// 			refetchQueries: [
-				// 				QUERY_MEDS, // DocumentNode object parsed with gql
-				// 				'Meds' // Query name
-				// 			],
-				// 		}
-				// 	);
 
 				console.log('med added');
 				console.log(data);
@@ -154,9 +147,11 @@ const MedForm = (props) => {
 			}
 
 			if (mutation === 'UPDATE_MED') {
+				medSettings.medId = _id;
+				console.log(medSettings);
 				const { data } = await updateMed({
 					variables: {
-						medData: { ...medSettings, _id},
+						medData: { ...medSettings},
 					},
 				});
 
@@ -192,7 +187,6 @@ const MedForm = (props) => {
 						id="maxDailyDoses-input"
 						value={medFormData.maxDailyDoses}
 						onChange={handleChange}
-						placeholder="0"
 					/>
 				</Form.Group>
 				<Form.Group>
@@ -203,7 +197,6 @@ const MedForm = (props) => {
 						id="minTimeBetween-input"
 						value={medFormData.minTimeBetween}
 						onChange={handleChange}
-						placeholder="4"
 					/>
 				</Form.Group>
 				<Form.Group>
