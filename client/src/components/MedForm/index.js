@@ -11,9 +11,10 @@ const MedForm = () => {
 		medName: '',
 		maxDailyDoses: 0,
 		minTimeBetween: 4,
-		remindersBool: true,
+		remindersBool: false,
 	});
 
+	console.log(medFormData);
 	const [addMed] = useMutation(ADD_MED);
 
 	const handleChange = (event) => {
@@ -34,6 +35,9 @@ const MedForm = () => {
 		console.log(medFormData);
 
 		try {
+			if (medFormData.remindersBool === "on") {
+				setMedFormData({ ...medFormData, remindersBool: true });
+			}
 			const { data } = await addMed({
 				variables: { medSettings: medFormData },
 			});
@@ -48,7 +52,7 @@ const MedForm = () => {
 			medName: '',
 			maxDailyDoses: 0,
 			minTimeBetween: 4,
-			remindersBool: true,
+			remindersBool: false,
 		});
 	};
 
@@ -98,7 +102,6 @@ const MedForm = () => {
 						type="switch"
 						name="remindersBool"
 						id="remindersBool-input"
-						value={medFormData.remindersBool}
 						onChange={handleChange}
 						label="Reminders"
 					/>

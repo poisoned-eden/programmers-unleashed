@@ -19,7 +19,6 @@ const medSchema = new Schema(
     },
     remindersBool: {
       type: Boolean,
-      required: true,
     },
     iconType: {
       type: String,

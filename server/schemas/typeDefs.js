@@ -30,7 +30,7 @@ const typeDefs = gql`
     _id: ID!
     userId: ID!
     medId: ID!
-    doseScheduled: DateTime
+    doseScheduled: String
     doseLogged: DateTime
   }
 
@@ -79,6 +79,7 @@ const typeDefs = gql`
     maxDailyDoses: Int
     minTimeBetween: Int
     remindersBool: Boolean!
+    iconType: String
   }
 
   type Query {
@@ -94,7 +95,7 @@ const typeDefs = gql`
   type Mutation {
     addUser(username: String!, email: String!, password: String!): Auth
     login(email: String!, password: String!): Auth
-    addMed(userId: ID!, medSettings: MedInput!): Med
+    addMed(medSettings: MedInput!): Med
     addDose(medId: ID!, doseScheduled: DateTime, doseLogged: DateTime): Dose
     addThought(thoughtText: String!): Thought
     addComment(thoughtId: ID!, commentText: String!): Thought
