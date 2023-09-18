@@ -5,6 +5,7 @@
  * 1. Correct the line height in all browsers.
  * 2. Prevent adjustments of font size after orientation changes in iOS.
  */
+ 
 html {
 	line-height: 1.15;
 	/* 1 */
@@ -18,7 +19,8 @@ html {
  * Remove the margin in all browsers.
  */
 body {
-	margin: 0;
+  margin: 0;
+  font-family: 'PT Sans', sans-serif;
 }
 
 /**
@@ -29,16 +31,14 @@ main {
 }
 
 .bg-colour {
-	background: #56ccf2; /* fallback for old browsers */
-	background: -webkit-linear-gradient(to right, #2f80ed, #56ccf2); /* Chrome 10-25, Safari 5.1-6 */
-	background: linear-gradient(
-		to right,
-		#2f80ed,
-		#56ccf2
-	); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
 
-	/* background-color: #5cbdea; */
-	/* background-color: white; */
+  background: #0575E6;  /* fallback for old browsers */
+background: -webkit-linear-gradient(to right, #021B79, #0575E6);  /* Chrome 10-25, Safari 5.1-6 */
+background: linear-gradient(to right, #021B79, #0575E6); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+
+  /* background-color: #04268d; */
+  /* background-color: #5cbdea; */
+  /* background-color: white; */
 }
 
 /**
@@ -46,8 +46,9 @@ main {
  * `article` contexts in Chrome, Firefox, and Safari.
  */
 h1 {
-	font-size: 2em;
-	margin: 0.67em 0;
+  font-size: 2em;
+  margin: 0.67em 0;
+  font-family: 'PT Sans', sans-serif;
 }
 
 /* Grouping content
@@ -396,6 +397,19 @@ h6 {
 	line-height: 1.25;
 }
 
+h1.m-0 {
+  text-decoration: underline;
+}
+
+a.text-light {
+  text-decoration: none;
+}
+
+span{
+  color: rgb(17, 44, 160);
+  text-decoration: underline;
+}
+
 h1 {
 	font-size: 2.25rem;
 }
@@ -404,12 +418,20 @@ h1.rem {
 
   text-align: center;
   margin-top: 5%;
-
-	text-align: center;
-	margin-top: 5%;
-
 }
 
+
+h3.today{
+text-align: center;
+margin-top: -10%;
+margin-bottom: 3rem;
+}
+
+h3.taken {
+  text-align: center;
+margin-top: -10%;
+margin-bottom: 3rem;
+}
 h2 {
 	font-size: 2rem;
 }
@@ -1052,10 +1074,124 @@ a:hover {
 	padding: 0.3rem 0.9rem;
 }
 
-.btn.btn-lg {
-	font-size: 1.25rem;
-	padding: 0.8rem 1.4rem;
+.btn-16,
+.btn-16 *,
+.btn-16 :after,
+.btn-16 :before,
+.btn-16:after,
+.btn-16:before {
+  border: 0 solid;
+  box-sizing: border-box;
 }
+
+.btn-16 {
+  -webkit-tap-highlight-color: transparent;
+  -webkit-appearance: button;
+  background-color: #0c2faae8;
+  background-image: none;
+  color: #fff;
+  cursor: pointer;
+  font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont,
+    Segoe UI, Roboto, Helvetica Neue, Arial, Noto Sans, sans-serif,
+    Apple Color Emoji, Segoe UI Emoji, Segoe UI Symbol, Noto Color Emoji;
+  font-size: 100%;
+  font-weight: 900;
+  line-height: 1.5;
+  margin: 0;
+  padding: 0;
+  text-transform: uppercase;
+}
+
+
+.btn-16 {
+  border-radius: 99rem;
+  border-width: 2px;
+  padding: 0.8rem 3rem;
+  z-index: 0;
+  text-decoration: none;
+}
+
+a.btn-16:hover {
+color: white;
+}
+
+.btn-16:hover {
+background-color: #006edc;
+}
+
+
+/* logout button */
+
+.btn-17,
+.btn-17 *,
+.btn-17 :after,
+.btn-17 :before,
+.btn-17:after,
+.btn-17:before {
+  border: 0 solid;
+  box-sizing: border-box;
+}
+
+.btn-17 {
+  -webkit-tap-highlight-color: transparent;
+  -webkit-appearance: button;
+  background-color: #aa0d0d;
+  background-image: none;
+  color: #fff;
+  cursor: pointer;
+  font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont,
+    Segoe UI, Roboto, Helvetica Neue, Arial, Noto Sans, sans-serif,
+    Apple Color Emoji, Segoe UI Emoji, Segoe UI Symbol, Noto Color Emoji;
+  font-size: 100%;
+  font-weight: 900;
+  line-height: 1.5;
+  margin: 0;
+  -webkit-mask-image: -webkit-radial-gradient(#9f0808, #fff);
+  padding: 0;
+  text-transform: uppercase;
+}
+
+
+.btn-17 {
+  border-radius: 99rem;
+  border-width: 2px;
+  padding: 0.8rem 3rem;
+  z-index: 0;
+}
+
+
+.btn-17:after,
+.btn-17:before {
+  --skew: 0.2;
+  background: #f6352b79;
+  color: white;
+  content: "";
+  display: block;
+  height: 102%;
+  left: calc(-50% - 50% * var(--skew));
+  pointer-events: none;
+  position: absolute;
+  top: -104%;
+  transform: skew(calc(150deg * var(--skew))) translateY(var(--progress, 0));
+  transition: transform 0.2s ease;
+  width: 100%;
+}
+
+.btn-17:after {
+  --progress: 0%;
+  left: calc(50% + 50% * var(--skew));
+  top: 102%;
+  z-index: -1;
+}
+
+.btn-17:hover:before {
+  --progress: 100%;
+}
+
+.btn-17:hover:after {
+  --progress: -102%;
+}
+
 
 .btn.btn-block {
 	width: 100%;
@@ -1064,8 +1200,8 @@ a:hover {
 }
 
 .btn.btn-primary {
-	background-color: #03285f;
-	color: #d9e9e8;
+  background-color: #03285f;
+  color: #d9e9e9;
 }
 
 .btn.btn-primary:hover {
@@ -1135,18 +1271,224 @@ a:hover {
 	background-color: #31a9e1;
 }
 
-.card {
-	border: 1px solid #1a1a1a;
-	margin-bottom: 1rem;
-	width: 60%;
-	padding: 1rem;
-	/* background-color: rgba(255, 255, 255, 0.074); */
-	background-color: rgb(59 174 245);
-	border: 1px solid rgba(255, 255, 255, 0.222);
-	-webkit-backdrop-filter: blur(20px);
-	backdrop-filter: blur(20px);
-	border-radius: 0.7rem;
-	transition: all ease 0.3s;
+/* med list card */
+
+div.card {
+  border: 1px solid #1a1a1a;
+  margin-bottom: 1rem;
+   width: 60%;
+  padding: 1rem;
+  /* background-color: rgba(255, 255, 255, 0.074); */
+  /* background-color: rgb(59 174 245); */
+  background-color: rgb(13 144 224);
+  box-shadow: 12px 17px 51px rgba(0, 0, 0, 0.22);
+  border: 1px solid rgba(255, 255, 255, 0.222);
+  -webkit-backdrop-filter: blur(20px);
+  backdrop-filter: blur(20px);
+  border-radius: .7rem;
+  transition: all ease .3s;
+  left: -40px;
+  border: none;
+}
+
+div.card2 {
+  position: absolute;
+  left: 55rem;
+  border: 1px solid #1a1a1a;
+  margin-bottom: 1rem;
+   width: 66%;
+  padding: 5rem;
+  /* background-color: rgba(255, 255, 255, 0.074); */
+  /* background-color: rgb(59 174 245); */
+  background-color: rgb(13 144 224);
+  box-shadow: 12px 17px 51px rgba(0, 0, 0, 0.22);
+  border: 1px solid rgba(255, 255, 255, 0.222);
+  border: none;
+  -webkit-backdrop-filter: blur(20px);
+  backdrop-filter: blur(20px);
+  border-radius: .7rem;
+  transition: all ease .3s;
+  top: -1px;
+}
+
+div.card3.card {
+  margin-bottom: 1rem;
+    width: 85%;
+    padding: 1rem;
+    background-color: rgb(39 159 234);
+    -webkit-backdrop-filter: blur(20px);
+    backdrop-filter: blur(20px);
+    border-radius: 0.7rem;
+    transition: all ease .3s;
+    border:none;
+    left: 57px;
+
+}
+
+/* react calender */
+
+div.react-calendar {
+  width: 350px;
+  max-width: 100%;
+  background: white;
+  border: 1px solid #a0a096;
+  font-family: Arial, Helvetica, sans-serif;
+  line-height: 1.125em;
+  background-color: rgb(255 255 255 / 0%);
+  border: 1px solid rgba(255, 255, 255, 0.222);
+  -webkit-backdrop-filter: blur(20px);
+  backdrop-filter: blur(20px);
+  border-radius: 0.7rem;
+  transition: all ease .3s;
+  margin-bottom: 50px;
+  border: none;
+}
+
+.react-calendar--doubleView {
+  width: 700px;
+}
+
+.react-calendar--doubleView .react-calendar__viewContainer {
+  display: flex;
+  margin: -0.5em;
+}
+
+.react-calendar--doubleView .react-calendar__viewContainer > * {
+  width: 50%;
+  margin: 0.5em;
+}
+
+.react-calendar,
+.react-calendar *,
+.react-calendar *:before,
+.react-calendar *:after {
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+}
+
+.react-calendar button {
+  margin: 0;
+  border: 0;
+  outline: none;
+}
+
+.react-calendar button:enabled:hover {
+  cursor: pointer;
+  border-radius: 35px;
+}
+
+.react-calendar__navigation {
+  display: flex;
+  height: 44px;
+  margin-bottom: 1em;
+}
+
+.react-calendar__navigation button {
+  min-width: 44px;
+  background: none;
+}
+
+.react-calendar__navigation button:disabled {
+  background-color: #f0f0f0;
+}
+
+.react-calendar__navigation button:enabled:hover,
+.react-calendar__navigation button:enabled:focus {
+  background-color: #e6e6e6;
+}
+
+.react-calendar__month-view__weekdays {
+  text-align: center;
+  text-transform: uppercase;
+  font-weight: bold;
+  font-size: 0.75em;
+  
+}
+
+.react-calendar__month-view__weekdays__weekday {
+  padding: 0.5em;
+
+}
+
+.react-calendar__month-view__weekNumbers .react-calendar__tile {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.75em;
+  font-weight: bold;
+}
+
+.react-calendar__month-view__days__day--weekend {
+  color: #d10000;
+}
+
+.react-calendar__month-view__days__day--neighboringMonth {
+  color: #757575;
+}
+
+.react-calendar__year-view .react-calendar__tile,
+.react-calendar__decade-view .react-calendar__tile,
+.react-calendar__century-view .react-calendar__tile {
+  padding: 2em 0.5em;
+}
+
+.react-calendar__tile {
+  max-width: 100%;
+  padding: 10px 6.6667px;
+  background: none;
+  text-align: center;
+  line-height: 16px;
+}
+
+.react-calendar__tile:disabled {
+  background-color: #f0f0f0;
+}
+
+.react-calendar__tile:enabled:hover,
+.react-calendar__tile:enabled:focus {
+  background-color: #e6e6e6;
+}
+
+.react-calendar__tile--now {
+  background: #ffff76;
+  border-radius: 35px;
+}
+
+.react-calendar__tile--now:enabled:hover,
+.react-calendar__tile--now:enabled:focus {
+  background: #ffffa9;
+  border-radius: 35px;
+}
+
+.react-calendar__tile--hasActive {
+  background: #76baff;
+}
+
+.react-calendar__tile--hasActive:enabled:hover,
+.react-calendar__tile--hasActive:enabled:focus {
+  background: #a9d4ff;
+}
+
+.react-calendar__tile--active {
+  background: #006edc;
+  color: white;
+  border-radius: 35px;
+}
+
+.react-calendar__tile--active:enabled:hover,
+.react-calendar__tile--active:enabled:focus {
+  background: #1087ff;
+  border-radius: 35px;
+}
+
+.react-calendar--selectRange .react-calendar__tile--hover {
+  background-color: #e6e6e6;
+  
+}
+
+hr.cal {
+  margin-bottom: 12%;
 }
 
 .card .card-header {
@@ -1778,18 +2120,18 @@ label form [type='radio'] {
 }
 
 .loader {
-	position: relative;
-	width: 5em;
-	height: 5em;
-	border-radius: 50%;
-	background-color: rgb(208, 208, 208);
-	box-shadow: 0 0em 4em rgba(23, 190, 250, 0.5);
-	/* animation: loader-rotate 1s linear infinite; */
-	background-image: url(./images/Screenshot\ 2023-09-14\ at\ 18.56.51.png);
-	background-position: center;
-	background-size: cover;
-	top: -20%;
-	/* right:33%; */
+  position: relative;
+  width: 6rem;
+  height: 6em;
+  border-radius: 50%;
+  background-color: rgb(208, 208, 208);
+  box-shadow: 0 0em 4em rgba(23, 190, 250, 0.5);
+  /* animation: loader-rotate 1s linear infinite; */
+  background-image: url(./images/Screenshot\ 2023-09-14\ at\ 18.56.51.png);
+  background-position: center;
+  background-size: cover;
+  top: -20% ;
+  /* right:33%; */
 }
 
 .loader::before,
@@ -1853,25 +2195,35 @@ ul.medication-list {
 	width: 100%;
 }
 
-li {
-	margin-bottom: 60px;
-	padding: 2rem;
-	/* border-radius: 10px; */
-	width: 510px;
-	height: 124px;
-	background: rgb(17, 4, 134);
-	border-radius: 15px;
-	/* box-shadow: rgb(0,0,0,0.7) 5px 10px 50px, rgb(0,0,0,0.7) -5px 0px 250px; */
-	display: flex;
-	color: white;
-	justify-content: center;
-	position: relative;
-	flex-direction: column;
-	/* background: linear-gradient(to right, rgb(66 133 255), rgb(44 111 188)); */
-	cursor: pointer;
-	transition: all 0.3s ease-in-out;
-	overflow: hidden;
+div.list.list-group {
+  border: 1px solid #a0a096;
+  font-family: Arial, Helvetica, sans-serif;
+  background-color: rgba(255, 255, 255, 0.153);
+  border: 1px solid rgba(255, 255, 255, 0.222);
+  -webkit-backdrop-filter: blur(20px);
+  backdrop-filter: blur(20px);
+  border-radius: 0.7rem;
+  transition: all ease .3s;
+  margin-bottom: 50px;
+  display: flex;
+  overflow: auto;
+  scroll-snap-type: x mandatory;
+  padding: 10px;
+  /* gap: 10px; */
+  scroll-padding: 10px;
+  height: 270px;
 }
+  
+div.list-group-item {
+  background-color: rgb(255 255 255 / 0%);
+  border-color: cornflowerblue;
+  border: none;
+}
+
+
+
+
+
 
 @media screen and (max-width: 768px) {
 	.loader-container {

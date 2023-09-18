@@ -1,38 +1,32 @@
-import React from 'react';
-import { Navigate, useParams } from 'react-router-dom';
+import React, { useState } from 'react';
+
 import { useQuery } from '@apollo/client';
 
-import { QUERY_USER, QUERY_ME } from '../utils/queries';
+import { QUERY_ME, QUERY_MEDS } from '../utils/queries';
 
 import MedForm from '../components/MedForm';
+import MedCard from '../components/MedCard';
 
 import Auth from '../utils/auth';
 
 const Profile = () => {
-	//  FIXME
-	// const { username: userParam } = useParams();
+	const { loading: meLoading, data: meData } = useQuery(QUERY_ME);
+	const { loading: medsLoading, data: medsData } = useQuery(QUERY_MEDS);
+	
+	if (medsLoading) return <h1>loading your meds info...</h1>;
 
-	// const { loading, data } = useQuery(userParam ? QUERY_USER : QUERY_ME, {
-	// 	variables: { username: userParam },
-	// });
+	console.log(meData);
+	
+	if (meLoading) {
+		return <div>Loading...</div>;
+	}
 
-	// // const user = data?.me || data?.user || {};
-	// // // navigate to personal profile page if username is yours
-	// // if (Auth.loggedIn() && Auth.getProfile().data.username === userParam) {
-	// // 	return <Navigate to="/me" />;
-	// // }
+	if (medsData) console.log(medsData);
 
-	// // if (loading) {
-	// // 	return <div>Loading...</div>;
-	// // }
+	// const user = meData.me;
 
-	// if (!user?.username) {
-	// 	return (
-	// 		<h4>
-	// 			You need to be logged in to see this. Use the navigation links
-	// 			above to sign up or log in!
-	// 		</h4>
-	// 	);
+	// if (!meData?.username) {
+	// 	return <h4>You need to be logged in to see this. Use the navigation links above to sign up or log in!</h4>;
 	// }
 
 	return (
@@ -43,9 +37,17 @@ const Profile = () => {
 					settings.
 				</h2> */}
 				{/* TODO move MedForm into modal that opens when push button to add new med */}
-				<MedForm />
+				<MedForm mutation="ADD_MED" />
 				{/* TODO Account Settings */}
-				{/* TODO cards that show current med settings so they can be edited */}
+				{medsData.meds.map((med) => (
+					<MedCard
+						medId={med._id}
+						medName={med.medName}
+						maxDailyDoses={med.maxDailyDoses}
+						minTimeBetween={med.minTimeBetween}
+						remindersBool={med.remindersBool}
+					/>
+				))}
 			</div>
 		</div>
 	);

@@ -1,39 +1,43 @@
-const { Schema, model } = require("mongoose");
+const { Schema, model } = require('mongoose');
 
-const medSchema = new Schema(
-  {
-    userId: {
-        type: Schema.Types.ObjectId,
-        ref: "User",
-    },
-    medName: {
-      type: String,
-      unique: true,
-      required: true,
-    },
-    maxDailyDoses: {
-      type: Number,
-    },
-    minTimeBetween: {
-      type: Number,
-    },
-    remindersBool: {
-      type: Boolean,
-    },
-    iconType: {
-      type: String,
-    },
-    doses: [
-      {
-        type: Schema.Types.ObjectId,
-        ref: "Dose",
-      },
-    ],
+const medSchema = new Schema({
+	userId: {
+		type: Schema.Types.ObjectId,
+		ref: 'User',
+	},
+	medName: {
+		type: String,
+		required: true,
+	},
+	maxDailyDoses: {
+		type: Number,
+		default: 0,
+	},
+	minTimeBetween: {
+		type: Number,
+		default: 0,
+	},
+	remindersBool: {
+		type: Boolean,
+		default: false,
+	},
+	mostRecentDose: {
+		type: Schema.Types.ObjectId,
+		ref: 'Dose',
+	},
+	mostRecentTime: {
+		type: String,
+	},
+	doses: [
+		{
+			type: Schema.Types.ObjectId,
+			ref: 'Dose',
+		},
+	],
 
-    // TODO add icon
-  }
-);
+	// TODO add icon
+});
 
-const Med = model("Med", medSchema);
+const Med = model('Med', medSchema);
 
 module.exports = Med;

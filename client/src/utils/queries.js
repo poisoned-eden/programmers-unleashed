@@ -1,40 +1,48 @@
 import { gql } from '@apollo/client';
 
-export const QUERY_THOUGHTS = gql`
-	query getThoughts {
-		thoughts {
+export const QUERY_MEDS = gql`
+	query Meds {
+		meds {
 			_id
-			thoughtText
-			thoughtAuthor
-			createdAt
+			medName
+			maxDailyDoses
+			minTimeBetween
+			remindersBool
+			mostRecentDose {
+				_id
+				doseDate
+				doseTime
+				doseLogged
+			}
+			doses {
+				_id
+				doseDate
+				doseTime
+				doseLogged
+			}
 		}
 	}
 `;
 
-// TODO
-// export const QUERY_MEDS = gql`
-//   query meds {
-//     thoughts {
-//       _id
-//       thoughtText
-//       thoughtAuthor
-//       createdAt
-//     }
-//   }
-// `;
-
-export const QUERY_SINGLE_THOUGHT = gql`
-	query getSingleThought($thoughtId: ID!) {
-		thought(thoughtId: $thoughtId) {
+export const QUERY_MED = gql`
+	query Med($medId: ID) {
+		med(medId: $medId) {
 			_id
-			thoughtText
-			thoughtAuthor
-			createdAt
-			comments {
+			medName
+			maxDailyDoses
+			minTimeBetween
+			remindersBool
+			mostRecentDose {
 				_id
-				commentText
-				commentAuthor
-				createdAt
+				doseDate
+				doseTime
+				doseLogged
+			}
+			doses {
+				_id
+				doseDate
+				doseTime
+				doseLogged
 			}
 		}
 	}
@@ -46,28 +54,22 @@ export const QUERY_ME = gql`
 			_id
 			username
 			email
-			password
-			savedNotes {
-				_id
-				title
-				medicine
-				startTime
-				period
-				numberOfTime
-				total
-				userId
-			}
-			noteCount
 			userMeds {
 				_id
-				userId
 				medName
 				maxDailyDoses
 				minTimeBetween
 				remindersBool
+				mostRecentDose {
+					_id
+					doseDate
+					doseTime
+					doseLogged
+				}
 				doses {
 					_id
-					doseScheduled
+					doseDate
+					doseTime
 					doseLogged
 				}
 			}

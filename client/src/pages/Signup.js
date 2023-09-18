@@ -1,21 +1,23 @@
-import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import React, { useState } from "react";
+import { Link } from "react-router-dom";
 
-import { useMutation } from '@apollo/client';
-import { ADD_USER } from '../utils/mutations';
+import { useMutation } from "@apollo/client";
+import { ADD_USER } from "../utils/mutations";
 import { Image, Card, Container, Row, Col } from 'react-bootstrap';
 import frontScreenshot from '../images/frontscreenshot.jpeg';
-import Auth from '../utils/auth';
+import Auth from "../utils/auth";
+
+//import { createUser } from "../utils/oneSignal";
 import '../index.css';
 //import { createUser } from "../utils/oneSignal";
 
 const Signup = () => {
-	const [formState, setFormState] = useState({
-		username: '',
-		email: '',
-		password: '',
-	});
-	const [addUser, { error, data }] = useMutation(ADD_USER);
+  const [formState, setFormState] = useState({
+    username: "",
+    email: "",
+    password: "",
+  });
+  const [addUser, { error, data }] = useMutation(ADD_USER);
 
 	const handleChange = (event) => {
 		const { name, value } = event.target;

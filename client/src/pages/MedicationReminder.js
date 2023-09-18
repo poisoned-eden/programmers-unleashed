@@ -1,80 +1,92 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import { useQuery } from '@apollo/client';
-import { QUERY_ME, QUERY_THOUGHTS } from '../utils/queries';
+import { QUERY_ME, QUERY_MEDS } from '../utils/queries';
+import { splitDate } from '../utils/dtUtils';
+
+import { TodayContext } from '../utils/TodayContext';
 
 import Calendar from 'react-calendar';
-import { Container, Row, Col, Card } from 'react-bootstrap';
+import { Accordion, Container, Row, Col, Card, ListGroup } from 'react-bootstrap';
+import AddDoseButton from '../components/AddDoseButton';
+import MedCards from '../components/MedCards';
 
 import 'react-calendar/dist/Calendar.css';
 
 const MedicationReminder = () => {
-	const { loading, data } = useQuery(QUERY_ME);
-	const [calendarValue, setCalendarValue] = useState(new Date());
+	// const { today, setToday } = useContext(TodayContext);
+	// console.log(today);
+	const dateToday = splitDate(new Date());
+	
+	// setToday(dateToday);
+	
+	// console.log(today);
+	const [calendarValue, setCalendarValue] = useState(dateToday);
 
-	const meds = data?.me.userMeds || [];
+	const { loading: medsLoading, data: medsData, error } = useQuery(QUERY_MEDS, {
+		variables: { 
+			today: dateToday,
+		}
+	});
+
+	if (error) console.log(error);
+
+	if (medsLoading) return 'loading your meds info...';
+
+	const meds = medsData?.meds || [];
+	console.log(meds);
 
 	function onChangeCalendar(nextValue) {
-		setCalendarValue(nextValue);
+		setCalendarValue(splitDate(nextValue));
 		console.log(calendarValue);
-	};
-
-	if (loading) return 'loading your data...';
+	}
 
 	return (
 		<main>
-			<Container>
-				<header>
-					<h1>Medication Reminder</h1>
-				</header>
-				<Row>
-					<Col>
-						<div className="loader-container" id="pill-image">
-							<div className="loader"></div>
+			<div className="card">
+				<Container>
+					<header>
+						<h1 className="rem">Medication Reminder</h1>
+					</header>
+					<Row>
+						<Col>
+							<div className="loader-container" id="pill-image">
+								<div className="loader"></div>
+							</div>
+							<h3 className="today">Todays Pills</h3>
+							{meds.map((med) => (
+								<MedCards med={med} />
+							))}
+						</Col>
+						<div className="card2">
+							<Col>
+								<h3 className="taken">Medications taken on</h3>
+								<Calendar onChange={onChangeCalendar} value={calendarValue} />
+								<div className="reminder">
+									{/* Add reminder component here */}
+									{/* Example: <ReminderComponent /> */}
+								</div>
+								<hr className="cal"></hr>
+								<ListGroup className="list">
+									<ListGroup.Item>Medication 1: time logged</ListGroup.Item>
+									<hr></hr>
+									<ListGroup.Item>Medication 2: time logged</ListGroup.Item>
+									<hr></hr>
+									<ListGroup.Item>Medication 1: time logged</ListGroup.Item>
+									<hr></hr>
+									<ListGroup.Item>Medication 2: time logged</ListGroup.Item>
+									<hr></hr>
+									<ListGroup.Item>Medication 3: time logged</ListGroup.Item>
+									<hr></hr>
+									<ListGroup.Item>Medication 3: time logged</ListGroup.Item>
+									<hr></hr>
+									<ListGroup.Item>Medication 2: time logged</ListGroup.Item>
+								</ListGroup>
+							</Col>
 						</div>
-							{meds.map((med) => 
-								<Card key={med._id}>
-									<Card.Title>
-										{med.medName}	
-									</Card.Title>
-									<Card.Body>
-										{/* TODO add med.icon properly */}
-										<span className="medication-icon">Icon 1</span>
-											{med.doses.map((dose) => 
-										<ul key={dose._id}>
-												<li>Scheduled:{dose.doseScheduled}</li>
-												<li>Logged:{dose.doseLogged}</li>
-										</ul>
-											)}
-									</Card.Body>
-								</Card>
-							)}
-
-						<ul className="medication-list">
-							<li>
-								Medication Type 2
-								<span className="medication-icon">Icon 2</span>
-							</li>
-							<li>
-								Medication Type 3
-								<span className="medication-icon">Icon 3</span>
-							</li>
-							{/* Add more medication types and icons as needed */}
-						</ul>
-					</Col>
-					<Col>
-						<Calendar
-							onChange={onChangeCalendar}
-							value={calendarValue}
-						/>
-						<div className="reminder">
-							{/* Add reminder component here */}
-							{/* Example: <ReminderComponent /> */}
-						</div>
-					</Col>
-				</Row>
-			</Container>
+					</Row>
+				</Container>
+			</div>
 		</main>
 	);
 };
-
 export default MedicationReminder;
