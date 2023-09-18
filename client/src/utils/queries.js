@@ -82,10 +82,13 @@ export const QUERY_BYDATE = gql`
 		dosesByDate(doseDate: $doseDate) {
 			_id
 			userId
-			medId
-				doseDate
-				doseTime
-				doseLogged
+			medId {
+				_id
+				medName
+			}
+			doseDate
+			doseTime
+			doseLogged
 		}
 	}
 `;
