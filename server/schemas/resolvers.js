@@ -29,7 +29,7 @@ const resolvers = {
 			throw new AuthenticationError('You need to be logged in!');
 		},
 		// TODO
-		meds: async (parent, { today }, context) => {
+		meds: async (parent, args, context) => {
 			if (context.user) {
 				try {
 					const medsData = await Med.find({

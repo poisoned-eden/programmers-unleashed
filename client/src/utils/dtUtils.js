@@ -1,7 +1,8 @@
 export function splitDate(dateTime) {
-	const dtObj = new Date(dateTime);
+	const dtObj = new Date(dateTime).toISOString();
+	// console.log(typeof dtObj);
 	// console.log(dtObj);
-	return dtObj.toISOString().split('T')[0];
+	return dtObj.split('T')[0];
 }
 
 export function addMinTimeBetween(dateTime, minTimeBetween) {
@@ -21,7 +22,7 @@ export function addMinTimeBetween(dateTime, minTimeBetween) {
 	const newDateSet = new Date(dtObj).setDate(newDate);
 
 	const newDateTime = new Date(newDateSet).setHours(newHrs);
-	return dateTimeFormat(newDateTime);
+	return newDateTime.toString();
 }
 
 export function splitHours(dateTime) {
@@ -47,9 +48,9 @@ export function splitTime(dateTime) {
 	return `${hrs}:${mins}`.padStart(5, '0');
 }
 
-export function dateTimeFormat(dateTime) {
-	return `${splitDate(dateTime)} ${splitTime(dateTime).string}`;
-}
+// export function dateTimeFormat(dateTime) {
+// 	return `${splitDate(dateTime)} ${splitTime(dateTime).string}`;
+// }
 
 export function setDoseLoggedTime(doseTime) {
 	const hr = doseTime.split(':')[0];

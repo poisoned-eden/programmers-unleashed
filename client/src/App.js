@@ -60,7 +60,12 @@ const client = new ApolloClient({
 	cache,
 });
 
+await client.refetchQueries({
+	include: "all", // Consider using "active" instead!
+});
+
 function App() {
+	
 
 	const [today, setToday] = useState(new Date());
 

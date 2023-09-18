@@ -13,14 +13,18 @@ import MedCards from '../components/MedCards';
 import 'react-calendar/dist/Calendar.css';
 
 const MedicationReminder = () => {
-	const { today } = useContext(TodayContext);
+	const { today, setToday } = useContext(TodayContext);
+	// console.log(today);
+	const dateToday = splitDate(new Date());
+	
+	setToday(dateToday);
+	
 	console.log(today);
-
-	const [calendarValue, setCalendarValue] = useState(today.string);
+	const [calendarValue, setCalendarValue] = useState(today);
 
 	const { loading: medsLoading, data: medsData, error } = useQuery(QUERY_MEDS, {
 		variables: { 
-			today: today.string 
+			today: today,
 		}
 	});
 

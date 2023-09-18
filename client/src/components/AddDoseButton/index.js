@@ -16,30 +16,24 @@ const AddDoseButton = ({ med }) => {
 	const { today, setToday } = useContext(TodayContext);
 
 	const [addDose, { error }] = useMutation(ADD_DOSE, {
-		refetchQueries: [
-			QUERY_MEDS, // DocumentNode object parsed with gql
-			'Meds', // Query name
-		],
+		refetchQueries: ['Meds'],
+		// update(cache, { data: { addDose } }) {
+		// 	try {
+		// 		const { doses } = cache.readQuery({ query: QUERY_MEDS });
+
+		// 		cache.writeQuery({
+		// 			query: QUERY_MEDS,
+		// 			data: { meds: [addDose, ...meds] },
+		// 		});
+		// 	} catch (e) {
+		// 		console.error(e);
+		// 	}
+		// },
 	});
 
 	const [doseTime, setDoseTime] = useState(splitTime());
 
 	const { _id, minTimeBetween, maxDailyDoses, doses, mostRecentDose } = med;
-
-	// , {
-	// 	update(cache, { data: { addDose } }) {
-	// 		try {
-	// 		  const { doses } = cache.readQuery({ query: QUERY_MEDS });
-
-	// 		  cache.writeQuery({
-	// 			query: QUERY_MEDS,
-	// 			data: { meds: [addMed, ...meds] },
-	// 		  });
-	// 		} catch (e) {
-	// 		  console.error(e);
-	// 		}
-	// 	},
-	// }
 
 	const handleChange = async (event) => {
 		// console.log(event.target.value);
@@ -47,16 +41,16 @@ const AddDoseButton = ({ med }) => {
 		// console.log(doseTime);
 	};
 
-	const handleDoseClick = async (event) => {
+	const handleDoseClick = async ({ event, nowBool }) => {
 		event.preventDefault();
-		const doseLogged = setDoseLoggedTime(doseTime);
-		const doseDate = splitDate(today);
-		console.log({doseLogged, doseDate});
-
-		console.log(doseLogged.valueOf());
-		console.log(mostRecentDose.doseLogged.valueOf())
+		let doseLogged = setDoseLoggedTime(doseTime);
+		if (nowBool) {
+			doseLogged = new Date().toISOString();
+		}
+		const doseDate = today;
+		console.log({ doseLogged, doseDate });
 		let mostRecentBool = true;
-		if ( mostRecentDose && doseLogged.valueOf() < mostRecentDose.doseLogged.valueOf() ) {
+		if (mostRecentDose && doseLogged.valueOf() < mostRecentDose.doseLogged.valueOf()) {
 			mostRecentBool = false;
 		}
 
@@ -65,15 +59,10 @@ const AddDoseButton = ({ med }) => {
 			doseDate: doseDate,
 			doseTime: doseTime,
 			doseLogged: doseLogged,
-			// // TODO change mutation so it doesn't need mostRecentTime if dose added now, because dose now will always be most recent
-			// mostRecentTime: doseLogged
 		};
 
 		console.log(doseData);
 
-		// 	// TODO set up new mutations for 'newest dose' or 'previous dose'
-		// 	// so I can use different cache updating techniques for them both
-		// 	console.log(dayjs(doseTime, 'HH:mm'));
 		try {
 			const { data } = await addDose({
 				variables: {
@@ -91,9 +80,9 @@ const AddDoseButton = ({ med }) => {
 	return (
 		<>
 			<InputGroup>
-				<Button onClick={handleDoseClick}>Log now</Button>
+				<Button onClick={(event) => handleDoseClick({ event, nowBool: true })}>Log now</Button>
 				<Form.Control aria-label="The time of the dose" type="time" value={doseTime} onChange={handleChange} />
-				<Button onClick={handleDoseClick}>Log at time</Button>
+				<Button onClick={(event) => handleDoseClick({ event, nowBool: false })}>Log at time</Button>
 			</InputGroup>
 			{error && <Alert>Logging dose failed. Please try again.</Alert>}
 		</>
