@@ -58,6 +58,8 @@ const AddDoseButton = ({ med }) => {
 			doseDate: doseDate,
 			doseTime: doseTime,
 			doseLogged: doseLogged,
+			// // TODO change mutation so it doesn't need mostRecentTime if dose added now, because dose now will always be most recent
+			// mostRecentTime: doseLogged
 		};
 
 		console.log(doseData);
