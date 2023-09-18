@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { Navigate } from 'react-router-dom';
 
 import { useQuery } from '@apollo/client';
 
@@ -10,6 +11,7 @@ import MedCard from '../components/MedCard';
 import Auth from '../utils/auth';
 
 const Profile = () => {
+	console.log('Profile');
 	const { loading: meLoading, data: meData } = useQuery(QUERY_ME);
 	const { loading: medsLoading, data: medsData } = useQuery(QUERY_MEDS);
 	
@@ -25,9 +27,9 @@ const Profile = () => {
 
 	// const user = meData.me;
 
-	// if (!meData?.username) {
-	// 	return <h4>You need to be logged in to see this. Use the navigation links above to sign up or log in!</h4>;
-	// }
+	if (!meData) {
+		return <Navigate to="/" />;
+	}
 
 	return (
 		<div>
@@ -40,13 +42,7 @@ const Profile = () => {
 				<MedForm mutation="ADD_MED" />
 				{/* TODO Account Settings */}
 				{medsData.meds.map((med) => (
-					<MedCard
-						medId={med._id}
-						medName={med.medName}
-						maxDailyDoses={med.maxDailyDoses}
-						minTimeBetween={med.minTimeBetween}
-						remindersBool={med.remindersBool}
-					/>
+					<MedCard med={med} />
 				))}
 			</div>
 		</div>
