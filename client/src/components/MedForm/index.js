@@ -8,19 +8,27 @@ import { Container, Row, Col, Button, Form } from 'react-bootstrap';
 // import { Container, Row, Col, Button, Form } from 'react-bootstrap';
 import { QUERY_MEDS, QUERY_ME } from '../../utils/queries';
 
+
 const MedForm = (props) => {
-	const { mutation } = props;
-	const [medFormData, setMedFormData] = useState({
-		medId: '',
-		medName: '',
-		maxDailyDoses: 0,
-		minTimeBetween: 4,
-		remindersBool: 'off',
-	});
+	console.log('MedForm');
+	
+	const { mutation, _id } = props;
+	console.log(props);
+
+
+	const defaultFormData = {
+			medName: '',
+			maxDailyDoses: '0',
+			minTimeBetween: '4',
+			remindersBool: 'off',
+		};
+
+	const [medFormData, setMedFormData] = useState(defaultFormData);
 
 	const handleChange = (event) => {
 		const { name, value } = event.target;
 		setMedFormData({ ...medFormData, [name]: value });
+		console.log(medFormData);
 	};
 
 	const [addMed] = useMutation(ADD_MED, {
@@ -120,52 +128,36 @@ const MedForm = (props) => {
 		} else {
 			medSettings.remindersBool = false;
 		}
-		console.log(medSettings);
 
+		medSettings.maxDailyDoses = Number(medSettings.maxDailyDoses);
+		medSettings.minTimeBetween = Number(medSettings.minTimeBetween);
+		console.log(medSettings);
+		
+		console.log(mutation);
 		try {
-			console.log(mutation);
 
 			if (mutation === 'ADD_MED') {
 				const { data } = await addMed({
 					variables: { medSettings: medSettings },
 				});
-				// try {
-				// 	if (medFormData.remindersBool === "on") {
-				// 		setMedFormData({ ...medFormData, remindersBool: true });
-				// 	}
-				// 	const { data } = await addMed(
-				// 		{
-				// 			variables: { medSettings: medFormData },
-				// 		},
-				// 		{
-				// 			refetchQueries: [
-				// 				QUERY_MEDS, // DocumentNode object parsed with gql
-				// 				'Meds' // Query name
-				// 			],
-				// 		}
-				// 	);
 
 				console.log('med added');
-				console.log(data.addMed);
+				console.log(data);
 
-				setMedFormData({
-					medId: '',
-					medName: '',
-					maxDailyDoses: 0,
-					minTimeBetween: 4,
-					remindersBool: false,
-				});
+				setMedFormData(defaultFormData);
 			}
 
 			if (mutation === 'UPDATE_MED') {
+				medSettings.medId = _id;
+				console.log(medSettings);
 				const { data } = await updateMed({
 					variables: {
-						medData: medSettings,
+						medData: { ...medSettings},
 					},
 				});
 
 				console.log('med updated');
-				console.log(data.updateMed);
+				console.log(data);
 			}
 		} catch (err) {
 			console.error(err);
@@ -173,8 +165,8 @@ const MedForm = (props) => {
 	};
 
 	return (
-		<div>
-			<h3>What's your medication?</h3>
+		<div className='medform1'>
+			<h3 className='medtitle'>What's your medication?</h3>
 
 			<Form>
 				<Form.Group>
@@ -196,7 +188,6 @@ const MedForm = (props) => {
 						id="maxDailyDoses-input"
 						value={medFormData.maxDailyDoses}
 						onChange={handleChange}
-						placeholder="0"
 					/>
 				</Form.Group>
 				<Form.Group>
@@ -207,7 +198,6 @@ const MedForm = (props) => {
 						id="minTimeBetween-input"
 						value={medFormData.minTimeBetween}
 						onChange={handleChange}
-						placeholder="4"
 					/>
 				</Form.Group>
 				<Form.Group>
