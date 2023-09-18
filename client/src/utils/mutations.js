@@ -48,15 +48,19 @@ export const ADD_DOSE = gql`
 `;
 
 export const UPDATE_MED = gql`
-	mutation updateMed($medData: MedUpdate!) {
+	mutation UpdateMed($medData: MedUpdate!) {
 		updateMed(medData: $medData) {
 			_id
-			userId
 			medName
 			maxDailyDoses
 			minTimeBetween
 			remindersBool
-			mostRecentDose
+			mostRecentDose {
+				_id
+				doseDate
+				doseLogged
+				doseTime
+			}
 			doses {
 				_id
 				doseDate

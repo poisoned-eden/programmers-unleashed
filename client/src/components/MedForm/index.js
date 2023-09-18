@@ -10,74 +10,92 @@ import { QUERY_MEDS, QUERY_ME } from '../../utils/queries';
 
 
 const MedForm = (props) => {
-	const { medFormData, setMedFormData, mutation } = props;
+	console.log('MedForm');
+	
+	const { mutation, _id } = props;
+	console.log(props);
+
+
+	const defaultFormData = {
+			medName: '',
+			maxDailyDoses: '0',
+			minTimeBetween: '4',
+			remindersBool: 'off',
+		};
+
+	const [medFormData, setMedFormData] = useState(defaultFormData);
 
 	const handleChange = (event) => {
 		const { name, value } = event.target;
-		props.setMedFormData({ ...props.medFormData, [name]: value });
+		setMedFormData({ ...medFormData, [name]: value });
+		console.log(medFormData);
 	};
 
 	const [addMed] = useMutation(ADD_MED, {
-		update(cache, { data: { addMed } }) {
-			try {
-				console.log('now adding');
-				const { meds } = cache.readQuery({ query: QUERY_MEDS });
+		// THIS IS COMMENTED OUT BECAUSE IT WAS NOT ALLOWING THE PAGE TO RELOAD WITH NEW DATA AUTOMATICALLY
+		// -------------------------------------------------------
+		// update(cache, { data: { addMed } }) {
+		// 	try {
+		// 		console.log('now adding');
+		// 		const { meds } = cache.readQuery({ query: QUERY_MEDS });
 
-				cache.writeQuery({
-					query: QUERY_MEDS,
-					data: { meds: [...meds, addMed] },
-				});
-			} catch (e) {
-				console.error(e);
-			}
+		// 		cache.writeQuery({
+		// 			query: QUERY_MEDS,
+		// 			data: { meds: [...meds, addMed] },
+		// 		});
+		// 	} catch (e) {
+		// 		console.error(e);
+		// 	}
 
-			const { me } = cache.readQuery({ query: QUERY_ME });
-			cache.writeQuery({
-				query: QUERY_ME,
-				data: { me: { ...me, userMeds: [...me.userMeds, addMed] } },
-			});
-		},
+		// 	const { me } = cache.readQuery({ query: QUERY_ME });
+		// 	cache.writeQuery({
+		// 		query: QUERY_ME,
+		// 		data: { me: { ...me, userMeds: [...me.userMeds, addMed] } },
+		// 	});
+		// },
 		refetchQueries: [{ query: QUERY_MEDS }],
 	});
 
 	const [updateMed] = useMutation(UPDATE_MED, {
-		update(cache, { data: { updateMed } }) {
-			try {
-				console.log('now updateing');
-				const { meds } = cache.readQuery({ query: QUERY_MEDS });
+		// THIS IS COMMENTED OUT BECAUSE IT WAS NOT ALLOWING THE PAGE TO RELOAD WITH NEW DATA AUTOMATICALLY
+		// -------------------------------------------------------
+		// update(cache, { data: { updateMed } }) {
+		// 	try {
+		// 		console.log('now updateing');
+		// 		const { meds } = cache.readQuery({ query: QUERY_MEDS });
 
-				let index;
+		// 		let index;
 
-				for (var i = 0; i < meds.length; i++) {
-					var note = meds[i];
-					if (note._id === updateMed._id) {
-						index = i;
-					}
-				}
+		// 		for (var i = 0; i < meds.length; i++) {
+		// 			var note = meds[i];
+		// 			if (note._id === updateMed._id) {
+		// 				index = i;
+		// 			}
+		// 		}
 
-				const prev = meds.slice(0, index);
-				const after = meds.slice(index + 1);
+		// 		const prev = meds.slice(0, index);
+		// 		const after = meds.slice(index + 1);
 
-				cache.writeQuery({
-					query: QUERY_MEDS,
-					data: { meds: [...prev, updateMed, ...after] },
-				});
+		// 		cache.writeQuery({
+		// 			query: QUERY_MEDS,
+		// 			data: { meds: [...prev, updateMed, ...after] },
+		// 		});
 
-				const { me } = cache.readQuery({ query: QUERY_ME });
+		// 		const { me } = cache.readQuery({ query: QUERY_ME });
 
-				const userprev = me.userMeds.slice(0, index);
-				const userafter = me.userMeds.slice(index + 1);
+		// 		const userprev = me.userMeds.slice(0, index);
+		// 		const userafter = me.userMeds.slice(index + 1);
 
-				cache.writeQuery({
-					query: QUERY_ME,
-					data: {
-						me: { ...me, userMeds: [...userprev, updateMed, ...userafter] },
-					},
-				});
-			} catch (e) {
-				console.error(e);
-			}
-		},
+		// 		cache.writeQuery({
+		// 			query: QUERY_ME,
+		// 			data: {
+		// 				me: { ...me, userMeds: [...userprev, updateMed, ...userafter] },
+		// 			},
+		// 		});
+		// 	} catch (e) {
+		// 		console.error(e);
+		// 	}
+		// },
 		refetchQueries: [{ query: QUERY_MEDS }],
 	});
 	// refetchQueries: [
@@ -110,52 +128,36 @@ const MedForm = (props) => {
 		} else {
 			medSettings.remindersBool = false;
 		}
+
+		medSettings.maxDailyDoses = Number(medSettings.maxDailyDoses);
+		medSettings.minTimeBetween = Number(medSettings.minTimeBetween);
 		console.log(medSettings);
-
+		
+		console.log(mutation);
 		try {
-			console.log(props.mutation);
 
-			if (props.mutation === 'ADD_MED') {
+			if (mutation === 'ADD_MED') {
 				const { data } = await addMed({
 					variables: { medSettings: medSettings },
 				});
-				// try {
-				// 	if (medFormData.remindersBool === "on") {
-				// 		setMedFormData({ ...medFormData, remindersBool: true });
-				// 	}
-				// 	const { data } = await addMed(
-				// 		{
-				// 			variables: { medSettings: medFormData },
-				// 		},
-				// 		{
-				// 			refetchQueries: [
-				// 				QUERY_MEDS, // DocumentNode object parsed with gql
-				// 				'Meds' // Query name
-				// 			],
-				// 		}
-				// 	);
 
 				console.log('med added');
-				console.log(data.addMed);
+				console.log(data);
 
-				props.setMedFormData({
-					medId: '',
-					medName: '',
-					maxDailyDoses: 0,
-					minTimeBetween: 4,
-					remindersBool: false,
-				});
+				setMedFormData(defaultFormData);
 			}
 
-			if (props.mutation === 'UPDATE_MED') {
+			if (mutation === 'UPDATE_MED') {
+				medSettings.medId = _id;
+				console.log(medSettings);
 				const { data } = await updateMed({
 					variables: {
-						medData: medSettings,
+						medData: { ...medSettings},
 					},
 				});
 
 				console.log('med updated');
-				console.log(data.updateMed);
+				console.log(data);
 			}
 		} catch (err) {
 			console.error(err);
@@ -173,7 +175,7 @@ const MedForm = (props) => {
 						type="text"
 						name="medName"
 						id="medName-input"
-						value={props.medFormData.medName}
+						value={medFormData.medName}
 						onChange={handleChange}
 						placeholder="Enter the medication name"
 					/>
@@ -184,9 +186,8 @@ const MedForm = (props) => {
 						type="number"
 						name="maxDailyDoses"
 						id="maxDailyDoses-input"
-						value={props.medFormData.maxDailyDoses}
+						value={medFormData.maxDailyDoses}
 						onChange={handleChange}
-						placeholder="0"
 					/>
 				</Form.Group>
 				<Form.Group>
@@ -195,9 +196,8 @@ const MedForm = (props) => {
 						type="number"
 						name="minTimeBetween"
 						id="minTimeBetween-input"
-						value={props.medFormData.minTimeBetween}
+						value={medFormData.minTimeBetween}
 						onChange={handleChange}
-						placeholder="4"
 					/>
 				</Form.Group>
 				<Form.Group>
@@ -210,7 +210,7 @@ const MedForm = (props) => {
 						label="Reminders"
 					/>
 				</Form.Group>
-				{props.mutation === 'ADD_MED' ? (
+				{mutation === 'ADD_MED' ? (
 					<Button type="sumbit" onClick={handleFormSubmit}>
 						Add Medication
 					</Button>

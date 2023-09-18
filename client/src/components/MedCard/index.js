@@ -9,26 +9,28 @@ import { Container, Row, Col, Button, Form, Card } from "react-bootstrap";
 import MedForm from "../../components/MedForm";
 
 const MedCard = (props) => {
+  console.log('MedCard');
   const [isUpdated, setIsUpdated] = useState(false);
-  const [medFormData, setMedFormData] = useState({
-    medId: props.medId,
-    medName: props.medName,
-    maxDailyDoses: props.maxDailyDoses,
-    minTimeBetween: props.minTimeBetween,
-    remindersBool: props.remindersBool,
-  });
+  console.log(props);
+  const { _id, medName, maxDailyDoses, minTimeBetween, remindersBool } = props.med;
 
   if (!isUpdated) {
     return (
+
       <Container key={medFormData.medId}>
         <Card.Body className="card">
         <i class="gg-pill"></i>
           <Card.Title>{medFormData.medName}</Card.Title>
+
+      <Container key={_id}>
+        <Card.Body>
+          <Card.Title>{medName}</Card.Title>
+
           <Card.Text>
-            Max. daily doses: {medFormData.maxDailyDoses} times
+            Max. daily doses: {maxDailyDoses} times
           </Card.Text>
           <Card.Text>
-            Min. time between: {medFormData.minTimeBetween} hours
+            Min. time between: {minTimeBetween} hours
           </Card.Text>
           <Button
             variant="primary"
@@ -43,20 +45,16 @@ const MedCard = (props) => {
     );
   } else {
     return (
-      <Container key={medFormData.medId}>
-        <MedForm
-          medFormData={medFormData}
-          setMedFormData={setMedFormData}
-          mutation="UPDATE_MED"
-        />
-        <Button
+      <Container key={_id}>
+        <MedForm mutation="UPDATE_MED" _id={_id} />
+        {/* <Button
           variant="primary"
           onClick={() => {
             setIsUpdated(false);
           }}
         >
           Save
-        </Button>
+        </Button> */}
       </Container>
     );
   }
