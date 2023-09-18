@@ -9,6 +9,7 @@ import Calendar from 'react-calendar';
 import { Accordion, Container, Row, Col, Card, ListGroup } from 'react-bootstrap';
 import AddDoseButton from '../components/AddDoseButton';
 import MedCards from '../components/MedCards';
+import Reminder from '../components/Reminder';
 
 import 'react-calendar/dist/Calendar.css';
 
@@ -16,16 +17,20 @@ const MedicationReminder = () => {
 	// const { today, setToday } = useContext(TodayContext);
 	// console.log(today);
 	const dateToday = splitDate(new Date());
-	
+
 	// setToday(dateToday);
-	
+
 	// console.log(today);
 	const [calendarValue, setCalendarValue] = useState(dateToday);
 
-	const { loading: medsLoading, data: medsData, error } = useQuery(QUERY_MEDS, {
-		variables: { 
+	const {
+		loading: medsLoading,
+		data: medsData,
+		error,
+	} = useQuery(QUERY_MEDS, {
+		variables: {
 			today: dateToday,
-		}
+		},
 	});
 
 	if (error) console.log(error);
@@ -66,21 +71,7 @@ const MedicationReminder = () => {
 									{/* Example: <ReminderComponent /> */}
 								</div>
 								<hr className="cal"></hr>
-								<ListGroup className="list">
-									<ListGroup.Item>Medication 1: time logged</ListGroup.Item>
-									<hr></hr>
-									<ListGroup.Item>Medication 2: time logged</ListGroup.Item>
-									<hr></hr>
-									<ListGroup.Item>Medication 1: time logged</ListGroup.Item>
-									<hr></hr>
-									<ListGroup.Item>Medication 2: time logged</ListGroup.Item>
-									<hr></hr>
-									<ListGroup.Item>Medication 3: time logged</ListGroup.Item>
-									<hr></hr>
-									<ListGroup.Item>Medication 3: time logged</ListGroup.Item>
-									<hr></hr>
-									<ListGroup.Item>Medication 2: time logged</ListGroup.Item>
-								</ListGroup>
+								<Reminder value={calendarValue} />
 							</Col>
 						</div>
 					</Row>
@@ -89,4 +80,5 @@ const MedicationReminder = () => {
 		</main>
 	);
 };
+
 export default MedicationReminder;

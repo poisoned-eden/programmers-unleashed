@@ -26,8 +26,9 @@ const typeDefs = gql`
 
 	type Dose {
 		_id: ID!
-		userId: User
-		medId: Med
+		userId: ID
+		medId: ID
+		medName: String
 		doseDate: String
 		doseTime: String
 		doseLogged: String
@@ -57,6 +58,7 @@ const typeDefs = gql`
 
 	input DoseInput {
 		medId: ID
+		medName: String
 		doseDate: String
 		doseTime: String
 		doseLogged: String
@@ -73,7 +75,7 @@ const typeDefs = gql`
 	type Query {
 		med(medId: ID): Med
 		meds: [Med]
-		dosesByDate(date: String): [Dose]
+		dosesByDate(doseDate: String): [Dose]
 		me: User
 	}
 

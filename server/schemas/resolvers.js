@@ -18,8 +18,7 @@ const resolvers = {
 				try {
 					const userData = await User.findOne({
 						_id: context.user._id,
-					})
-					.populate('userMeds');
+					}).populate('userMeds');
 					console.log(userData);
 					return userData;
 				} catch (err) {
@@ -35,15 +34,15 @@ const resolvers = {
 					const medsData = await Med.find({
 						userId: context.user._id,
 					})
-					.populate('mostRecentDose')
-					.populate({
-						path: 'doses',
-						options: {
-							sort: {
-								doseLogged: -1,
+						.populate('mostRecentDose')
+						.populate({
+							path: 'doses',
+							options: {
+								sort: {
+									doseLogged: -1,
+								},
 							},
-						},
-					});
+						});
 					console.log(medsData);
 
 					return medsData;
@@ -71,13 +70,15 @@ const resolvers = {
 			throw new AuthenticationError('You need to be logged in!');
 		},
 
-		dosesByDate: async (parent, { date }, context) => {
+		dosesByDate: async (parent, { doseDate }, context) => {
 			if (context.user) {
 				try {
 					const doseData = await Dose.find({
 						userId: context.user._id,
-						doseDate: date,
-					});
+						doseDate: doseDate,
+					}).populate('medId');
+
+					console.log(doseData);
 
 					return doseData;
 				} catch (err) {
@@ -146,22 +147,23 @@ const resolvers = {
 		},
 
 		addDose: async (parent, { doseData }, context) => {
-			const { medId, doseDate, doseTime, doseLogged, mostRecentBool } = doseData;
+			const { medId, medName, doseDate, doseTime, doseLogged, mostRecentBool } = doseData;
 
 			console.log('addDose resolver');
-			console.log({ medId, doseDate, doseTime, doseLogged, mostRecentBool });
+			console.log({ medId, medName, doseDate, doseTime, doseLogged, mostRecentBool });
 			if (context.user) {
 				console.log('context.user exists');
 				try {
 					const newDose = await Dose.create({
 						userId: context.user._id,
 						medId: medId,
+						medName: medName,
 						doseDate: doseDate,
 						doseTime: doseTime,
 						doseLogged: doseLogged,
 					});
 					console.log(newDose);
-					
+
 					// if the dose is logged at a time before the mostRecent time, just update normally
 					if (mostRecentBool) {
 						const updateMed = await Med.findOneAndUpdate(
@@ -172,15 +174,15 @@ const resolvers = {
 							},
 							{ new: true },
 						)
-						.populate('mostRecentDose')
-						.populate({
-							path: 'doses',
-							options: {
-								sort: {
-									doseLogged: -1,
+							.populate('mostRecentDose')
+							.populate({
+								path: 'doses',
+								options: {
+									sort: {
+										doseLogged: -1,
+									},
 								},
-							},
-						});
+							});
 						console.log(updateMed);
 						return newDose;
 					} else {
@@ -191,15 +193,15 @@ const resolvers = {
 							},
 							{ new: true },
 						)
-						.populate('mostRecentDose')
-						.populate({
-							path: 'doses',
-							options: {
-								sort: {
-									doseLogged: -1,
+							.populate('mostRecentDose')
+							.populate({
+								path: 'doses',
+								options: {
+									sort: {
+										doseLogged: -1,
+									},
 								},
-							},
-						});
+							});
 						console.log(updateMed);
 
 						return newDose;

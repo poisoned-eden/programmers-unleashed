@@ -40,6 +40,7 @@ export const ADD_DOSE = gql`
 	mutation AddDose($doseData: DoseInput!, $mostRecentBool: Boolean!) {
 		addDose(doseData: $doseData, mostRecentBool: $mostRecentBool) {
 			_id
+			medName
 			doseDate
 			doseTime
 			doseLogged
