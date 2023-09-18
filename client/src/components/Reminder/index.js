@@ -20,9 +20,9 @@ const MedCard = (props) => {
         return medData
     }
   
-	const { loading, data, error } = useQuery(QUERY_BYDATE, {
+	const { loading, data } = useQuery(QUERY_BYDATE, {
 		variables: { 
-			doseDate: dateSelected,
+			doseDate: '2023-09-18',
 		}
 	});
 

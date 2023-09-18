@@ -80,7 +80,7 @@ const resolvers = {
 					const doseData = await Dose.find({
 						userId: context.user._id,
 						doseDate: doseDate,
-					}).populate('medId');
+					});
 					
 					// const medData = doseData.map(async (dose) => {
 					// 	return await Med.find({
