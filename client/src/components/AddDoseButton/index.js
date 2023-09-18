@@ -40,6 +40,7 @@ const AddDoseButton = ({ med }) => {
 		// 		console.error(e);
 		// 	}
 		// },
+		// TODO update query and makeVar in cache
 	});
 
 	const { _id, minTimeBetween, maxDailyDoses, doses, mostRecentDose } = med;

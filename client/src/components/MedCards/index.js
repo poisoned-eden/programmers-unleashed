@@ -11,6 +11,7 @@ import 'react-calendar/dist/Calendar.css';
 import { forEach } from 'lodash';
 
 const MedCards = ({ med }) => {
+	// TODO add card for if no meds
 	// const { today } = useContext(TodayContext);
 	const past24hr = makeVar([]);
 	
