@@ -9,14 +9,16 @@ import { Container, Row, Col, Button, Form } from 'react-bootstrap';
 import { QUERY_MEDS, QUERY_ME } from '../../utils/queries';
 
 const MedForm = (props) => {
-	const { mutation } = props;
-	const [medFormData, setMedFormData] = useState({
-		medId: '',
-		medName: '',
-		maxDailyDoses: 0,
-		minTimeBetween: 4,
-		remindersBool: 'off',
-	});
+	const { mutation, _id } = props;
+
+	const defaultFormData = {
+			medName: '',
+			maxDailyDoses: 0,
+			minTimeBetween: 4,
+			remindersBool: 'off',
+		};
+
+	const [medFormData, setMedFormData] = useState(defaultFormData);
 
 	const handleChange = (event) => {
 		const { name, value } = event.target;
@@ -146,26 +148,20 @@ const MedForm = (props) => {
 				// 	);
 
 				console.log('med added');
-				console.log(data.addMed);
+				console.log(data);
 
-				setMedFormData({
-					medId: '',
-					medName: '',
-					maxDailyDoses: 0,
-					minTimeBetween: 4,
-					remindersBool: false,
-				});
+				setMedFormData(defaultFormData);
 			}
 
 			if (mutation === 'UPDATE_MED') {
 				const { data } = await updateMed({
 					variables: {
-						medData: medSettings,
+						medData: { ...medSettings, _id},
 					},
 				});
 
 				console.log('med updated');
-				console.log(data.updateMed);
+				console.log(data);
 			}
 		} catch (err) {
 			console.error(err);
