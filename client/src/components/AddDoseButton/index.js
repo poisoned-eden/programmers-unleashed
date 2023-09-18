@@ -2,7 +2,7 @@ import React, { useContext, useState } from 'react';
 import { useQuery, useMutation, makeVar } from '@apollo/client';
 import { QUERY_ME, QUERY_MEDS } from '../../utils/queries';
 import { ADD_DOSE } from '../../utils/mutations';
-import { setDoseLoggedTime, splitDate, splitTime, dateTimeFormat } from '../../utils/dtUtils';
+import { setDoseLoggedTime, splitDate, splitTime, splitDateTime, dateTimeFormat } from '../../utils/dtUtils';
 import { TodayContext } from '../../utils/TodayContext';
 
 import dayjs from 'dayjs';
@@ -14,7 +14,17 @@ import { Button, InputGroup, Form, Alert } from 'react-bootstrap';
 
 const AddDoseButton = ({ med }) => {
 	// const { today, setToday } = useContext(TodayContext);
-	const today = new Date();
+	const now = new Date();
+	const nowISO = now.toISOString();
+	// console.log(nowISO);
+	const nowDate = splitDate(now);
+	// console.log(now);
+	// console.log(nowDate);
+	const nowTime = splitTime(now);
+	// console.log(nowTime);
+	const nowDateTime = splitDateTime(now);
+
+	const [inputDateTimeValue, setInputDateTimeValue] = useState(nowDateTime);
 
 	const [addDose, { error }] = useMutation(ADD_DOSE, {
 		refetchQueries: ['Meds'],
@@ -32,24 +42,29 @@ const AddDoseButton = ({ med }) => {
 		// },
 	});
 
-	const [doseTime, setDoseTime] = useState(splitTime());
-
 	const { _id, minTimeBetween, maxDailyDoses, doses, mostRecentDose } = med;
 
 	const handleChange = async (event) => {
 		// console.log(event.target.value);
-		await setDoseTime(event.target.value);
+		await setInputDateTimeValue(event.target.value);
 		// console.log(doseTime);
 	};
 
 	const handleDoseClick = async ({ event, nowBool }) => {
 		event.preventDefault();
-		let doseLogged = setDoseLoggedTime(doseTime);
-		if (nowBool) {
-			doseLogged = new Date().toISOString();
+		// console.log(inputDateTimeValue);
+		
+		let doseLogged = nowDateTime;
+		
+		if (!nowBool) {
+			doseLogged = inputDateTimeValue;
 		}
-		const doseDate = today;
-		console.log({ doseLogged, doseDate });
+
+		const doseDate = doseLogged.split('T')[0];
+		const doseTime = doseLogged.split('T')[1];
+		
+		console.log({ doseLogged, doseDate, doseTime });
+
 		let mostRecentBool = true;
 		if (mostRecentDose && doseLogged.valueOf() < mostRecentDose.doseLogged.valueOf()) {
 			mostRecentBool = false;
@@ -62,10 +77,11 @@ const AddDoseButton = ({ med }) => {
 			doseLogged: doseLogged,
 		};
 
-		console.log(doseData);
+		console.log({ doseData, mostRecentBool });
+		//  TODO set an alert to pop up if logging in the future
 
 		try {
-			const { data } = await addDose({
+			const { data, loading: doseLoading } = await addDose({
 				variables: {
 					doseData: doseData,
 					mostRecentBool: mostRecentBool,
@@ -82,7 +98,7 @@ const AddDoseButton = ({ med }) => {
 		<>
 			<InputGroup>
 				<Button onClick={(event) => handleDoseClick({ event, nowBool: true })}>Log now</Button>
-				<Form.Control aria-label="The time of the dose" type="time" value={doseTime} onChange={handleChange} />
+				<Form.Control aria-label="The time of the dose" type="datetime-local" value={inputDateTimeValue} onChange={handleChange} />
 				<Button onClick={(event) => handleDoseClick({ event, nowBool: false })}>Log at time</Button>
 			</InputGroup>
 			{error && <Alert>Logging dose failed. Please try again.</Alert>}

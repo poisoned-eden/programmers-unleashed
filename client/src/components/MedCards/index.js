@@ -19,32 +19,28 @@ const MedCards = ({ med }) => {
 	const now = new Date(); // returns date time that's an hour early
 	const nowMs = now.getTime();  // returns integer of ms
 	const yesterdayMs = now - ( 1000 * 60 * 60 * 24 ); 
-	console.log( 'now ' + now ); 
-	console.log( 'now datestring ' + now.toString() );  // returns an hour early
-	console.log( 'nowms datestring ' + new Date(nowMs).toString() ); // returns correct time
-	console.log( 'nowMs ' + nowMs);  // returns integer of ms
-	console.log( 'pastMs ' + yesterdayMs );  // returns integer of ms
-	console.log( 'pastMs string ' + new Date(yesterdayMs).toString() ); // returns correct time 1 day ago
-
-	// TODO set conditional empty list saying "no doses in last 24hrs" in dropdown
+	// console.log( 'now ' + now ); 
+	// console.log( 'now datestring ' + now.toString() );  // returns an hour early
+	// console.log( 'nowms datestring ' + new Date(nowMs).toString() ); // returns correct time
+	// console.log( 'nowMs ' + nowMs);  // returns integer of ms
+	// console.log( 'pastMs ' + yesterdayMs );  // returns integer of ms
+	// console.log( 'pastMs string ' + new Date(yesterdayMs).toString() ); // returns correct time 1 day ago
 
 	for ( const key in doses ) {
 		// getTime of dose
 		const doseMs = new Date(doses[key].doseLogged).getTime(); // TODO consider adding ms field to dose
-		console.log('doseMs ' + doseMs);
+		// console.log('doseMs ' + doseMs);
 
 		if (doseMs > yesterdayMs) {
 			// put into array
 
 			past24hr([...past24hr(), doses[key]]);
-			console.log(past24hr());
+			// console.log(past24hr());
 		}
 		// console.log(doses[key]);
 	}
 
 	const numDosesToday = past24hr().length || 0;
-
-	console.log(splitTime(new Date()));
 
 	return (
 		<Card className="card3" key={_id}>
@@ -56,7 +52,7 @@ const MedCards = ({ med }) => {
 						Doses today: {numDosesToday}
 						{maxDailyDoses > 0 && `/${maxDailyDoses}`}
 					</ListGroup.Item>
-					{numDosesToday > 0 ? 
+					{mostRecentDose ? 
 						(<>
 							<ListGroup.Item>Last taken Today at {mostRecentDose.doseTime}</ListGroup.Item>
 
@@ -76,11 +72,18 @@ const MedCards = ({ med }) => {
 				<Accordion>
 					<Accordion.Header>Dose schedule</Accordion.Header>
 					<Accordion.Body>
-						<ul>
-							{doses.map((dose) => (
-								<li key={dose._id}>{dose.doseTime}</li>
-							))}
-						</ul>
+						{numDosesToday ? 
+							<ul>
+								{past24hr().map((dose) => (
+									<li key={dose._id}>{dose.doseTime}</li>
+								))}
+							</ul>
+						: 
+							<em>
+								Not taken in the past 24hrs'
+
+							</em>
+						}
 					</Accordion.Body>
 				</Accordion>
 			</Card.Footer>

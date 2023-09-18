@@ -60,3 +60,16 @@ export function setDoseLoggedTime(doseTime) {
 	// console.log(new Date(loggedTime).toString());
 	return new Date(loggedTime).toString();
 }
+
+export function splitDateTime(dateTime) {
+	const dtObj = new Date(dateTime);
+	// console.log(dtObj);
+	const ISOString = dtObj.toISOString();
+	// console.log(typeof dtObj);
+	// console.log(ISOString);
+	const split = ISOString.split(':');
+	// console.log(split);
+	const dtSplitString = `${split[0]}:${split[1]}`
+	// console.log(dtSplitString);
+	return dtSplitString;
+}
