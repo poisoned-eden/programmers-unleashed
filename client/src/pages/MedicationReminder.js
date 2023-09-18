@@ -12,6 +12,9 @@ import MedCards from '../components/MedCards';
 
 import 'react-calendar/dist/Calendar.css';
 
+
+
+
 const MedicationReminder = () => {
 	// const { today, setToday } = useContext(TodayContext);
 	// console.log(today);
@@ -67,19 +70,25 @@ const MedicationReminder = () => {
 								</div>
 								<hr className="cal"></hr>
 								<ListGroup className="list">
-									<ListGroup.Item>Medication 1: time logged</ListGroup.Item>
+									<ListGroup.Item className='medication-item'>Medication 1: time logged </ListGroup.Item> <div className='clock'>🕗</div>
 									<hr></hr>
-									<ListGroup.Item>Medication 2: time logged</ListGroup.Item>
+									<ListGroup.Item className='medication-item'>Medication 2: time logged </ListGroup.Item>
+                  <div className='clock2'>🕗</div>
 									<hr></hr>
-									<ListGroup.Item>Medication 1: time logged</ListGroup.Item>
+									<ListGroup.Item className='medication-item'>Medication 1: time logged </ListGroup.Item>
+                  <div className='clock3'>🕗</div>
 									<hr></hr>
-									<ListGroup.Item>Medication 2: time logged</ListGroup.Item>
+									<ListGroup.Item className='medication-item'>Medication 2: time logged </ListGroup.Item>
+                  <div className='clock4'>🕗</div>
 									<hr></hr>
-									<ListGroup.Item>Medication 3: time logged</ListGroup.Item>
+									<ListGroup.Item className='medication-item'>Medication 3: time logged </ListGroup.Item>
+                  <div className='clock5'>🕗</div>
 									<hr></hr>
-									<ListGroup.Item>Medication 3: time logged</ListGroup.Item>
+									<ListGroup.Item className='medication-item'>Medication 3: time logged </ListGroup.Item>
+                  <div className='clock6'>🕗</div>
 									<hr></hr>
-									<ListGroup.Item>Medication 2: time logged</ListGroup.Item>
+									<ListGroup.Item className='medication-item'>Medication 2: time logged </ListGroup.Item>
+                  <div className='clock7'>🕗</div>
 								</ListGroup>
 							</Col>
 						</div>
@@ -89,4 +98,5 @@ const MedicationReminder = () => {
 		</main>
 	);
 };
+
 export default MedicationReminder;

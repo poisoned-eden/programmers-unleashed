@@ -21,7 +21,8 @@ const MedCard = (props) => {
   if (!isUpdated) {
     return (
       <Container key={medFormData.medId}>
-        <Card.Body>
+        <Card.Body className="card">
+        <i class="gg-pill"></i>
           <Card.Title>{medFormData.medName}</Card.Title>
           <Card.Text>
             Max. daily doses: {medFormData.maxDailyDoses} times

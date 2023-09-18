@@ -5,11 +5,16 @@
  * 1. Correct the line height in all browsers.
  * 2. Prevent adjustments of font size after orientation changes in iOS.
  */
+
+ @import url('https://unpkg.com/css.gg@2.0.0/icons/css/pill.css');
+ @import url('https://unpkg.com/css.gg@2.0.0/icons/css/edit-contrast.css');
+
  
 html {
   line-height: 1.15;
   /* 1 */
   -webkit-text-size-adjust: 100%;
+  
   /* 2 */
 }
 
@@ -21,6 +26,7 @@ html {
 body {
   margin: 0;
   font-family: 'PT Sans', sans-serif;
+  
 }
 
 /**
@@ -31,10 +37,9 @@ main {
 }
 
 .bg-colour {
-
-  background: #0575E6;  /* fallback for old browsers */
-background: -webkit-linear-gradient(to right, #021B79, #0575E6);  /* Chrome 10-25, Safari 5.1-6 */
-background: linear-gradient(to right, #021B79, #0575E6); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+    background: #0575E6; 
+    background: -webkit-linear-gradient(to right, #021B79, #0575E6);  
+    background: linear-gradient(to right, #021B79, #0575E6); 
 
   /* background-color: #04268d; */
   /* background-color: #5cbdea; */
@@ -375,6 +380,10 @@ body {
     "Segoe UI Symbol";
   font-size: 16px;
   color: #1a1a1a;
+}
+
+.medbod {
+background-color: #000000;
 }
 
 h1,
@@ -1150,7 +1159,6 @@ background-color: #006edc;
 .btn-17:after {
   --progress: 0%;
   left: calc(50% + 50% * var(--skew));
-  top: 102%;
   z-index: -1;
 }
 
@@ -2080,6 +2088,57 @@ label form [type="radio"] {
   }
 }
 
+/* profile page */
+
+div.form-card {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5em;
+  border-radius: 25px;
+  padding: 0.6em;
+  /* border: none; */
+  outline: inset;
+  color: #7AD7F0;
+  background-color: #171717;
+  box-shadow: inset 2px 5px 10px rgb(5, 5, 5);
+  width: fit-content;
+  margin: auto;
+}
+
+div.flex-row.justify-center.mb-3 {
+  width: 35rem;
+  padding: 17px;
+}
+
+div.card.card-body {
+  margin-top: 10px;
+  background-color: #006edc;
+  border-radius: 10px;
+  padding: 13px;
+  width: 27rem;
+  margin-left: 73px;
+  
+}
+
+div.medform1{
+  width: inherit;
+}
+
+h3.medtitle {
+ text-align: center;
+}
+
+hr.profilehr {
+  margin-top: 1rem;
+  margin-bottom: 1rem;
+  border: 0;
+  border-top: 1px solid rgba(0, 0, 0, .1);
+  width: 28rem;
+  color: #0575E6;
+  background-color: #0575E6;
+}
+
 /* animation */
 
 .loader-container {
@@ -2186,16 +2245,138 @@ div.list.list-group {
   height: 270px;
 }
   
-div.list-group-item {
+div.medication-item.list-group-item {
   background-color: rgb(255 255 255 / 0%);
   border-color: cornflowerblue;
   border: none;
 }
 
+div.dose.list-group-item {
+  background: none;
+  text-align:start ;
+  left: 1%;
+}
+
+/* dose schedule dropdown */
+
+button.accordion-button.collapsed {
+  border-radius: 6px;
+}
+
+button.accordion-button.collapsed:active {
+  border-radius: 6px;
+}
+
+button.btn.btn-primary {
+  border: none;
+}
+
+/* pill icon in cards/next to medication name */
+
+.gg-pill,
+.gg-pill::after {
+ display: block;
+ box-sizing: border-box;
+ width: 12px
+}
+
+.gg-pill {
+  border-top-left-radius: 140px;
+  border-top-right-radius: 140px;
+  border: 2px solid;
+  transform: rotate(45deg) scale(var(--ggs,1));
+  position: relative;
+  height: 14px;
+  top: 17px; 
+  left: 5px;
+  margin-top: -18px;
+}
 
 
+.gg-pill::after {
+ content: "";
+ position: absolute;
+ height: 12px;
+ background: currentColor;
+ left: -2px;
+ bottom: -12px;
+ border-bottom-left-radius: 140px;
+ border-bottom-right-radius: 140px
+} 
 
+.gg-edit-contrast {
+  box-sizing: border-box;
+  position: relative;
+  display: block;
+  transform: scale(var(--ggs,1));
+  width: 16px;
+  height: 16px;
+  border: 2px solid transparent;
+  box-shadow: 0 0 0 2px;
+  border-radius: 100px;
+  top: 29px;
+  right: 6px;
+  overflow: hidden;
+  margin-top: -17px;
 
+ }
+ 
+ .gg-edit-contrast::before {
+  content: "";
+  display: block;
+  box-sizing: border-box;
+  position: absolute;
+  width: 6px;
+  height: 12px;
+  background: currentColor
+ } 
+
+ div.card-title.h5 {
+  left: 26px;
+  position: relative;
+ }
+
+div.clock {
+  left: 90%;
+  bottom: 84%;
+  position: absolute;
+}
+
+div.clock2 {
+  left: 90%;
+  bottom: 57%;
+  position: absolute;
+}
+
+div.clock3 {
+  left: 90%;
+  bottom: 30%;
+  position: absolute;
+}
+
+div.clock4 {
+  left: 90%;
+  bottom: 3%;
+  position: absolute;
+}
+
+div.clock5 {
+  left: 90%;
+  bottom: -25%;
+  position: absolute;
+}
+
+div.clock6 {
+  left: 90%;
+  bottom: -53%;
+  position: absolute;
+}
+
+div.clock7 {
+  left: 90%;
+  bottom: -80%;
+  position: absolute;
+}
 
 @media screen and (max-width: 768px) {
   .loader-container {
