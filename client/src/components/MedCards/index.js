@@ -45,12 +45,14 @@ const MedCards = ({ med }) => {
 
 	return (
 		<Card className="card3" key={_id}>
+			<i class="gg-pill"></i>
 			<Card.Title>{medName}</Card.Title>
 			<Card.Body>
-				<span className="medication-icon">Icon 1/2/3</span>
+				<span className="medication-icon"></span>
 				<ListGroup variant="flush">
-					<ListGroup.Item>
-						Doses today: {numDosesToday}
+				<i class="gg-edit-contrast"></i>
+					<ListGroup.Item className='dose' >
+					 Doses today: {numDosesToday}
 						{maxDailyDoses > 0 && `/${maxDailyDoses}`}
 					</ListGroup.Item>
 					{mostRecentDose ? 
@@ -70,7 +72,7 @@ const MedCards = ({ med }) => {
 				<AddDoseButton med={med} />
 			</Card.Body>
 			<Card.Footer>
-				<Accordion>
+				<Accordion className='schedule'>
 					<Accordion.Header>Dose schedule</Accordion.Header>
 					<Accordion.Body>
 						{numDosesToday ? 

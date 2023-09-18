@@ -14,11 +14,11 @@ const Profile = () => {
 	console.log('Profile');
 	const { loading: meLoading, data: meData } = useQuery(QUERY_ME);
 	const { loading: medsLoading, data: medsData } = useQuery(QUERY_MEDS);
-	
+
 	if (medsLoading) return <h1>loading your meds info...</h1>;
 
 	console.log(meData);
-	
+
 	if (meLoading) {
 		return <div>Loading...</div>;
 	}

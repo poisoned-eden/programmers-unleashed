@@ -8,6 +8,7 @@ import { Container, Row, Col, Button, Form } from 'react-bootstrap';
 // import { Container, Row, Col, Button, Form } from 'react-bootstrap';
 import { QUERY_MEDS, QUERY_ME } from '../../utils/queries';
 
+
 const MedForm = (props) => {
 	console.log('MedForm');
 	
@@ -164,8 +165,8 @@ const MedForm = (props) => {
 	};
 
 	return (
-		<div>
-			<h3>What's your medication?</h3>
+		<div className='medform1'>
+			<h3 className='medtitle'>What's your medication?</h3>
 
 			<Form>
 				<Form.Group>
