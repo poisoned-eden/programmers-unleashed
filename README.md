@@ -24,9 +24,6 @@ Then I am presented with a responsive UI that looks good on all devices
 ## Project Product Description
 
 Our medication website, powered by Node.js and Express.js, delivers a seamless experience with cutting-edge technologies.
-We utilized two new technologies in this project.
-Firstly, we used svgator to generate the logo of our website
-and secondly, using Howler.js, we created an immersive audio player which enhanced the music discovery process for he user(s).
 Our API, built with Node.js and Express.js, utilises GraphQL and ensures efficient data retrieval and seamless addition of new content through queries and Mutations.
 Our database, powered by MongoDB and the Mongoose ORM, ensures reliable and scalable storage for music preferences.
 We incorporated authentication using express-session and cookies, guaranteeing privacy and prioritizing data protection by safeguarding API keys and sensitive information with environment variables.
