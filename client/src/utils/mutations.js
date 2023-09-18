@@ -56,8 +56,7 @@ export const UPDATE_MED = gql`
 			maxDailyDoses
 			minTimeBetween
 			remindersBool
-			mostRecentDose
-			doses {
+			mostRecentDose {
 				_id
 				doseDate
 				doseTime

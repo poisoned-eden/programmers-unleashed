@@ -49,8 +49,8 @@ const typeDefs = gql`
 	input MedUpdate {
 		medId: ID
 		medName: String!
-		maxDailyDoses: String
-		minTimeBetween: String
+		maxDailyDoses: Int
+		minTimeBetween: Int
 		remindersBool: Boolean
 		mostRecentDose: ID
 	}
