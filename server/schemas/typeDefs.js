@@ -17,9 +17,10 @@ const typeDefs = gql`
 		_id: ID
 		userId: User
 		medName: String!
-		maxDailyDoses: Int
-		minTimeBetween: Int
-		remindersBool: Boolean
+		maxDailyDoses: String
+		minTimeBetween: String
+		remindersBool: String
+		mostRecentTime: String
 		mostRecentDose: Dose
 		doses: [Dose]
 	}
@@ -41,17 +42,17 @@ const typeDefs = gql`
 	input MedInput {
 		medId: ID
 		medName: String!
-		maxDailyDoses: Int
-		minTimeBetween: Int
-		remindersBool: Boolean
+		maxDailyDoses: String
+		minTimeBetween: String
+		remindersBool: String
 	}
 
 	input MedUpdate {
 		medId: ID
 		medName: String!
-		maxDailyDoses: Int
-		minTimeBetween: Int
-		remindersBool: Boolean
+		maxDailyDoses: String
+		minTimeBetween: String
+		remindersBool: String
 		mostRecentDose: ID
 	}
 
@@ -73,7 +74,7 @@ const typeDefs = gql`
 	type Query {
 		med(medId: ID): Med
 		meds: [Med]
-		dosesByDate(date: String): [Dose]
+		dosesByDate(doseDate: String): [Dose]
 		me: User
 	}
 

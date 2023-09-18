@@ -13,8 +13,8 @@ const MedForm = (props) => {
 	const [medFormData, setMedFormData] = useState({
 		medId: '',
 		medName: '',
-		maxDailyDoses: 0,
-		minTimeBetween: 4,
+		maxDailyDoses: "0",
+		minTimeBetween: "4",
 		remindersBool: 'off',
 	});
 
@@ -112,14 +112,16 @@ const MedForm = (props) => {
 			event.stopPropagation();
 		}
 
+
+
 		console.log(medFormData);
 		const medSettings = medFormData;
 		console.log(medSettings);
-		if (medFormData.remindersBool === 'on') {
-			medSettings.remindersBool = true;
-		} else {
-			medSettings.remindersBool = false;
-		}
+		// if (medFormData.remindersBool === 'on') {
+		// 	medSettings.remindersBool = true;
+		// } else {
+		// 	medSettings.remindersBool = false;
+		// }
 		console.log(medSettings);
 
 		try {
@@ -151,9 +153,9 @@ const MedForm = (props) => {
 				setMedFormData({
 					medId: '',
 					medName: '',
-					maxDailyDoses: 0,
-					minTimeBetween: 4,
-					remindersBool: false,
+					maxDailyDoses: "0",
+					minTimeBetween: "4",
+					remindersBool: "off",
 				});
 			}
 

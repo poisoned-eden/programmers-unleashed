@@ -71,15 +71,28 @@ const resolvers = {
 			throw new AuthenticationError('You need to be logged in!');
 		},
 
-		dosesByDate: async (parent, { date }, context) => {
+		dosesByDate: async (parent, { doseDate }, context) => {
+			console.log('we are in the query dosesByDate')
+			console.log(doseDate)
+
 			if (context.user) {
 				try {
 					const doseData = await Dose.find({
 						userId: context.user._id,
-						doseDate: date,
-					});
+						doseDate: doseDate,
+					}).populate('medId');
+					
+					// const medData = doseData.map(async (dose) => {
+					// 	return await Med.find({
+					// 		userId: context.user._id,
+					// 		_id: dose.medId
+					// 	}).populate('doses')
+					// })
 
-					return doseData;
+					console.log(doseData)
+
+					return doseData
+
 				} catch (err) {
 					console.error(err);
 				}
@@ -122,6 +135,7 @@ const resolvers = {
 					maxDailyDoses: maxDailyDoses,
 					minTimeBetween: minTimeBetween,
 					remindersBool: remindersBool,
+					mostRecentTime: '',
 				});
 				console.log(newMed);
 

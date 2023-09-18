@@ -9,6 +9,7 @@ import Calendar from 'react-calendar';
 import { Accordion, Container, Row, Col, Card, ListGroup } from 'react-bootstrap';
 import AddDoseButton from '../components/AddDoseButton';
 import MedCards from '../components/MedCards';
+import Reminder from '../components/Reminder'
 
 import 'react-calendar/dist/Calendar.css';
 
@@ -36,8 +37,8 @@ const MedicationReminder = () => {
 	console.log(meds);
 
 	function onChangeCalendar(nextValue) {
+		console.log(nextValue);
 		setCalendarValue(splitDate(nextValue));
-		console.log(calendarValue);
 	}
 
 	return (
@@ -60,27 +61,10 @@ const MedicationReminder = () => {
 						<div className="card2">
 							<Col>
 								<h3 className="taken">Medications taken on</h3>
-								<Calendar onChange={onChangeCalendar} value={calendarValue} />
+								<Calendar onChange={onChangeCalendar} />
 								<div className="reminder">
-									{/* Add reminder component here */}
-									{/* Example: <ReminderComponent /> */}
-								</div>
-								<hr className="cal"></hr>
-								<ListGroup className="list">
-									<ListGroup.Item>Medication 1: time logged</ListGroup.Item>
-									<hr></hr>
-									<ListGroup.Item>Medication 2: time logged</ListGroup.Item>
-									<hr></hr>
-									<ListGroup.Item>Medication 1: time logged</ListGroup.Item>
-									<hr></hr>
-									<ListGroup.Item>Medication 2: time logged</ListGroup.Item>
-									<hr></hr>
-									<ListGroup.Item>Medication 3: time logged</ListGroup.Item>
-									<hr></hr>
-									<ListGroup.Item>Medication 3: time logged</ListGroup.Item>
-									<hr></hr>
-									<ListGroup.Item>Medication 2: time logged</ListGroup.Item>
-								</ListGroup>
+									<Reminder calendarValue = {calendarValue}/>
+								</div>								
 							</Col>
 						</div>
 					</Row>

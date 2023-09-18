@@ -10,16 +10,16 @@ const medSchema = new Schema({
 		required: true,
 	},
 	maxDailyDoses: {
-		type: Number,
-		default: 0,
+		type: String,
+		default: "0",
 	},
 	minTimeBetween: {
-		type: Number,
-		default: 0,
+		type: String,
+		default: "0",
 	},
 	remindersBool: {
-		type: Boolean,
-		default: false,
+		type: String,
+		default: "off",
 	},
 	mostRecentDose: {
 		type: Schema.Types.ObjectId,
