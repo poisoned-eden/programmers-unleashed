@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { Navigate } from 'react-router-dom';
 
 import { useQuery } from '@apollo/client';
 
@@ -25,9 +26,9 @@ const Profile = () => {
 
 	// const user = meData.me;
 
-	// if (!meData?.username) {
-	// 	return <h4>You need to be logged in to see this. Use the navigation links above to sign up or log in!</h4>;
-	// }
+	if (!meData) {
+		return <Navigate to="/" />;
+	}
 
 	return (
 		<div>
