@@ -23,11 +23,12 @@ Then I am presented with a responsive UI that looks good on all devices
 
 ## Project Product Description
 
-Our medication website, powered by Node.js and Express.js, delivers a seamless experience with cutting-edge technologies.
-Our API, built with Node.js and Express.js, utilises GraphQL and ensures efficient data retrieval and seamless addition of new content through queries and Mutations.
-Our database, powered by MongoDB and the Mongoose ORM, ensures reliable and scalable storage for music preferences.
+MediMate is an innovative health management platform designed to empower individuals on their journey to a healthier and happier life. It combines the power of a mobile app and a website to provide a seamless and holistic approach to health and wellness.
+MediMate is powered by Node.js and Express.js, delivers a seamless experience with cutting-edge technologies.
+It's API is built with Node.js and Express.js, utilises GraphQL and ensures efficient data retrieval and seamless addition of new content through queries and Mutations.
+It's database is powered by MongoDB and the Mongoose ORM, ensures reliable and scalable storage for music preferences.
 We incorporated authentication using express-session and cookies, guaranteeing privacy and prioritizing data protection by safeguarding API keys and sensitive information with environment variables.
-With our deployment on Heroku, access to our website is available anytime, anywhere, while enjoying a responsive and polished UI that adapts seamlessly to your device.
+It is deployed on Heroku for easy access and the website is available anytime, anywhere, while enjoying a responsive and polished UI that adapts seamlessly to your device.
 
 ## Usage
 When the user opens this application, they are first presented with the Sign up page. This contains a navigation bar at the top of the page with links to 'Login' & ‘Signup’ and a Sign Up form for the user to register their desired login details. When the user has finished registering their details and clicks the submit button. The user is redirected to the profile page which contains another form containing details of the medication and the option to input prescription details. 
