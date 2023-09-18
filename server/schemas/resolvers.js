@@ -80,16 +80,7 @@ const resolvers = {
 					const doseData = await Dose.find({
 						userId: context.user._id,
 						doseDate: doseDate,
-					});
-					
-					// const medData = doseData.map(async (dose) => {
-					// 	return await Med.find({
-					// 		userId: context.user._id,
-					// 		_id: dose.medId
-					// 	}).populate('doses')
-					// })
-
-					console.log(doseData)
+					})						
 
 					return doseData
 
@@ -160,7 +151,7 @@ const resolvers = {
 		},
 
 		addDose: async (parent, { doseData }, context) => {
-			const { medId, doseDate, doseTime, doseLogged, mostRecentBool } = doseData;
+			const { medId, medName, doseDate, doseTime, doseLogged, mostRecentBool } = doseData;
 
 			console.log('addDose resolver');
 			console.log({ medId, doseDate, doseTime, doseLogged, mostRecentBool });
@@ -170,6 +161,7 @@ const resolvers = {
 					const newDose = await Dose.create({
 						userId: context.user._id,
 						medId: medId,
+						medName: medName,
 						doseDate: doseDate,
 						doseTime: doseTime,
 						doseLogged: doseLogged,

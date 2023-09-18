@@ -15,7 +15,7 @@ const typeDefs = gql`
 
 	type Med {
 		_id: ID
-		userId: User
+		userId: ID
 		medName: String!
 		maxDailyDoses: String
 		minTimeBetween: String
@@ -27,8 +27,9 @@ const typeDefs = gql`
 
 	type Dose {
 		_id: ID!
-		userId: User
-		medId: Med
+		userId: ID
+		medId: ID
+		medName: String
 		doseDate: String
 		doseTime: String
 		doseLogged: String
@@ -58,6 +59,7 @@ const typeDefs = gql`
 
 	input DoseInput {
 		medId: ID
+		medName: String
 		doseDate: String
 		doseTime: String
 		doseLogged: String

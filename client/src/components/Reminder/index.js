@@ -9,9 +9,7 @@ import { ListGroup } from "react-bootstrap";
 import { useQuery } from '@apollo/client';
 import { QUERY_BYDATE } from '../../utils/queries';
 
-import MedForm from "../../components/MedForm";
-
-const MedCard = (props) => {
+const Reminder = (props) => {
     const dateSelected = props.calendarValue
 
     console.log(dateSelected);
@@ -22,7 +20,7 @@ const MedCard = (props) => {
   
 	const { loading, data } = useQuery(QUERY_BYDATE, {
 		variables: { 
-			doseDate: '2023-09-18',
+			doseDate: dateSelected,
 		}
 	});
 
@@ -30,25 +28,19 @@ const MedCard = (props) => {
         return <p>It's loading ...</p>
     }
 
-    console.log(doseOutput(data))
+    const doses = data.dosesByDate;
 
   return (
     <ListGroup className="list">
-									<ListGroup.Item>Medication 1: time logged</ListGroup.Item>
-									<hr></hr>
-									<ListGroup.Item>Medication 2: time logged</ListGroup.Item>
-									<hr></hr>
-									<ListGroup.Item>Medication 1: time logged</ListGroup.Item>
-									<hr></hr>
-									<ListGroup.Item>Medication 2: time logged</ListGroup.Item>
-									<hr></hr>
-									<ListGroup.Item>Medication 3: time logged</ListGroup.Item>
-									<hr></hr>
-									<ListGroup.Item>Medication 3: time logged</ListGroup.Item>
-									<hr></hr>
-									<ListGroup.Item>Medication 2: time logged</ListGroup.Item>
+    {
+        doses.map(
+            (dose) => {
+                return <ListGroup.Item>{dose.medName} at {dose.doseTime}.</ListGroup.Item>						
+            }
+        )
+    }	
 								</ListGroup>
   )
 };
 
-export default MedCard;
+export default Reminder;

@@ -43,7 +43,7 @@ const AddDoseButton = ({ med }) => {
 		// TODO update query and makeVar in cache
 	});
 
-	const { _id, minTimeBetween, maxDailyDoses, doses, mostRecentDose } = med;
+	const { _id, medName, minTimeBetween, maxDailyDoses, doses, mostRecentDose } = med;
 
 	const handleChange = async (event) => {
 		// console.log(event.target.value);
@@ -73,6 +73,7 @@ const AddDoseButton = ({ med }) => {
 
 		const doseData = {
 			medId: _id,
+			medName: medName,
 			doseDate: doseDate,
 			doseTime: doseTime,
 			doseLogged: doseLogged,
