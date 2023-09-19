@@ -6,23 +6,20 @@
  * 2. Prevent adjustments of font size after orientation changes in iOS.
  */
 
- @import url('https://unpkg.com/css.gg@2.0.0/icons/css/pill.css');
- @import url('https://unpkg.com/css.gg@2.0.0/icons/css/edit-contrast.css');
+@import url('https://unpkg.com/css.gg@2.0.0/icons/css/pill.css');
+@import url('https://unpkg.com/css.gg@2.0.0/icons/css/edit-contrast.css');
 
- 
 html {
+	line-height: 1.15;
+	/* 1 */
+	-webkit-text-size-adjust: 100%;
 
-  line-height: 1.15;
-  /* 1 */
-  -webkit-text-size-adjust: 100%;
-  
-  /* 2 */
+	/* 2 */
 
 	line-height: 1.15;
 	/* 1 */
 	-webkit-text-size-adjust: 100%;
 	/* 2 */
-
 }
 
 /* Sections
@@ -31,9 +28,8 @@ html {
  * Remove the margin in all browsers.
  */
 body {
-  margin: 0;
-  font-family: 'PT Sans', sans-serif;
-  
+	margin: 0;
+	font-family: 'PT Sans', sans-serif;
 }
 
 /**
@@ -44,9 +40,9 @@ main {
 }
 
 .bg-colour {
-    background: #0575E6; 
-    background: -webkit-linear-gradient(to right, #021B79, #0575E6);  
-    background: linear-gradient(to right, #021B79, #0575E6); 
+	background: #0575e6;
+	background: -webkit-linear-gradient(to right, #021b79, #0575e6);
+	background: linear-gradient(to right, #021b79, #0575e6);
 
 	/* background-color: #04268d; */
 	/* background-color: #5cbdea; */
@@ -399,7 +395,7 @@ body {
 }
 
 .medbod {
-background-color: #000000;
+	background-color: #000000;
 }
 
 h1,
@@ -490,62 +486,71 @@ button {
 	margin: 0;
 }
 .frontend-image {
-	position: fixed;
-	top: 0;
-	left: 0;
-	bottom: 0;
-	width: 100%;
-	height: 100%;
-	object-fit: cover;
+  position: fixed;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
 }
+
 /* Move the .About div to the left side */
 .About {
-	position: absolute;
-	top: 0;
-	left: 0;
-	width: 50%; /* Adjust the width as needed */
-	padding: 20px; /* Add padding for spacing */
-	background-color: #f7f7f7; /* Add a background color for contrast */
-	box-sizing: border-box; /* Include padding in the width */
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 50%; /* Adjust the width as needed */
+  padding: 20px; /* Add padding for spacing */
+  background-color: #f7f7f7;
+  box-sizing: border-box; /* Include padding in the width */
 }
 
 /* Style the text inside the .About div */
 .About p {
-	font-size: 16px;
-	line-height: 1.5;
-	color: #333; /* Text color */
+  font-size: 16px;
+  line-height: 1.5;
+  color: #333; /* Text color */
 }
 
 /* Style the container */
 .Container {
-	position: relative;
+  position: relative;
 }
 
 /* Adjust the right column (login form) to the right side of the page */
 .Col:nth-child(2) {
-	position: absolute;
-	top: 0;
-	right: 0;
-	width: 50%; /* Adjust the width as needed */
-	box-sizing: border-box; /* Include margin in the width */
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 50%; /* Adjust the width as needed */
+  box-sizing: border-box; /* Include margin in the width */
 }
 
 /* Style the login form inside the .Col */
 .Col:nth-child(2) .card {
-	background-color: #fff; /* Background color for the form */
-	padding: 20px; /* Add padding to the form */
-	box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Add a box shadow for the form */
+  padding: 20px; /* Add padding to the form */
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Add a box shadow for the form */
 }
 
 /* Style the login form elements */
 .Col:nth-child(2) .form-input {
-	width: 100%; /* Make form inputs full width */
+  width: 100%; /* Make form inputs full width */
 }
 
 /* Style the login button */
 .Col:nth-child(2) .btn-primary {
-	width: 100%; /* Make the button full width */
+  width: 100%; /* Make the button full width */
 }
+
+/* Import the background image */
+body {
+  background-image: url('./images/frontscreenshot.jpeg');
+  background-size: cover; /* Adjust as needed to cover the entire page */
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+}
+
 
 a {
 	color: #1b89bc;
@@ -1260,9 +1265,9 @@ a.btn-16:hover {
 }
 
 .btn-17:after {
-  --progress: 0%;
-  left: calc(50% + 50% * var(--skew));
-  z-index: -1;
+	--progress: 0%;
+	left: calc(50% + 50% * var(--skew));
+	z-index: -1;
 }
 
 .btn-17:hover:before {
@@ -2189,52 +2194,51 @@ label form [type='radio'] {
 /* profile page */
 
 div.form-card {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 0.5em;
-  border-radius: 25px;
-  padding: 0.6em;
-  /* border: none; */
-  outline: inset;
-  color: #7AD7F0;
-  background-color: #171717;
-  box-shadow: inset 2px 5px 10px rgb(5, 5, 5);
-  width: fit-content;
-  margin: auto;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	gap: 0.5em;
+	border-radius: 25px;
+	padding: 0.6em;
+	/* border: none; */
+	outline: inset;
+	color: #7ad7f0;
+	background-color: #171717;
+	box-shadow: inset 2px 5px 10px rgb(5, 5, 5);
+	width: fit-content;
+	margin: auto;
 }
 
 div.flex-row.justify-center.mb-3 {
-  width: 35rem;
-  padding: 17px;
+	width: 35rem;
+	padding: 17px;
 }
 
 div.card.card-body {
-  margin-top: 10px;
-  background-color: #006edc;
-  border-radius: 10px;
-  padding: 13px;
-  width: 27rem;
-  margin-left: 73px;
-  
+	margin-top: 10px;
+	background-color: #006edc;
+	border-radius: 10px;
+	padding: 13px;
+	width: 27rem;
+	margin-left: 73px;
 }
 
-div.medform1{
-  width: inherit;
+div.medform1 {
+	width: inherit;
 }
 
 h3.medtitle {
- text-align: center;
+	text-align: center;
 }
 
 hr.profilehr {
-  margin-top: 1rem;
-  margin-bottom: 1rem;
-  border: 0;
-  border-top: 1px solid rgba(0, 0, 0, .1);
-  width: 28rem;
-  color: #0575E6;
-  background-color: #0575E6;
+	margin-top: 1rem;
+	margin-bottom: 1rem;
+	border: 0;
+	border-top: 1px solid rgba(0, 0, 0, 0.1);
+	width: 28rem;
+	color: #0575e6;
+	background-color: #0575e6;
 }
 
 /* animation */
@@ -2340,138 +2344,136 @@ div.list.list-group {
 	scroll-padding: 10px;
 	height: 270px;
 }
-  
+
 div.medication-item.list-group-item {
-  background-color: rgb(255 255 255 / 0%);
-  border-color: cornflowerblue;
-  border: none;
+	background-color: rgb(255 255 255 / 0%);
+	border-color: cornflowerblue;
+	border: none;
 }
 
 div.dose.list-group-item {
-  background: none;
-  text-align:start ;
-  left: 1%;
+	background: none;
+	text-align: start;
+	left: 1%;
 }
 
 /* dose schedule dropdown */
 
 button.accordion-button.collapsed {
-  border-radius: 6px;
+	border-radius: 6px;
 }
 
 button.accordion-button.collapsed:active {
-  border-radius: 6px;
+	border-radius: 6px;
 }
 
 button.btn.btn-primary {
-  border: none;
+	border: none;
 }
 
 /* pill icon in cards/next to medication name */
 
 .gg-pill,
 .gg-pill::after {
- display: block;
- box-sizing: border-box;
- width: 12px
+	display: block;
+	box-sizing: border-box;
+	width: 12px;
 }
 
 .gg-pill {
-  border-top-left-radius: 140px;
-  border-top-right-radius: 140px;
-  border: 2px solid;
-  transform: rotate(45deg) scale(var(--ggs,1));
-  position: relative;
-  height: 14px;
-  top: 17px; 
-  left: 5px;
-  margin-top: -18px;
+	border-top-left-radius: 140px;
+	border-top-right-radius: 140px;
+	border: 2px solid;
+	transform: rotate(45deg) scale(var(--ggs, 1));
+	position: relative;
+	height: 14px;
+	top: 17px;
+	left: 5px;
+	margin-top: -18px;
 }
 
-
 .gg-pill::after {
- content: "";
- position: absolute;
- height: 12px;
- background: currentColor;
- left: -2px;
- bottom: -12px;
- border-bottom-left-radius: 140px;
- border-bottom-right-radius: 140px
-} 
+	content: '';
+	position: absolute;
+	height: 12px;
+	background: currentColor;
+	left: -2px;
+	bottom: -12px;
+	border-bottom-left-radius: 140px;
+	border-bottom-right-radius: 140px;
+}
 
 .gg-edit-contrast {
-  box-sizing: border-box;
-  position: relative;
-  display: block;
-  transform: scale(var(--ggs,1));
-  width: 16px;
-  height: 16px;
-  border: 2px solid transparent;
-  box-shadow: 0 0 0 2px;
-  border-radius: 100px;
-  top: 29px;
-  right: 6px;
-  overflow: hidden;
-  margin-top: -17px;
+	box-sizing: border-box;
+	position: relative;
+	display: block;
+	transform: scale(var(--ggs, 1));
+	width: 16px;
+	height: 16px;
+	border: 2px solid transparent;
+	box-shadow: 0 0 0 2px;
+	border-radius: 100px;
+	top: 29px;
+	right: 6px;
+	overflow: hidden;
+	margin-top: -17px;
+}
 
- }
- 
- .gg-edit-contrast::before {
-  content: "";
-  display: block;
-  box-sizing: border-box;
-  position: absolute;
-  width: 6px;
-  height: 12px;
-  background: currentColor
- } 
+.gg-edit-contrast::before {
+	content: '';
+	display: block;
+	box-sizing: border-box;
+	position: absolute;
+	width: 6px;
+	height: 12px;
+	background: currentColor;
+}
 
- div.card-title.h5 {
-  left: 26px;
-  position: relative;
- }
+div.card-title.h5 {
+	left: 26px;
+	position: relative;
+}
 
 div.clock {
-  left: 90%;
-  bottom: 84%;
-  position: absolute;
+	left: 90%;
+	bottom: 84%;
+	position: absolute;
 }
 
 div.clock2 {
-  left: 90%;
-  bottom: 57%;
-  position: absolute;
+	left: 90%;
+	bottom: 57%;
+	position: absolute;
 }
 
 div.clock3 {
-  left: 90%;
-  bottom: 30%;
-  position: absolute;
+	left: 90%;
+	bottom: 30%;
+	position: absolute;
 }
 
 div.clock4 {
-  left: 90%;
-  bottom: 3%;
-  position: absolute;
+	left: 90%;
+	bottom: 3%;
+	position: absolute;
 }
 
 div.clock5 {
-  left: 90%;
-  bottom: -25%;
-  position: absolute;
+	left: 90%;
+	bottom: -25%;
+	position: absolute;
 }
 
 div.clock6 {
-  left: 90%;
-  bottom: -53%;
-  position: absolute;
+	left: 90%;
+	bottom: -53%;
+	position: absolute;
 }
 
 div.clock7 {
-  left: 90%;
-  bottom: -80%;
-  position: absolute;
+	left: 90%;
+	bottom: -80%;
+	position: absolute;
 }
 
 @media screen and (max-width: 768px) {
