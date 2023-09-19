@@ -20,6 +20,7 @@ const typeDefs = gql`
 		maxDailyDoses: Int
 		minTimeBetween: Int
 		remindersBool: Boolean
+		nextDoseDue: String
 		mostRecentDose: Dose
 		doses: [Dose]
 	}
@@ -45,6 +46,7 @@ const typeDefs = gql`
 		maxDailyDoses: Int
 		minTimeBetween: Int
 		remindersBool: Boolean
+		nextDoseDue: String
 	}
 
 	input MedUpdate {

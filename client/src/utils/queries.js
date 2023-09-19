@@ -8,6 +8,7 @@ export const QUERY_MEDS = gql`
 			maxDailyDoses
 			minTimeBetween
 			remindersBool
+			nextDoseDue
 			mostRecentDose {
 				_id
 				doseDate

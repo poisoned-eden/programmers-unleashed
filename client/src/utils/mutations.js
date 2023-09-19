@@ -32,6 +32,7 @@ export const ADD_MED = gql`
 			maxDailyDoses
 			minTimeBetween
 			remindersBool
+			nextDoseDue
 		}
 	}
 `;

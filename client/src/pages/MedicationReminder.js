@@ -3,7 +3,7 @@ import { useQuery } from '@apollo/client';
 import { QUERY_ME, QUERY_MEDS } from '../utils/queries';
 
 import { splitDate, splitTime } from '../utils/dtUtils';
-import { DateTimeContext } from '../utils/DateTimeContext';
+import { DateTimeContext, DataContext } from '../utils/DateTimeContext';
 import { splitDateTime } from '../utils/dtUtils';
 
 import Calendar from 'react-calendar';
@@ -16,14 +16,16 @@ import Alert from '../components/Alert';
 import 'react-calendar/dist/Calendar.css';
 
 const MedicationReminder = () => {
+	const { dataContext, setDataContext } = useContext(DataContext);
+
 	function DateTimeObj(newDate) {
 		this.now = newDate;
 		this.date = splitDate(newDate);
 		this.time = splitTime(newDate);
 		this.dateTimeString = `${this.date}T${this.time}`;
-		this.ms = this.now.getTime();
-		this.msMinus24hrInt = this.ms - ( 24 * 60 * 60 * 1000);
-		this.minus24hrString = new Date(this.msMinus24hrInt).toString();
+		// this.ms = this.now.getTime();
+		// this.msMinus24hrInt = this.ms - 24 * 60 * 60 * 1000;
+		// this.minus24hrString = new Date(this.msMinus24hrInt).toString();
 	}
 
 	console.log('MedicationReminder');
@@ -34,7 +36,7 @@ const MedicationReminder = () => {
 	setInterval(() => {
 		setNowState(now);
 		// TODO use this interval to check for reminders required.
-	}, (60 * 1000));
+	}, 60 * 1000);
 
 	const [calendarValue, setCalendarValue] = useState(nowState.date);
 
@@ -70,7 +72,6 @@ const MedicationReminder = () => {
 					</header>
 					<DateTimeContext.Provider value={nowState}>
 						<Row>
-							
 							<Col>
 								<div className="loader-container" id="pill-image">
 									<div className="loader"></div>
