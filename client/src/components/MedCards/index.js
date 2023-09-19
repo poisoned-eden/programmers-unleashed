@@ -15,14 +15,16 @@ const MedCards = ({ med }) => {
 	// TODO add card for if no meds
 	const past24hr = makeVar([]);
 	// console.log('MedCards')
-	const { _id, medName, maxDailyDoses, minTimeBetween, remindersBool, mostRecentDose, mostRecentTime, doses } = med;
+	const { _id, medName, maxDailyDoses, minTimeBetween, remindersBool, nextDoseDue, mostRecentDose, doses } = med;
 
 	for (const key in doses) {
 		// getTime of dose
 		const doseMs = new Date(doses[key].doseLogged).getTime(); // TODO consider adding ms field to dose
+		// console.log(doses[key].doseLogged);
+		// console.log(doseMs)
 		// console.log('doseMs ' + doseMs);
 
-		if (doseMs > dateTimeContext.ms) {
+		if (doseMs > ( dateTimeContext.now.getTime() * (24 * 60 * 60 * 1000))) { // 24hr
 			// put into array
 
 			past24hr([...past24hr(), doses[key]]);
@@ -65,9 +67,9 @@ const MedCards = ({ med }) => {
 				<Accordion className="schedule">
 					<Accordion.Header>Dose schedule</Accordion.Header>
 					<Accordion.Body>
-						{numDosesToday ? (
+						{doses ? (
 							<ul>
-								{past24hr().map((dose) => (
+								{doses.map((dose) => (
 									<li key={dose._id}>
 										{dose.doseDate} at {dose.doseTime}
 									</li>

@@ -9,9 +9,9 @@ import { Container, Row, Col, Button, Form, Card } from 'react-bootstrap';
 import MedForm from '../../components/MedForm';
 
 const MedCard = (props) => {
-	console.log('MedCard');
+	// console.log('MedCard');
 	const [isUpdated, setIsUpdated] = useState(false);
-	console.log(props);
+	// console.log(props);
 	const { _id, medName, maxDailyDoses, minTimeBetween, remindersBool } = props.med;
 
 	if (!isUpdated) {

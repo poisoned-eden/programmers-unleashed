@@ -14,12 +14,14 @@ export const QUERY_MEDS = gql`
 				doseDate
 				doseTime
 				doseLogged
+				doseMS
 			}
 			doses {
 				_id
 				doseDate
 				doseTime
 				doseLogged
+				doseMS
 			}
 		}
 	}
@@ -44,6 +46,7 @@ export const QUERY_MED = gql`
 				doseDate
 				doseTime
 				doseLogged
+				doseMS
 			}
 		}
 	}
@@ -72,6 +75,7 @@ export const QUERY_ME = gql`
 					doseDate
 					doseTime
 					doseLogged
+					doseMS
 				}
 			}
 		}
@@ -86,6 +90,7 @@ export const QUERY_DATE = gql`
 			doseDate
 			doseTime
 			doseLogged
+			doseMS
 		}
 	}
 `;

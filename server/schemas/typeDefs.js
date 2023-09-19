@@ -33,6 +33,7 @@ const typeDefs = gql`
 		doseDate: String
 		doseTime: String
 		doseLogged: String
+		doseMS: String
 	}
 
 	type Auth {
@@ -64,6 +65,9 @@ const typeDefs = gql`
 		doseDate: String
 		doseTime: String
 		doseLogged: String
+		doseMS: String
+		mostRecentBool: Boolean
+		nextDoseDue: String
 	}
 
 	input DoseUpdate {
@@ -72,6 +76,7 @@ const typeDefs = gql`
 		doseTime: String
 		doseLogged: String
 		mostRecentDose: ID
+		nextDoseDue: String
 	}
 
 	type Query {
@@ -86,7 +91,7 @@ const typeDefs = gql`
 		login(email: String!, password: String!): Auth
 
 		addMed(medSettings: MedInput!): Med
-		addDose(doseData: DoseInput!, mostRecentBool: Boolean!): Dose
+		addDose(doseData: DoseInput!): Dose
 
 		updateMed(medData: MedUpdate!): Med
 		updateDose(doseData: DoseUpdate!): Dose

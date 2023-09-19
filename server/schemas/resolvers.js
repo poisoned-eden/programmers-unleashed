@@ -148,10 +148,10 @@ const resolvers = {
 		},
 
 		addDose: async (parent, { doseData }, context) => {
-			const { medId, medName, doseDate, doseTime, doseLogged, mostRecentBool } = doseData;
+			const { medId, medName, doseDate, doseTime, doseLogged, doseMS, mostRecentBool, nextDoseDue } = doseData;
 
 			console.log('addDose resolver');
-			console.log({ medId, medName, doseDate, doseTime, doseLogged, mostRecentBool });
+			console.log(doseData);
 			if (context.user) {
 				console.log('context.user exists');
 				try {
@@ -162,15 +162,19 @@ const resolvers = {
 						doseDate: doseDate,
 						doseTime: doseTime,
 						doseLogged: doseLogged,
+						doseMS: doseMS
 					});
-					console.log(newDose);
+					// console.log(newDose);
 
 					// if the dose is logged at a time before the mostRecent time, just update normally
 					if (mostRecentBool) {
 						const updateMed = await Med.findOneAndUpdate(
 							{ _id: medId },
 							{
-								$set: { mostRecentDose: newDose._id },
+								$set: { 
+									mostRecentDose: newDose._id,
+									nextDoseDue: nextDoseDue
+								},
 								$addToSet: { doses: newDose._id },
 							},
 							{ new: true },
@@ -184,13 +188,13 @@ const resolvers = {
 									},
 								},
 							});
-						console.log(updateMed);
+						// console.log(updateMed);
 						return newDose;
 					} else {
 						const updateMed = await Med.findOneAndUpdate(
 							{ _id: medId },
 							{
-								$addToSet: { doses: newDose._id },
+								$addToSet: { doses: newDose._id,  },
 							},
 							{ new: true },
 						)
