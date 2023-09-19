@@ -16,7 +16,7 @@ const MedCard = (props) => {
 
 	if (!isUpdated) {
 		return (
-			<Container key={_id}>
+			<Card key={_id}>
 				<Card.Body>
 					<Card.Title>{medName}</Card.Title>
 					<Card.Text>Max. daily doses: {maxDailyDoses} times</Card.Text>
@@ -30,7 +30,7 @@ const MedCard = (props) => {
 						Update
 					</Button>
 				</Card.Body>
-			</Container>
+			</Card>
 		);
 	} else {
 		return (
