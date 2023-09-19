@@ -14,6 +14,9 @@ import Alert from '../components/Alert';
 
 import 'react-calendar/dist/Calendar.css';
 
+
+
+
 const MedicationReminder = () => {
 	// const { today, setToday } = useContext(TodayContext);
 	// console.log(today);
@@ -74,6 +77,7 @@ const MedicationReminder = () => {
 								</div>
 								<hr className="cal"></hr>
 								<Reminder value={calendarValue} />
+
 							</Col>
 						</div>
 					</Row>
