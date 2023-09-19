@@ -13,7 +13,7 @@ function Alert(props) {
 	console.log('Alert');
 	
 	console.log(props);
-	const { meds, show, setShow } = props;
+	const { meds, show, setShow, dueState } = props;
 	console.log(dateTimeContext.now)
 
 	const handleClose = () => setShow(false);
@@ -28,12 +28,17 @@ function Alert(props) {
 	// 	console.log(coming);
 	// 	return coming;
 	// };
+	
+		const warnClass = '';
+		if (dueState) {
+			warnClass+= 'WarnDue';
+		}
 
 
 
 	return (
 		<>
-			<Modal show={show} onHide={handleClose}>
+			<Modal show={show} onHide={handleClose} className={warnClass}>
 				<Modal.Header closeButton>
 					<Modal.Title>Your upcoming medication</Modal.Title>
 				</Modal.Header>
@@ -41,18 +46,11 @@ function Alert(props) {
 					
 
 					{meds.map((med) => (
-						med.nextDoseDue && (
-							med.nextDoseDue < dateTimeContext.now.getTime() ? (
-								<div className='danger'>
-									{med.medName}  at  {prettyDateTime(Number(med.nextDoseDue))}
-								</div>
-							) : (
 								<div>
 									{med.medName}  at  {prettyDateTime(Number(med.nextDoseDue))}
 								</div>
 							)
-						)
-					))}
+					)}
 				</Modal.Body>
 			</Modal>
 		</>

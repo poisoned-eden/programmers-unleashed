@@ -1,5 +1,5 @@
 import React, { useState, useContext, useEffect } from 'react';
-import { useQuery } from '@apollo/client';
+import { makeVar, useQuery } from '@apollo/client';
 import { QUERY_ME, QUERY_MEDS } from '../utils/queries';
 
 import { splitDate, splitTime } from '../utils/dtUtils';
@@ -18,6 +18,7 @@ import 'react-calendar/dist/Calendar.css';
 const MedicationReminder = () => {
 	const { dataContext, setDataContext } = useContext(DataContext);
 	const [show, setShow] = useState(true);
+	const dueMeds = makeVar([]);
 
 	function DateTimeObj(newDate) {
 		this.now = newDate;
@@ -32,11 +33,20 @@ const MedicationReminder = () => {
 	console.log('MedicationReminder');
 	const now = new DateTimeObj(new Date());
 	const [nowState, setNowState] = useState(now);
+	const [dueState, setDueState] = useState(false);
 	console.log(nowState);
 
 	setInterval(() => {
 		setNowState(now);
 		// TODO use this interval to check for reminders required.
+		dueMeds().forEach(med => {
+			const minCheck = nowState.now.getTime() - (45 * 60 * 1000);
+			const maxCheck = nowState.now.getTime() + (45 * 60 * 1000);
+			if (med.nextDoseDue > minCheck && med.nextDoseDue < maxCheck ) {
+				setShow(true);
+				setDueState(true);
+			}
+		});
 	}, 60 * 1000);
 
 	const [calendarValue, setCalendarValue] = useState(nowState.date);
@@ -58,6 +68,15 @@ const MedicationReminder = () => {
 	const meds = medsData?.meds || [];
 	console.log(meds);
 
+	for (const key in meds) {
+		if (meds[key].nextDoseDue) {
+			
+			dueMeds([...dueMeds(), meds[key]]);
+			console.log('dueMeds()');
+			console.log(dueMeds());
+		}
+	}
+	
 	function onChangeCalendar(nextValue) {
 		setCalendarValue(splitDate(nextValue));
 		console.log(calendarValue);
@@ -66,7 +85,7 @@ const MedicationReminder = () => {
 	return (
 		<main>
 			<DateTimeContext.Provider value={nowState}>
-				<Alert meds={meds} show={show} setShow={setShow} />
+				<Alert meds={dueMeds()} show={show} setShow={setShow} dueState={dueState} />
 				<div className="card">
 					<Container>
 						<header>
