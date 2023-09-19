@@ -9,6 +9,8 @@ import Calendar from 'react-calendar';
 import { Accordion, Container, Row, Col, Card, ListGroup } from 'react-bootstrap';
 import AddDoseButton from '../components/AddDoseButton';
 import MedCards from '../components/MedCards';
+import Reminder from '../components/Reminder';
+import Alert from '../components/Alert';
 
 import 'react-calendar/dist/Calendar.css';
 
@@ -19,16 +21,20 @@ const MedicationReminder = () => {
 	// const { today, setToday } = useContext(TodayContext);
 	// console.log(today);
 	const dateToday = splitDate(new Date());
-	
+
 	// setToday(dateToday);
-	
+
 	// console.log(today);
 	const [calendarValue, setCalendarValue] = useState(dateToday);
 
-	const { loading: medsLoading, data: medsData, error } = useQuery(QUERY_MEDS, {
-		variables: { 
+	const {
+		loading: medsLoading,
+		data: medsData,
+		error,
+	} = useQuery(QUERY_MEDS, {
+		variables: {
 			today: dateToday,
-		}
+		},
 	});
 
 	if (error) console.log(error);
@@ -45,6 +51,7 @@ const MedicationReminder = () => {
 
 	return (
 		<main>
+			<Alert value={dateToday} />
 			<div className="card">
 				<Container>
 					<header>
@@ -69,27 +76,8 @@ const MedicationReminder = () => {
 									{/* Example: <ReminderComponent /> */}
 								</div>
 								<hr className="cal"></hr>
-								<ListGroup className="list">
-									<ListGroup.Item className='medication-item'>Medication 1: time logged </ListGroup.Item> <div className='clock'>🕗</div>
-									<hr></hr>
-									<ListGroup.Item className='medication-item'>Medication 2: time logged </ListGroup.Item>
-                  <div className='clock2'>🕗</div>
-									<hr></hr>
-									<ListGroup.Item className='medication-item'>Medication 1: time logged </ListGroup.Item>
-                  <div className='clock3'>🕗</div>
-									<hr></hr>
-									<ListGroup.Item className='medication-item'>Medication 2: time logged </ListGroup.Item>
-                  <div className='clock4'>🕗</div>
-									<hr></hr>
-									<ListGroup.Item className='medication-item'>Medication 3: time logged </ListGroup.Item>
-                  <div className='clock5'>🕗</div>
-									<hr></hr>
-									<ListGroup.Item className='medication-item'>Medication 3: time logged </ListGroup.Item>
-                  <div className='clock6'>🕗</div>
-									<hr></hr>
-									<ListGroup.Item className='medication-item'>Medication 2: time logged </ListGroup.Item>
-                  <div className='clock7'>🕗</div>
-								</ListGroup>
+								<Reminder value={calendarValue} />
+
 							</Col>
 						</div>
 					</Row>
