@@ -33,6 +33,7 @@ const MedicationReminder = () => {
 	console.log('MedicationReminder');
 	const now = new DateTimeObj(new Date());
 	const [nowState, setNowState] = useState(now);
+	const [dueState, setDueState] = useState(false);
 	console.log(nowState);
 
 	setInterval(() => {
@@ -43,6 +44,7 @@ const MedicationReminder = () => {
 			const maxCheck = nowState.now.getTime() + (45 * 60 * 1000);
 			if (med.nextDoseDue > minCheck && med.nextDoseDue < maxCheck ) {
 				setShow(true);
+				setDueState(true);
 			}
 		});
 	}, 60 * 1000);
@@ -83,7 +85,7 @@ const MedicationReminder = () => {
 	return (
 		<main>
 			<DateTimeContext.Provider value={nowState}>
-				<Alert meds={dueMeds()} show={show} setShow={setShow} />
+				<Alert meds={dueMeds()} show={show} setShow={setShow} dueState={dueState} />
 				<div className="card">
 					<Container>
 						<header>
