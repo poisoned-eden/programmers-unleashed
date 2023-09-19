@@ -24,7 +24,7 @@ const MedCards = ({ med }) => {
 		// console.log(doseMs)
 		// console.log('doseMs ' + doseMs);
 
-		if (doseMs > ( dateTimeContext.now.getTime() * (24 * 60 * 60 * 1000))) { // 24hr
+		if (doseMs < ( dateTimeContext.now.getTime() * (24 * 60 * 60 * 1000))) { // 24hr
 			// put into array
 
 			past24hr([...past24hr(), doses[key]]);
@@ -65,7 +65,7 @@ const MedCards = ({ med }) => {
 			</Card.Body>
 			<Card.Footer>
 				<Accordion className="schedule">
-					<Accordion.Header>Dose schedule</Accordion.Header>
+					<Accordion.Header>Doses logged in the last 24hrs</Accordion.Header>
 					<Accordion.Body>
 						{doses ? (
 							<ul>

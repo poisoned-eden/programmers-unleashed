@@ -41,7 +41,6 @@ function Alert(props) {
 					
 
 					{meds.map((med) => (
-						med.nextDoseDue && (
 							med.nextDoseDue < dateTimeContext.now.getTime() ? (
 								<div className='danger'>
 									{med.medName}  at  {prettyDateTime(Number(med.nextDoseDue))}
@@ -52,7 +51,7 @@ function Alert(props) {
 								</div>
 							)
 						)
-					))}
+					)}
 				</Modal.Body>
 			</Modal>
 		</>
