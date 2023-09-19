@@ -5,24 +5,8 @@ export function splitDate(dateTime) {
 	return dtObj.split('T')[0];
 }
 
-export function addMinTimeBetween(dateTime, minTimeBetween) {
-	const dtObj = new Date(dateTime);
-	let newHrs = splitTime(dtObj).hrs + minTimeBetween;
-	let dtIncrement = 0;
-
-	// console.log(dateTime);
-	// console.log(minTimeBetween);
-
-	while (newHrs > 24) {
-		newHrs -= 24;
-		dtIncrement += 1;
-	}
-
-	const newDate = dtObj.getDate() + dtIncrement;
-	const newDateSet = new Date(dtObj).setDate(newDate);
-
-	const newDateTime = new Date(newDateSet).setHours(newHrs);
-	return newDateTime.toString();
+export function addMinTimeBetween(input, minTimeBetween) {
+	return new Date(input).getTime() + (minTimeBetween * 60 * 60 * 1000)
 }
 
 export function splitHours(dateTime) {
@@ -72,4 +56,8 @@ export function splitDateTime(dateTime) {
 	const dtSplitString = `${split[0]}:${split[1]}`
 	// console.log(dtSplitString);
 	return dtSplitString;
+}
+
+export function prettyDateTime(dateTime) {
+	return `${splitDate(dateTime)} ${splitTime(dateTime)}`;
 }

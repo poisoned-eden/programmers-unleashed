@@ -8,7 +8,7 @@ import { setContext } from '@apollo/client/link/context';
 // utilities
 import OneSignal from 'react-onesignal';
 import Auth from './utils/auth';
-import { TodayContext } from './utils/TodayContext';
+
 // pages and components
 import MedicationReminder from './pages/MedicationReminder';
 import Signup from './pages/Signup';
@@ -22,6 +22,7 @@ import logo from './logo.svg';
 import 'bootstrap/dist/css/bootstrap.css';
 import './App.css';
 import { loadErrorMessages, loadDevMessages } from '@apollo/client/dev';
+import { DataContext } from './utils/DateTimeContext';
 
 if (process.env.NODE_ENV !== 'production') {
 	// Adds messages only in a dev environment
@@ -66,22 +67,27 @@ await client.refetchQueries({
 });
 
 function App() {
+
+	const [dataContext, setDataContext] = useState(null);
+
 	return (
 		<ApolloProvider client={client}>
 			<Router>
-				<div className="flex-column bg-colour justify-flex-start min-100-vh">
-					<Header />
-					<div className="container">
-						<Routes>
-							<Route path="/" element={Auth.loggedIn() ? <MedicationReminder /> : <Welcome />} />
-							<Route path="/medicationReminder" element={<MedicationReminder />} />
-							<Route path="/login" element={<Login />} />
-							<Route path="/signup" element={<Signup />} />
-							<Route path="/me" element={<Profile />} />
-						</Routes>
+				<DataContext.Provider value={{dataContext, setDataContext}}>
+					<div className="flex-column bg-colour justify-flex-start min-100-vh">
+						<Header />
+						<div className="container">
+								<Routes>
+									<Route path="/" element={Auth.loggedIn() ? <MedicationReminder /> : <Login />} />
+									<Route path="/medicationReminder" element={<MedicationReminder />} />
+									<Route path="/login" element={<Login />} />
+									<Route path="/signup" element={<Signup />} />
+									<Route path="/me" element={<Profile />} />
+								</Routes>
+						</div>
+						<Footer />
 					</div>
-					<Footer />
-				</div>
+				</DataContext.Provider>
 			</Router>
 		</ApolloProvider>
 	);

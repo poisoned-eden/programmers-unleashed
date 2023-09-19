@@ -2,29 +2,22 @@ import React, { useContext, useState } from 'react';
 import { useQuery, useMutation, makeVar } from '@apollo/client';
 import { QUERY_ME, QUERY_MEDS } from '../../utils/queries';
 import { ADD_DOSE } from '../../utils/mutations';
-import { setDoseLoggedTime, splitDate, splitTime, splitDateTime, dateTimeFormat } from '../../utils/dtUtils';
-import { TodayContext } from '../../utils/TodayContext';
-
-import dayjs from 'dayjs';
-import customParseFormat from 'dayjs/plugin/customParseFormat';
-import utc from 'dayjs/plugin/utc';
-import timezone from 'dayjs/plugin/timezone'; // dependent on utc plugin
+import {
+	setDoseLoggedTime,
+	splitDate,
+	splitTime,
+	splitDateTime,
+	dateTimeFormat,
+	addMinTimeBetween,
+} from '../../utils/dtUtils';
+import { DateTimeContext } from '../../utils/DateTimeContext';
 
 import { Button, InputGroup, Form, Alert } from 'react-bootstrap';
 
-
 const AddDoseButton = ({ med }) => {
-	// const { today, setToday } = useContext(TodayContext);
-	const now = new Date();
-	// console.log(nowTime);
-	const nowDateTime = splitDateTime(now.getTime() - now.getTimezoneOffset() * 60000);
+	const dateTimeContext = useContext(DateTimeContext);
 
-	const [inputDateTimeValue, setInputDateTimeValue] = useState(nowDateTime);
-
-	setInterval(() => {
-		const d = new Date();
-		setInputDateTimeValue(splitDateTime(d.getTime() - d.getTimezoneOffset() * 60000));
-	}, 60000);
+	const [inputDateTimeValue, setInputDateTimeValue] = useState(dateTimeContext.dateTimeString);
 
 	const [addDose, { error }] = useMutation(ADD_DOSE, {
 		refetchQueries: ['Meds'],
@@ -43,7 +36,7 @@ const AddDoseButton = ({ med }) => {
 		// TODO update query and makeVar in cache
 	});
 
-	const { _id, medName, minTimeBetween, maxDailyDoses, doses, mostRecentDose } = med;
+	const { _id, medName, minTimeBetween, maxDailyDoses, doses, mostRecentDose, mostRecentTime, nextDoseDue } = med;
 
 	const handleChange = async (event) => {
 		// console.log(event.target.value);
@@ -54,22 +47,28 @@ const AddDoseButton = ({ med }) => {
 	const handleDoseClick = async ({ event, nowBool }) => {
 		event.preventDefault();
 		// console.log(inputDateTimeValue);
-
-		let doseLogged = nowDateTime;
+		let mostRecentBool = true;
+		let doseLogged = dateTimeContext.dateTimeString;
+		let doseMS = new Date(doseLogged).getTime();
 
 		if (!nowBool) {
 			doseLogged = inputDateTimeValue;
+
+			console.log(inputDateTimeValue);
+		}
+
+		if (mostRecentDose && mostRecentDose.doseMS > doseMS) {
+			console.log(mostRecentDose);
+			console.log('logged lessRecent');
+			mostRecentBool = false;
 		}
 
 		const doseDate = doseLogged.split('T')[0];
 		const doseTime = doseLogged.split('T')[1];
 
-		console.log({ doseLogged, doseDate, doseTime });
+		console.log({ doseMS, doseLogged, doseDate, doseTime });
 
-		let mostRecentBool = true;
-		if (mostRecentDose && doseLogged.valueOf() < mostRecentDose.doseLogged.valueOf()) {
-			mostRecentBool = false;
-		}
+		const nextDue = addMinTimeBetween(doseLogged, minTimeBetween);
 
 		const doseData = {
 			medId: _id,
@@ -77,16 +76,18 @@ const AddDoseButton = ({ med }) => {
 			doseDate: doseDate,
 			doseTime: doseTime,
 			doseLogged: doseLogged,
+			doseMS: doseMS.toString(),
+			mostRecentBool: mostRecentBool,
+			nextDoseDue: nextDue.toString(),
 		};
 
-		console.log({ doseData, mostRecentBool });
+		console.log(doseData);
 		//  TODO set an alert to pop up if logging in the future
 
 		try {
 			const { data, loading: doseLoading } = await addDose({
 				variables: {
 					doseData: doseData,
-					mostRecentBool: mostRecentBool,
 				},
 			});
 

@@ -32,18 +32,21 @@ export const ADD_MED = gql`
 			maxDailyDoses
 			minTimeBetween
 			remindersBool
+			nextDoseDue
 		}
 	}
 `;
 
 export const ADD_DOSE = gql`
-	mutation AddDose($doseData: DoseInput!, $mostRecentBool: Boolean!) {
-		addDose(doseData: $doseData, mostRecentBool: $mostRecentBool) {
+	mutation AddDose($doseData: DoseInput!) {
+		addDose(doseData: $doseData) {
 			_id
+			userId
 			medName
 			doseDate
 			doseTime
 			doseLogged
+			doseMS
 		}
 	}
 `;
@@ -67,6 +70,7 @@ export const UPDATE_MED = gql`
 				doseDate
 				doseTime
 				doseLogged
+				doseMS
 			}
 		}
 	}
@@ -79,6 +83,7 @@ export const UPDATE_DOSE = gql`
 			doseDate
 			doseTime
 			doseLogged
+			doseMS
 		}
 	}
 `;

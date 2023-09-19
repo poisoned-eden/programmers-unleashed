@@ -21,6 +21,9 @@ const medSchema = new Schema({
 		type: Boolean,
 		default: false,
 	},
+	nextDoseDue: {
+		type: String,
+	},
 	mostRecentDose: {
 		type: Schema.Types.ObjectId,
 		ref: 'Dose',

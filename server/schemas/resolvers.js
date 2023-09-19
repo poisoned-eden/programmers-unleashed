@@ -34,15 +34,16 @@ const resolvers = {
 					const medsData = await Med.find({
 						userId: context.user._id,
 					})
-						.populate('mostRecentDose')
-						.populate({
-							path: 'doses',
-							options: {
-								sort: {
-									doseLogged: -1,
-								},
+					.sort('nextDoseDue')
+					.populate('mostRecentDose')
+					.populate({
+						path: 'doses',
+						options: {
+							sort: {
+								doseLogged: -1,
 							},
-						});
+						},
+					});
 					console.log(medsData);
 
 					return medsData;
@@ -77,6 +78,7 @@ const resolvers = {
 						userId: context.user._id,
 						doseDate: doseDate,
 					}).populate('medId');
+					// TODO if this is populated, do we need the medName in the Dose model?  Does it cause any problems to keep it?
 
 					console.log(doseData);
 
@@ -147,10 +149,10 @@ const resolvers = {
 		},
 
 		addDose: async (parent, { doseData }, context) => {
-			const { medId, medName, doseDate, doseTime, doseLogged, mostRecentBool } = doseData;
+			const { medId, medName, doseDate, doseTime, doseLogged, doseMS, mostRecentBool, nextDoseDue } = doseData;
 
 			console.log('addDose resolver');
-			console.log({ medId, medName, doseDate, doseTime, doseLogged, mostRecentBool });
+			console.log(doseData);
 			if (context.user) {
 				console.log('context.user exists');
 				try {
@@ -161,15 +163,19 @@ const resolvers = {
 						doseDate: doseDate,
 						doseTime: doseTime,
 						doseLogged: doseLogged,
+						doseMS: doseMS,
 					});
-					console.log(newDose);
+					// console.log(newDose);
 
 					// if the dose is logged at a time before the mostRecent time, just update normally
 					if (mostRecentBool) {
 						const updateMed = await Med.findOneAndUpdate(
 							{ _id: medId },
 							{
-								$set: { mostRecentDose: newDose._id },
+								$set: {
+									mostRecentDose: newDose._id,
+									nextDoseDue: nextDoseDue,
+								},
 								$addToSet: { doses: newDose._id },
 							},
 							{ new: true },
@@ -183,7 +189,7 @@ const resolvers = {
 									},
 								},
 							});
-						console.log(updateMed);
+						// console.log(updateMed);
 						return newDose;
 					} else {
 						const updateMed = await Med.findOneAndUpdate(

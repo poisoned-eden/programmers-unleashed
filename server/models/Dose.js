@@ -24,6 +24,9 @@ const doseSchema = new Schema({
 	doseLogged: {
 		type: String,
 	},
+	doseMS: {
+		type: String,
+	}
 });
 
 const Dose = model('Dose', doseSchema);
