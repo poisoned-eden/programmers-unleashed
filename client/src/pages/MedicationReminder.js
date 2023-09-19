@@ -10,6 +10,7 @@ import { Accordion, Container, Row, Col, Card, ListGroup } from 'react-bootstrap
 import AddDoseButton from '../components/AddDoseButton';
 import MedCards from '../components/MedCards';
 import Reminder from '../components/Reminder';
+import Alert from '../components/Alert';
 
 import 'react-calendar/dist/Calendar.css';
 
@@ -47,6 +48,7 @@ const MedicationReminder = () => {
 
 	return (
 		<main>
+			<Alert value={dateToday} />
 			<div className="card">
 				<Container>
 					<header>

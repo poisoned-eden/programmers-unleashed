@@ -15,16 +15,15 @@ import { Button, InputGroup, Form, Alert } from 'react-bootstrap';
 const AddDoseButton = ({ med }) => {
 	// const { today, setToday } = useContext(TodayContext);
 	const now = new Date();
-	const nowISO = now.toISOString();
-	// console.log(nowISO);
-	const nowDate = splitDate(now);
-	// console.log(now);
-	// console.log(nowDate);
-	const nowTime = splitTime(now);
 	// console.log(nowTime);
-	const nowDateTime = splitDateTime(now);
+	const nowDateTime = splitDateTime(now.getTime() - now.getTimezoneOffset() * 60000);
 
 	const [inputDateTimeValue, setInputDateTimeValue] = useState(nowDateTime);
+
+	setInterval(() => {
+		const d = new Date();
+		setInputDateTimeValue(splitDateTime(d.getTime() - d.getTimezoneOffset() * 60000));
+	}, 60000);
 
 	const [addDose, { error }] = useMutation(ADD_DOSE, {
 		refetchQueries: ['Meds'],
