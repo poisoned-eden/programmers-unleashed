@@ -16,16 +16,15 @@ import { Button, InputGroup, Form, Alert } from 'react-bootstrap';
 const AddDoseButton = ({ med }) => {
 	// const { today, setToday } = useContext(TodayContext);
 	const now = new Date();
-	const nowISO = now.toISOString();
-	// console.log(nowISO);
-	const nowDate = splitDate(now);
-	// console.log(now);
-	// console.log(nowDate);
-	const nowTime = splitTime(now);
 	// console.log(nowTime);
-	const nowDateTime = splitDateTime(now);
+	const nowDateTime = splitDateTime(now.getTime() - now.getTimezoneOffset() * 60000);
 
 	const [inputDateTimeValue, setInputDateTimeValue] = useState(nowDateTime);
+
+	setInterval(() => {
+		const d = new Date();
+		setInputDateTimeValue(splitDateTime(d.getTime() - d.getTimezoneOffset() * 60000));
+	}, 60000);
 
 	const [addDose, { error }] = useMutation(ADD_DOSE, {
 		refetchQueries: ['Meds'],
@@ -44,7 +43,7 @@ const AddDoseButton = ({ med }) => {
 		// TODO update query and makeVar in cache
 	});
 
-	const { _id, minTimeBetween, maxDailyDoses, doses, mostRecentDose } = med;
+	const { _id, medName, minTimeBetween, maxDailyDoses, doses, mostRecentDose } = med;
 
 	const handleChange = async (event) => {
 		// console.log(event.target.value);
@@ -55,16 +54,16 @@ const AddDoseButton = ({ med }) => {
 	const handleDoseClick = async ({ event, nowBool }) => {
 		event.preventDefault();
 		// console.log(inputDateTimeValue);
-		
+
 		let doseLogged = nowDateTime;
-		
+
 		if (!nowBool) {
 			doseLogged = inputDateTimeValue;
 		}
 
 		const doseDate = doseLogged.split('T')[0];
 		const doseTime = doseLogged.split('T')[1];
-		
+
 		console.log({ doseLogged, doseDate, doseTime });
 
 		let mostRecentBool = true;
@@ -74,6 +73,7 @@ const AddDoseButton = ({ med }) => {
 
 		const doseData = {
 			medId: _id,
+			medName: medName,
 			doseDate: doseDate,
 			doseTime: doseTime,
 			doseLogged: doseLogged,
@@ -100,7 +100,12 @@ const AddDoseButton = ({ med }) => {
 		<>
 			<InputGroup>
 				<Button onClick={(event) => handleDoseClick({ event, nowBool: true })}>Log now</Button>
-				<Form.Control aria-label="The time of the dose" type="datetime-local" value={inputDateTimeValue} onChange={handleChange} />
+				<Form.Control
+					aria-label="The time of the dose"
+					type="datetime-local"
+					value={inputDateTimeValue}
+					onChange={handleChange}
+				/>
 				<Button onClick={(event) => handleDoseClick({ event, nowBool: false })}>Log at time</Button>
 			</InputGroup>
 			{error && <Alert>Logging dose failed. Please try again.</Alert>}
