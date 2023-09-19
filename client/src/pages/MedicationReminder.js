@@ -1,4 +1,4 @@
-import React, { useState, useContext } from 'react';
+import React, { useState, useContext, useEffect } from 'react';
 import { useQuery } from '@apollo/client';
 import { QUERY_ME, QUERY_MEDS } from '../utils/queries';
 
@@ -17,6 +17,7 @@ import 'react-calendar/dist/Calendar.css';
 
 const MedicationReminder = () => {
 	const { dataContext, setDataContext } = useContext(DataContext);
+	const [show, setShow] = useState(true);
 
 	function DateTimeObj(newDate) {
 		this.now = newDate;
@@ -64,13 +65,13 @@ const MedicationReminder = () => {
 
 	return (
 		<main>
-			<Alert />
-			<div className="card">
-				<Container>
-					<header>
-						<h1 className="rem">Medication Reminder</h1>
-					</header>
-					<DateTimeContext.Provider value={nowState}>
+			<DateTimeContext.Provider value={nowState}>
+				<Alert meds={meds} show={show} setShow={setShow} />
+				<div className="card">
+					<Container>
+						<header>
+							<h1 className="rem">Medication Reminder</h1>
+						</header>
 						<Row>
 							<Col>
 								<div className="loader-container" id="pill-image">
@@ -94,9 +95,9 @@ const MedicationReminder = () => {
 								</Col>
 							</div>
 						</Row>
-					</DateTimeContext.Provider>
-				</Container>
-			</div>
+					</Container>
+				</div>
+			</DateTimeContext.Provider>
 		</main>
 	);
 };

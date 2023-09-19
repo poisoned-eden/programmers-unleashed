@@ -57,3 +57,7 @@ export function splitDateTime(dateTime) {
 	// console.log(dtSplitString);
 	return dtSplitString;
 }
+
+export function prettyDateTime(dateTime) {
+	return `${splitDate(dateTime)} ${splitTime(dateTime)}`;
+}

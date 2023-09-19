@@ -2,7 +2,7 @@ import React, { useState, useContext } from 'react';
 import { useQuery, useMutation, makeVar } from '@apollo/client';
 import { QUERY_ME, QUERY_MEDS } from '../../utils/queries';
 import { ADD_DOSE } from '../../utils/mutations';
-import { splitDate, addMinTimeBetween, splitTime } from '../../utils/dtUtils';
+import { splitDate, addMinTimeBetween, splitTime, splitDateTime, prettyDateTime } from '../../utils/dtUtils';
 import Calendar from 'react-calendar';
 import { Container, Row, Col, Card, Button, Accordion, ListGroup, ButtonGroup } from 'react-bootstrap';
 import { DateTimeContext, TodayContext } from '../../utils/DateTimeContext';
@@ -49,11 +49,11 @@ const MedCards = ({ med }) => {
 					</ListGroup.Item>
 					{mostRecentDose ? (
 						<>
-							<ListGroup.Item>Last taken Today at {mostRecentDose.doseTime}</ListGroup.Item>
+							<ListGroup.Item>Last taken today at {mostRecentDose.doseTime}</ListGroup.Item>
 
 							{minTimeBetween > 0 && (
 								<ListGroup.Item>
-									Next due: {addMinTimeBetween(mostRecentDose.doseLogged, minTimeBetween)}
+									Next due: {splitTime(Number(nextDoseDue))} 
 								</ListGroup.Item>
 							)}
 						</>

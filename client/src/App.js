@@ -78,7 +78,7 @@ function App() {
 						<Header />
 						<div className="container">
 								<Routes>
-									<Route path="/" element={Auth.loggedIn() ? <MedicationReminder /> : <Signup />} />
+									<Route path="/" element={Auth.loggedIn() ? <MedicationReminder /> : <Login />} />
 									<Route path="/medicationReminder" element={<MedicationReminder />} />
 									<Route path="/login" element={<Login />} />
 									<Route path="/signup" element={<Signup />} />
