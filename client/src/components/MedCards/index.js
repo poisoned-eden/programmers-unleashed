@@ -5,34 +5,24 @@ import { ADD_DOSE } from '../../utils/mutations';
 import { splitDate, addMinTimeBetween, splitTime } from '../../utils/dtUtils';
 import Calendar from 'react-calendar';
 import { Container, Row, Col, Card, Button, Accordion, ListGroup, ButtonGroup } from 'react-bootstrap';
-import { TodayContext } from '../../utils/TodayContext';
+import { DateTimeContext, TodayContext } from '../../utils/DateTimeContext';
 import AddDoseButton from '../AddDoseButton';
 import 'react-calendar/dist/Calendar.css';
 import { forEach } from 'lodash';
 
 const MedCards = ({ med }) => {
+	const dateTimeContext = useContext(DateTimeContext);
 	// TODO add card for if no meds
-	// const { today } = useContext(TodayContext);
 	const past24hr = makeVar([]);
-
+	// console.log('MedCards')
 	const { _id, medName, maxDailyDoses, minTimeBetween, remindersBool, mostRecentDose, mostRecentTime, doses } = med;
-
-	const now = new Date(); // returns date time that's an hour early
-	const nowMs = now.getTime(); // returns integer of ms
-	const yesterdayMs = now - 1000 * 60 * 60 * 24;
-	// console.log( 'now ' + now );
-	// console.log( 'now datestring ' + now.toString() );  // returns an hour early
-	// console.log( 'nowms datestring ' + new Date(nowMs).toString() ); // returns correct time
-	// console.log( 'nowMs ' + nowMs);  // returns integer of ms
-	// console.log( 'pastMs ' + yesterdayMs );  // returns integer of ms
-	// console.log( 'pastMs string ' + new Date(yesterdayMs).toString() ); // returns correct time 1 day ago
 
 	for (const key in doses) {
 		// getTime of dose
 		const doseMs = new Date(doses[key].doseLogged).getTime(); // TODO consider adding ms field to dose
 		// console.log('doseMs ' + doseMs);
 
-		if (doseMs > yesterdayMs) {
+		if (doseMs > dateTimeContext.ms) {
 			// put into array
 
 			past24hr([...past24hr(), doses[key]]);
@@ -50,9 +40,9 @@ const MedCards = ({ med }) => {
 			<Card.Body>
 				<span className="medication-icon"></span>
 				<ListGroup variant="flush">
-				<i class="gg-edit-contrast"></i>
-					<ListGroup.Item className='dose' >
-					 Doses today: {numDosesToday}
+					<i class="gg-edit-contrast"></i>
+					<ListGroup.Item className="dose">
+						Doses today: {numDosesToday}
 						{maxDailyDoses > 0 && `/${maxDailyDoses}`}
 					</ListGroup.Item>
 					{mostRecentDose ? (
@@ -72,7 +62,7 @@ const MedCards = ({ med }) => {
 				<AddDoseButton med={med} />
 			</Card.Body>
 			<Card.Footer>
-				<Accordion className='schedule'>
+				<Accordion className="schedule">
 					<Accordion.Header>Dose schedule</Accordion.Header>
 					<Accordion.Body>
 						{numDosesToday ? (

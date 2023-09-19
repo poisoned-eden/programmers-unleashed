@@ -1,13 +1,16 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
 
 import { useQuery } from '@apollo/client';
 
+import { DateTimeContext } from '../../utils/DateTimeContext';
 import { QUERY_DATE } from '../../utils/queries';
 
 function Alert(props) {
+	const dateTimeContext = useContext(DateTimeContext);
 	const [show, setShow] = useState(true);
+	console.log('Alert');
 
 	const handleClose = () => setShow(false);
 

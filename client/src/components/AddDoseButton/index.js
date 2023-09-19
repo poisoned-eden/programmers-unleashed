@@ -3,29 +3,14 @@ import { useQuery, useMutation, makeVar } from '@apollo/client';
 import { QUERY_ME, QUERY_MEDS } from '../../utils/queries';
 import { ADD_DOSE } from '../../utils/mutations';
 import { setDoseLoggedTime, splitDate, splitTime, splitDateTime, dateTimeFormat } from '../../utils/dtUtils';
-import { TodayContext } from '../../utils/TodayContext';
-
-import dayjs from 'dayjs';
-import customParseFormat from 'dayjs/plugin/customParseFormat';
-import utc from 'dayjs/plugin/utc';
-import timezone from 'dayjs/plugin/timezone'; // dependent on utc plugin
+import { DateTimeContext } from '../../utils/DateTimeContext';
 
 import { Button, InputGroup, Form, Alert } from 'react-bootstrap';
 
-
 const AddDoseButton = ({ med }) => {
-	// const { today, setToday } = useContext(TodayContext);
-	const now = new Date();
-	// console.log(nowTime);
-	const nowDateTime = splitDateTime(now.getTime() - now.getTimezoneOffset() * 60000);
-
-	const [inputDateTimeValue, setInputDateTimeValue] = useState(nowDateTime);
-
-	setInterval(() => {
-		const d = new Date();
-		console.log('updating inputDateTime on interval');
-		setInputDateTimeValue(splitDateTime(d.getTime() - d.getTimezoneOffset() * 60000));
-	}, 60000);
+	const dateTimeContext = useContext(DateTimeContext);
+	
+	const [inputDateTimeValue, setInputDateTimeValue] = useState(dateTimeContext.dateTimeString);
 
 	const [addDose, { error }] = useMutation(ADD_DOSE, {
 		refetchQueries: ['Meds'],
@@ -56,8 +41,9 @@ const AddDoseButton = ({ med }) => {
 		event.preventDefault();
 		// console.log(inputDateTimeValue);
 
-		let doseLogged = nowDateTime;
+		let doseLogged = dateTimeContext.dateTimeString;
 
+		// gets date time from input if 'log at time' clicked
 		if (!nowBool) {
 			doseLogged = inputDateTimeValue;
 		}

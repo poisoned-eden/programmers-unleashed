@@ -8,7 +8,7 @@ import { setContext } from '@apollo/client/link/context';
 // utilities
 import OneSignal from 'react-onesignal';
 import Auth from './utils/auth';
-import { TodayContext } from './utils/TodayContext';
+
 // pages and components
 import MedicationReminder from './pages/MedicationReminder';
 import Signup from './pages/Signup';
@@ -66,19 +66,20 @@ await client.refetchQueries({
 });
 
 function App() {
+
 	return (
 		<ApolloProvider client={client}>
 			<Router>
 				<div className="flex-column bg-colour justify-flex-start min-100-vh">
 					<Header />
 					<div className="container">
-						<Routes>
-							<Route path="/" element={Auth.loggedIn() ? <MedicationReminder /> : <Welcome />} />
-							<Route path="/medicationReminder" element={<MedicationReminder />} />
-							<Route path="/login" element={<Login />} />
-							<Route path="/signup" element={<Signup />} />
-							<Route path="/me" element={<Profile />} />
-						</Routes>
+							<Routes>
+								<Route path="/" element={Auth.loggedIn() ? <MedicationReminder /> : <Signup />} />
+								<Route path="/medicationReminder" element={<MedicationReminder />} />
+								<Route path="/login" element={<Login />} />
+								<Route path="/signup" element={<Signup />} />
+								<Route path="/me" element={<Profile />} />
+							</Routes>
 					</div>
 					<Footer />
 				</div>
