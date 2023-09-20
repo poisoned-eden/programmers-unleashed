@@ -66,3 +66,28 @@ https://medimate-initial-7cd2360e6da5.herokuapp.com/
 Link to GitHub repo:
 
 https://github.com/poisoned-eden/programmers-unleashed.git
+
+## Credits
+
+[https://github.com/poisoned-eden](https://github.com/Myra-k)
+[https://github.com/Myra-k](https://github.com/Myra-k)
+[https://github.com/cckinwest](https://github.com/cckinwest)
+[https://github.com/michaelcoder7](https://github.com/michaelcoder7)
+[https://github.com/tobzman](https://github.com/tobzman)
+
+## Licence
+
+Copyright (C) 2023,  Lilith Miller-Fermor, Myra Khatoon, Chi kin Chan, Michael Okikiade, Tobenna okafor.
+
+This program is free software: you can redistribute it and/or modify
+it under the terms of the GNU Affero General Public License as published
+by the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU Affero General Public License for more details.
+
+You should have received a copy of the GNU Affero General Public License
+along with this program.  If not, see <https://www.gnu.org/licenses/>.

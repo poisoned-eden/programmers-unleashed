@@ -1,5 +1,5 @@
 {
-	"name": "programming-thoughts",
+	"name": "MediMate",
 	"version": "1.0.0",
 	"main": "server/server.js",
 	"scripts": {
@@ -11,7 +11,7 @@
 	},
 	"keywords": [],
 	"author": "",
-	"license": "ISC",
+	"license": "GNU AGPLv3",
 	"devDependencies": {
 		"concurrently": "^5.1.0"
 	},
