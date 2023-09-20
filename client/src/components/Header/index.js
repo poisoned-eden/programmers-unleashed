@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { Container, Navbar } from 'react-bootstrap';
+import { Container, Navbar, Button } from 'react-bootstrap';
 
 import Auth from '../../utils/auth';
 
@@ -25,13 +25,16 @@ const Header = () => {
 					<div>
 						{Auth.loggedIn() ? (
 							<>
+								<Link className="btn-16" to="/">
+									<Button>Dashboard</Button>
+								</Link>
 								<Link className="btn-16" to="/me">
-									{Auth.getProfile().data.username}'s profile
+									<Button>{Auth.getProfile().data.username}'s profile</Button>
 								</Link>
 
-								<button className="btn-17" onClick={logout}>
+								<Button className="btn-17" onClick={logout}>
 									Logout
-								</button>
+								</Button>
 							</>
 						) : (
 							<>

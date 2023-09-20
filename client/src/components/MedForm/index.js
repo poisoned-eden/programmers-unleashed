@@ -4,24 +4,22 @@ import { useQuery, useMutation } from '@apollo/client';
 
 import { ADD_MED, UPDATE_MED } from '../../utils/mutations';
 
-import { Container, Row, Col, Button, Form } from 'react-bootstrap';
+import { Card, Container, Row, Col, Button, Form } from 'react-bootstrap';
 // import { Container, Row, Col, Button, Form } from 'react-bootstrap';
 import { QUERY_MEDS, QUERY_ME } from '../../utils/queries';
 
-
 const MedForm = (props) => {
 	console.log('MedForm');
-	
+
 	const { mutation, _id } = props;
 	console.log(props);
 
-
 	const defaultFormData = {
-			medName: '',
-			maxDailyDoses: '0',
-			minTimeBetween: '4',
-			remindersBool: 'off',
-		};
+		medName: '',
+		maxDailyDoses: '0',
+		minTimeBetween: '4',
+		remindersBool: 'off',
+	};
 
 	const [medFormData, setMedFormData] = useState(defaultFormData);
 
@@ -132,10 +130,9 @@ const MedForm = (props) => {
 		medSettings.maxDailyDoses = Number(medSettings.maxDailyDoses);
 		medSettings.minTimeBetween = Number(medSettings.minTimeBetween);
 		console.log(medSettings);
-		
+
 		console.log(mutation);
 		try {
-
 			if (mutation === 'ADD_MED') {
 				const { data } = await addMed({
 					variables: { medSettings: medSettings },
@@ -152,7 +149,7 @@ const MedForm = (props) => {
 				console.log(medSettings);
 				const { data } = await updateMed({
 					variables: {
-						medData: { ...medSettings},
+						medData: { ...medSettings },
 					},
 				});
 
@@ -165,62 +162,65 @@ const MedForm = (props) => {
 	};
 
 	return (
-		<div className='medform1'>
-			<h3 className='medtitle'>What's your medication?</h3>
-
-			<Form>
-				<Form.Group>
-					<Form.Label>Medication Name</Form.Label>
-					<Form.Control
-						type="text"
-						name="medName"
-						id="medName-input"
-						value={medFormData.medName}
-						onChange={handleChange}
-						placeholder="Enter the medication name"
-					/>
-				</Form.Group>
-				<Form.Group>
-					<Form.Label>Maximum doses per day</Form.Label>
-					<Form.Control
-						type="number"
-						name="maxDailyDoses"
-						id="maxDailyDoses-input"
-						value={medFormData.maxDailyDoses}
-						onChange={handleChange}
-					/>
-				</Form.Group>
-				<Form.Group>
-					<Form.Label>Minimum time allowed between doses in hours</Form.Label>
-					<Form.Control
-						type="number"
-						name="minTimeBetween"
-						id="minTimeBetween-input"
-						value={medFormData.minTimeBetween}
-						onChange={handleChange}
-					/>
-				</Form.Group>
-				<Form.Group>
-					<Form.Label>Would you like reminders for this medication?</Form.Label>
-					<Form.Check
-						type="switch"
-						name="remindersBool"
-						id="remindersBool-input"
-						onChange={handleChange}
-						label="Reminders"
-					/>
-				</Form.Group>
-				{mutation === 'ADD_MED' ? (
-					<Button type="sumbit" onClick={handleFormSubmit}>
-						Add Medication
-					</Button>
-				) : (
-					<Button type="sumbit" onClick={handleFormSubmit}>
-						Update Medication
-					</Button>
-				)}
-			</Form>
-		</div>
+		<Card className="medform1">
+			<Card.Header>
+				<h3 className="medtitle">What's your medication?</h3>
+			</Card.Header>
+			<Card.Body>
+				<Form>
+					<Form.Group>
+						<Form.Label>Medication Name</Form.Label>
+						<Form.Control
+							type="text"
+							name="medName"
+							id="medName-input"
+							value={medFormData.medName}
+							onChange={handleChange}
+							placeholder="Enter the medication name"
+						/>
+					</Form.Group>
+					<Form.Group>
+						<Form.Label>Maximum doses per day</Form.Label>
+						<Form.Control
+							type="number"
+							name="maxDailyDoses"
+							id="maxDailyDoses-input"
+							value={medFormData.maxDailyDoses}
+							onChange={handleChange}
+						/>
+					</Form.Group>
+					<Form.Group>
+						<Form.Label>Minimum time allowed between doses in hours</Form.Label>
+						<Form.Control
+							type="number"
+							name="minTimeBetween"
+							id="minTimeBetween-input"
+							value={medFormData.minTimeBetween}
+							onChange={handleChange}
+						/>
+					</Form.Group>
+					<Form.Group>
+						<Form.Label>Would you like reminders for this medication?</Form.Label>
+						<Form.Check
+							type="switch"
+							name="remindersBool"
+							id="remindersBool-input"
+							onChange={handleChange}
+							label="Reminders"
+						/>
+					</Form.Group>
+					{mutation === 'ADD_MED' ? (
+						<Button type="sumbit" onClick={handleFormSubmit}>
+							Add Medication
+						</Button>
+					) : (
+						<Button type="sumbit" onClick={handleFormSubmit}>
+							Update Medication
+						</Button>
+					)}
+				</Form>
+			</Card.Body>
+		</Card>
 	);
 };
 

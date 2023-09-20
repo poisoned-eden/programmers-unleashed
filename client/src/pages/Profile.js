@@ -9,6 +9,7 @@ import MedForm from '../components/MedForm';
 import MedCard from '../components/MedCard';
 
 import Auth from '../utils/auth';
+import { Row, Col, Card } from 'react-bootstrap';
 
 const Profile = () => {
 	const { loading: meLoading, data: meData } = useQuery(QUERY_ME);
@@ -32,20 +33,17 @@ const Profile = () => {
 	}
 
 	return (
-		<div>
-			<div className="flex-row justify-center mb-3">
-				{/* <h2 className="col-12 col-md-10 bg-dark text-light p-3 mb-5">
-					Viewing {userParam ? `${user.username}'s` : 'your'}{' '}
-					settings.
-				</h2> */}
-				{/* TODO move MedForm into modal that opens when push button to add new med */}
-				<MedForm mutation="ADD_MED" />
+		<Row>
+			<Col md={12} lg={6} className='mb-5'>
 				{/* TODO Account Settings */}
 				{medsData.meds.map((med) => (
 					<MedCard med={med} />
 				))}
-			</div>
-		</div>
+			</Col>
+			<Col md={12} lg={6}>
+				<MedForm mutation="ADD_MED" />
+			</Col>
+		</Row>
 	);
 };
 

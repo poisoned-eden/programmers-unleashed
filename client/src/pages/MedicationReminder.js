@@ -87,7 +87,7 @@ const MedicationReminder = () => {
 			<Row>
 				<DateTimeContext.Provider value={nowState}>
 					<Alert meds={dueMeds()} show={show} setShow={setShow} dueState={dueState} />
-					<Col sm={12} md={8}>
+					<Col md={12} lg={8}>
 						<Card >
 							<Card.Header>
 								<h1 className="rem">Medication Reminder</h1>
