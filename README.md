@@ -1,5 +1,7 @@
 # Programmers-Unleashed
 
+An easy-to-use progressive web app that allows the user to add different medications, track when they've taken them, and receive reminders when the next dose is due.
+
 ## User Story
 
 ```md
@@ -37,7 +39,7 @@ When the priscription details are added, the medication is then added to the sid
 
 ## Technologies Used
 
-This application is built using the following technologies:
+This MERN stack application is built using the following technologies:
 
 - **Node.js**
 - **Express.js**
