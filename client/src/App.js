@@ -23,6 +23,7 @@ import 'bootstrap/dist/css/bootstrap.css';
 import './App.css';
 import { loadErrorMessages, loadDevMessages } from '@apollo/client/dev';
 import { DataContext } from './utils/DateTimeContext';
+import { Container } from 'react-bootstrap';
 
 if (process.env.NODE_ENV !== 'production') {
 	// Adds messages only in a dev environment
@@ -76,7 +77,7 @@ function App() {
 				<DataContext.Provider value={{dataContext, setDataContext}}>
 					<div className="flex-column bg-colour justify-flex-start min-100-vh">
 						<Header />
-						<div className="container">
+						<Container>
 								<Routes>
 									<Route path="/" element={Auth.loggedIn() ? <MedicationReminder /> : <Login />} />
 									<Route path="/medicationReminder" element={<MedicationReminder />} />
@@ -84,7 +85,7 @@ function App() {
 									<Route path="/signup" element={<Signup />} />
 									<Route path="/me" element={<Profile />} />
 								</Routes>
-						</div>
+						</Container>
 						<Footer />
 					</div>
 				</DataContext.Provider>

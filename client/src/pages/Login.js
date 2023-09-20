@@ -6,8 +6,6 @@ import { Image, Card, Container, Row, Col } from 'react-bootstrap';
 import frontScreenshot from '../images/frontscreenshot.jpeg';
 import Auth from '../utils/auth';
 
-import '../index.css'; // Import the new CSS file
-
 const Login = (props) => {
 	const [formState, setFormState] = useState({ email: '', password: '' });
 	const [login, { error, data }] = useMutation(LOGIN_USER);

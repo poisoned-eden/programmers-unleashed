@@ -8,7 +8,6 @@ import frontScreenshot from '../images/frontscreenshot.jpeg';
 import Auth from "../utils/auth";
 
 //import { createUser } from "../utils/oneSignal";
-import '../index.css';
 //import { createUser } from "../utils/oneSignal";
 
 const Signup = () => {

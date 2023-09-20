@@ -84,39 +84,33 @@ const MedicationReminder = () => {
 
 	return (
 		<main>
-			<DateTimeContext.Provider value={nowState}>
-				<Alert meds={dueMeds()} show={show} setShow={setShow} dueState={dueState} />
-				<div className="card">
-					<Container>
-						<header>
-							<h1 className="rem">Medication Reminder</h1>
-						</header>
-						<Row>
-							<Col>
-								<div className="loader-container" id="pill-image">
-									<div className="loader"></div>
-								</div>
-								<h3 className="today">Todays Pills</h3>
-								{meds.map((med) => (
-									<MedCards med={med} />
-								))}
-							</Col>
-							<div className="card2">
-								<Col>
-									<h3 className="taken">Medications taken on</h3>
-									<Calendar onChange={onChangeCalendar} value={calendarValue} />
-									<div className="reminder">
-										{/* Add reminder component here */}
-										{/* Example: <ReminderComponent /> */}
-									</div>
-									<hr className="cal"></hr>
-									<Reminder value={calendarValue} />
-								</Col>
+			<Row>
+				<DateTimeContext.Provider value={nowState}>
+					<Alert meds={dueMeds()} show={show} setShow={setShow} dueState={dueState} />
+					<Col sm={12} md={8}>
+						<Card >
+							<Card.Header>
+								<h1 className="rem">Medication Reminder</h1>
+							</Card.Header>
+							<div className="loader-container" id="pill-image">
+								<div className="loader"></div>
 							</div>
-						</Row>
-					</Container>
-				</div>
-			</DateTimeContext.Provider>
+							<h3 className="today">Todays Pills</h3>
+							{meds.map((med) => (
+								<MedCards med={med} />
+							))}
+						</Card>
+					</Col>
+					<Col>
+						<Card className="card2">
+								<h3 className="taken">Medications taken on</h3>
+								<Calendar onChange={onChangeCalendar} value={calendarValue} />
+								<hr className="cal"></hr>
+							<Reminder value={calendarValue} />
+						</Card>
+					</Col>
+				</DateTimeContext.Provider>
+			</Row>
 		</main>
 	);
 };
