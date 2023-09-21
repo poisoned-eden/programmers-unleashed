@@ -29,7 +29,7 @@ function Alert(props) {
 	// 	return coming;
 	// };
 	
-		const warnClass = '';
+		let warnClass = '';
 		if (dueState) {
 			warnClass+= 'WarnDue';
 		}
